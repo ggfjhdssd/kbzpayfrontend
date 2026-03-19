@@ -8,88 +8,53 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════════════════
-   CSS VARIABLES & RESET
-═══════════════════════════════════════════════════ */
 :root{
-  --b1:#0f3fa8; --b2:#1565c0; --b3:#1976d2; --b4:#2196f3; --b5:#42a5f5;
-  --gold:#f5a623; --gold-lt:#ffd166;
-  --green:#00c875; --red:#f44336;
-  --surface:#eef3fb; --card:#ffffff;
-  --t1:#0a1628; --t2:#2d4878; --t3:#8099c0; --t4:#b8cce8;
+  --b1:#0f3fa8;--b2:#1565c0;--b3:#1976d2;--b4:#2196f3;
+  --gold:#f5a623;--gold-lt:#ffd166;
+  --green:#00c875;--red:#f44336;
+  --surface:#eef3fb;
+  --t1:#0a1628;--t2:#2d4878;--t3:#8099c0;
   --border:#dde8f8;
-  --glass-bg:rgba(255,255,255,.13);
-  --glass-border:rgba(255,255,255,.32);
-  --glass-shadow:0 4px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.28);
-  --radius-xl:22px; --radius-lg:16px; --radius-md:12px;
   --ff:'Nunito','Noto Sans Myanmar',sans-serif;
   --ff-mm:'Noto Sans Myanmar','Nunito',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:#c8d8f0}
-body{font-family:var(--ff);display:flex;justify-content:center;align-items:flex-start}
+body{font-family:var(--ff);display:flex;justify-content:center}
 .mm{font-family:var(--ff-mm)}
-img{max-width:100%;display:block}
-button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
 
-/* ═══════════════════════════════════════════════════
-   APP SHELL
-═══════════════════════════════════════════════════ */
 #app{
   width:100%;max-width:430px;height:100vh;
   display:flex;flex-direction:column;overflow:hidden;
   background:var(--surface);position:relative;
 }
 
-/* ═══════════════════════════════════════════════════
-   HERO HEADER
-═══════════════════════════════════════════════════ */
+/* ─── HERO ─── */
 .hero{
   background:linear-gradient(158deg,#0f3fa8 0%,#1565c0 36%,#1976d2 68%,#2095e8 100%);
-  padding:42px 20px 0;flex-shrink:0;position:relative;overflow:hidden;
+  padding:44px 20px 0;flex-shrink:0;position:relative;overflow:hidden;
 }
-/* Orbs */
-.hero::before{content:'';position:absolute;width:360px;height:360px;border-radius:50%;
-  background:rgba(255,255,255,.055);top:-120px;right:-100px;pointer-events:none}
-.hero::after{content:'';position:absolute;width:240px;height:240px;border-radius:50%;
-  background:rgba(255,255,255,.04);bottom:-80px;left:-60px;pointer-events:none}
-/* Star dust */
-.hero-dust{position:absolute;inset:0;pointer-events:none;
-  background-image:
-    radial-gradient(1.5px 1.5px at 12% 15%,rgba(255,255,255,.55) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 29%  7%,rgba(255,255,255,.38) 0%,transparent 100%),
-    radial-gradient(2px   2px   at 48% 20%,rgba(255,255,255,.22) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 64% 10%,rgba(255,255,255,.45) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 79% 18%,rgba(255,255,255,.30) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 91%  8%,rgba(255,255,255,.42) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 22% 36%,rgba(255,255,255,.20) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 93% 32%,rgba(255,255,255,.25) 0%,transparent 100%),
-    radial-gradient(ellipse 200% 80% at 96% 0%,rgba(66,165,245,.22) 0%,transparent 55%),
-    radial-gradient(ellipse 120% 60% at 4% 100%,rgba(15,63,168,.25) 0%,transparent 55%);
-}
+.hero::before{content:'';position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.055);top:-120px;right:-100px;pointer-events:none}
+.hero::after{content:'';position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.04);bottom:-80px;left:-60px;pointer-events:none}
+.hero-dust{position:absolute;inset:0;pointer-events:none;background-image:
+  radial-gradient(1.5px 1.5px at 12% 15%,rgba(255,255,255,.55) 0%,transparent 100%),
+  radial-gradient(1px 1px at 29% 7%,rgba(255,255,255,.38) 0%,transparent 100%),
+  radial-gradient(2px 2px at 48% 20%,rgba(255,255,255,.22) 0%,transparent 100%),
+  radial-gradient(1px 1px at 64% 10%,rgba(255,255,255,.45) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 79% 18%,rgba(255,255,255,.30) 0%,transparent 100%),
+  radial-gradient(1px 1px at 91% 8%,rgba(255,255,255,.42) 0%,transparent 100%),
+  radial-gradient(1px 1px at 22% 36%,rgba(255,255,255,.20) 0%,transparent 100%),
+  radial-gradient(ellipse 200% 80% at 96% 0%,rgba(66,165,245,.22) 0%,transparent 55%),
+  radial-gradient(ellipse 120% 60% at 4% 100%,rgba(15,63,168,.25) 0%,transparent 55%);}
 
-/* ─── Top bar ─── */
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;position:relative;z-index:2}
-.user-cluster{display:flex;align-items:center;gap:11px}
-.avatar{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.42);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;
-}
-.avatar img{width:100%;height:100%;object-fit:cover}
+.user-cl{display:flex;align-items:center;gap:11px}
+.avatar{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
 .greet-sub{color:rgba(255,255,255,.65);font-size:11px;font-weight:600}
-.greet-name{color:#fff;font-size:14px;font-weight:800;line-height:1.2;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.search-pill{
-  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);
-  border-radius:22px;padding:8px 15px;display:flex;align-items:center;gap:7px;
-  backdrop-filter:blur(8px);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;
-  cursor:pointer;transition:background .15s;
-}
-.search-pill:active{background:rgba(255,255,255,.22)}
+.greet-name{color:#fff;font-size:14px;font-weight:800;line-height:1.2;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);border-radius:22px;padding:8px 15px;display:flex;align-items:center;gap:7px;backdrop-filter:blur(8px);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
 .search-pill svg{width:14px;height:14px;fill:rgba(255,255,255,.85);flex-shrink:0}
 
-/* ─── Balance ─── */
 .balance-block{text-align:center;position:relative;z-index:2;margin-bottom:8px}
 .bal-label{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.72);font-size:13px;font-weight:700;margin-bottom:5px}
 .bal-label svg{width:16px;height:16px;fill:rgba(255,255,255,.72)}
@@ -97,104 +62,53 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
 .bal-main{font-size:50px;font-weight:900;letter-spacing:-1.5px;font-variant-numeric:tabular-nums}
 .bal-dec{font-size:22px;font-weight:700;margin-top:8px;opacity:.88}
 .bal-total{color:rgba(255,255,255,.6);font-size:12px;font-weight:700;margin-bottom:11px;font-variant-numeric:tabular-nums}
-.rate-chip{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
-  border-radius:20px;padding:5px 14px;
-  color:rgba(255,255,255,.88);font-size:12.5px;font-weight:800;
-}
+.rate-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:5px 14px;color:rgba(255,255,255,.88);font-size:12.5px;font-weight:800}
 
-/* ─── Quick action buttons (Glassmorphism) ─── */
-.quick-row{
-  display:flex;gap:8px;padding:18px 0 24px;
-  position:relative;z-index:2;
-}
+/* ─── GLASS BUTTONS ─── */
+.quick-row{display:flex;gap:8px;padding:18px 0 24px;position:relative;z-index:2}
 .qbtn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;
   border-radius:16px;padding:13px 6px 11px;overflow:hidden;position:relative;
-  /* Glass */
-  background:var(--glass-bg);
+  background:rgba(255,255,255,.13);
   backdrop-filter:blur(14px) saturate(180%);
   -webkit-backdrop-filter:blur(14px) saturate(180%);
-  border:1px solid var(--glass-border);
-  box-shadow:var(--glass-shadow);
+  border:1px solid rgba(255,255,255,.32);
+  box-shadow:0 4px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.28);
   cursor:pointer;transition:transform .13s,background .13s;
 }
-.qbtn:active{transform:scale(.93);background:rgba(255,255,255,.22)}
-/* Specular shine */
-.qbtn::before{
-  content:'';position:absolute;top:0;left:-70%;
-  width:55%;height:100%;
-  background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.13) 50%,transparent 80%);
-  transform:skewX(-15deg);transition:left .35s ease;pointer-events:none;
-}
+.qbtn::before{content:'';position:absolute;top:0;left:-70%;width:55%;height:100%;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.13) 50%,transparent 80%);transform:skewX(-15deg);transition:left .35s ease;pointer-events:none}
 .qbtn:hover::before{left:130%}
-/* Gold variant */
-.qbtn.gold{
-  background:linear-gradient(145deg,rgba(255,209,102,.92),rgba(245,166,35,.95));
-  border:1px solid rgba(255,230,120,.55);
-  box-shadow:0 6px 22px rgba(245,166,35,.45),0 2px 6px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.45);
-}
+.qbtn:active{transform:scale(.93);background:rgba(255,255,255,.22)}
+.qbtn.gold{background:linear-gradient(145deg,rgba(255,209,102,.92),rgba(245,166,35,.95));border:1px solid rgba(255,230,120,.55);box-shadow:0 6px 22px rgba(245,166,35,.45),inset 0 1px 0 rgba(255,255,255,.45)}
 .qbtn.gold:active{transform:scale(.93)}
-.qbtn-icon{
-  width:48px;height:48px;border-radius:13px;
-  background:rgba(255,255,255,.20);border:1px solid rgba(255,255,255,.28);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 6px rgba(0,0,0,.12);
-}
+.qbtn-icon{width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,.20);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
 .qbtn.gold .qbtn-icon{background:rgba(255,255,255,.30);border-color:rgba(255,255,255,.45)}
 .qbtn-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .qbtn.gold .qbtn-icon svg{stroke:rgba(70,30,0,.85)}
 .qbtn-label{font-size:10.5px;font-weight:800;color:rgba(255,255,255,.96);text-align:center;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.22)}
 .qbtn.gold .qbtn-label{color:#3d1800;text-shadow:none}
 
-/* ═══════════════════════════════════════════════════
-   WHITE SHEET (bottom panel)
-═══════════════════════════════════════════════════ */
-.sheet{
-  background:#fff;border-radius:24px 24px 0 0;
-  flex:1;display:flex;flex-direction:column;overflow:hidden;
-  margin-top:-5px;position:relative;z-index:3;
-  box-shadow:0 -6px 28px rgba(0,0,0,.08);
-}
-/* drag handle */
+/* ─── SHEET ─── */
+.sheet{background:#fff;border-radius:24px 24px 0 0;flex:1;display:flex;flex-direction:column;overflow:hidden;margin-top:-5px;position:relative;z-index:3;box-shadow:0 -6px 28px rgba(0,0,0,.08)}
 .sheet-handle{width:38px;height:4px;background:#dde8f4;border-radius:2px;margin:12px auto 0}
 
-/* ─── Tabs ─── */
 .tabs{display:flex;border-bottom:1.5px solid var(--border);padding:0 22px;flex-shrink:0}
-.tab{
-  flex:1;padding:13px 4px 11px;text-align:center;
-  font-size:14px;font-weight:800;color:var(--t3);
-  background:none;border:none;cursor:pointer;position:relative;transition:color .2s;line-height:1.25;
-}
+.tab{flex:1;padding:13px 4px 11px;text-align:center;font-size:14px;font-weight:800;color:var(--t3);background:none;border:none;cursor:pointer;position:relative;transition:color .2s;line-height:1.25}
 .tab.active{color:var(--b2)}
-.tab.active::after{
-  content:'';position:absolute;bottom:-1.5px;left:16%;right:16%;height:3px;
-  background:linear-gradient(90deg,var(--b2),var(--b4));border-radius:2px;
-}
+.tab.active::after{content:'';position:absolute;bottom:-1.5px;left:16%;right:16%;height:3px;background:linear-gradient(90deg,var(--b2),var(--b4));border-radius:2px}
 
-/* ─── Tab content ─── */
 .tab-content{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .tab-content::-webkit-scrollbar{display:none}
 .tab-panel{display:none;padding:16px 16px 110px}
 .tab-panel.active{display:block}
 
-/* ─── Section headers ─── */
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .sec-title{font-size:14px;font-weight:800;color:var(--t1)}
-.live-badge{
-  display:flex;align-items:center;gap:5px;
-  background:#e4f9ee;border-radius:20px;padding:3px 9px;
-  font-size:10.5px;font-weight:800;color:#00924a;
-}
+.live-badge{display:flex;align-items:center;gap:5px;background:#e4f9ee;border-radius:20px;padding:3px 9px;font-size:10.5px;font-weight:800;color:#00924a}
 .live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:lpulse 1.8s infinite}
 @keyframes lpulse{0%{box-shadow:0 0 0 0 rgba(0,200,117,.5)}70%{box-shadow:0 0 0 8px rgba(0,200,117,0)}100%{box-shadow:0 0 0 0 rgba(0,200,117,0)}}
 
-/* ─── Info banners ─── */
-.banner{
-  border-radius:var(--radius-lg);padding:13px 14px;margin-bottom:14px;
-  display:flex;align-items:flex-start;gap:11px;
-}
+.banner{border-radius:var(--radius-lg,16px);padding:13px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:11px}
 .banner.blue{background:linear-gradient(135deg,#e6f0ff,#d4e6ff);border:1px solid #b8d4fa}
 .banner.amber{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:1px solid #fde090}
 .banner.red{background:linear-gradient(135deg,#fff0f0,#ffe0e0);border:1px solid #ffb8b8}
@@ -206,255 +120,137 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
 .banner.red .banner-body p{color:#7a0000}
 .banner.red .banner-body p strong{color:#c00000}
 
-/* ─── Podium ─── */
+/* ─── PODIUM ─── */
 .podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;align-items:flex-end}
 .pod-card{border-radius:17px;display:flex;flex-direction:column;align-items:center;padding:11px 6px;gap:5px;position:relative}
 .pod-card.p1{background:linear-gradient(160deg,#fffae4,#fff7c8);border:1.5px solid #f5d870;box-shadow:0 5px 18px rgba(245,166,35,.17);padding-top:18px}
 .pod-card.p2{background:linear-gradient(160deg,#f3f8ff,#e7f0fc);border:1.5px solid #ccd9f0}
 .pod-card.p3{background:linear-gradient(160deg,#fff5ea,#fce8d5);border:1.5px solid #edcaa0}
 .pod-crown{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:22px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))}
-.pod-avatar{
-  width:44px;height:44px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:800;color:#fff;
-  border:2.5px solid rgba(255,255,255,.75);
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
+.pod-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;border:2.5px solid rgba(255,255,255,.75);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .rank-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px}
 .rb-g{background:linear-gradient(135deg,#ffd166,#f5a623);color:#7a3400}
 .rb-s{background:linear-gradient(135deg,#dbe8f5,#c3d8eb);color:#3a4f6e}
 .rb-b{background:linear-gradient(135deg,#f5c48a,#d48638);color:#5a2400}
-.pod-name{font-size:10.5px;font-weight:700;color:var(--t1);text-align:center;line-height:1.25;word-break:break-all}
+.pod-name{font-size:10.5px;font-weight:700;color:var(--t1);text-align:center;line-height:1.25}
 .pod-stat{font-size:10.5px;font-weight:800;color:var(--b2);font-variant-numeric:tabular-nums}
 
-/* ─── List rows ─── */
-.row{
-  background:#fff;border-radius:14px;padding:12px 14px;
-  display:flex;align-items:center;gap:11px;
-  box-shadow:0 2px 10px rgba(0,50,150,.06);
-  margin-bottom:8px;border:1px solid #eaf0f9;
-  transition:transform .12s;
-}
+/* ─── LIST ROWS ─── */
+.row{background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;box-shadow:0 2px 10px rgba(0,50,150,.06);margin-bottom:8px;border:1px solid #eaf0f9;transition:transform .12s}
 .row:active{transform:scale(.98)}
-.row-avatar{
-  width:40px;height:40px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:800;color:#fff;
-  box-shadow:0 2px 8px rgba(0,0,0,.14);
-}
-.row-rank{
-  width:28px;height:28px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;background:#edf2fa;color:#4a6080;
-}
+.row-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.row-rank{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:#edf2fa;color:#4a6080}
 .row-body{flex:1;min-width:0}
 .row-name{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-sub{font-size:11px;color:var(--t3);margin-top:1px}
 .row-right{text-align:right;flex-shrink:0}
-.row-amount{font-size:13.5px;font-weight:800;color:#00a050;font-variant-numeric:tabular-nums}
-.row-badge{
-  display:inline-flex;align-items:center;gap:3px;
-  background:#e4f9ee;color:#00a050;
-  font-size:10px;font-weight:700;
-  padding:2px 7px;border-radius:10px;margin-top:3px;
-}
+.row-amt{font-size:13.5px;font-weight:800;color:#00a050;font-variant-numeric:tabular-nums}
+.row-badge{display:inline-flex;align-items:center;gap:3px;background:#e4f9ee;color:#00a050;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:3px}
 
-/* ─── Bottom CTA ─── */
-.bottom-cta{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:12px 16px 20px;
-  background:linear-gradient(to top,#fff 55%,transparent);
-  z-index:10;
-}
-.cta-btn{
-  width:100%;padding:15px;border-radius:15px;
-  font-family:var(--ff-mm);font-size:14px;font-weight:800;color:#fff;
-  background:linear-gradient(135deg,var(--b3),var(--b1));
-  box-shadow:0 7px 22px rgba(15,63,168,.38);
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:transform .14s,box-shadow .14s;
-}
-.cta-btn:active{transform:scale(.975);box-shadow:0 3px 10px rgba(15,63,168,.28)}
+/* ─── BOTTOM CTA ─── */
+.bottom-cta{position:absolute;bottom:0;left:0;right:0;padding:12px 16px 20px;background:linear-gradient(to top,#fff 55%,transparent);z-index:10}
+.cta-btn{width:100%;padding:15px;border-radius:15px;font-family:var(--ff-mm);font-size:14px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--b3),var(--b1));box-shadow:0 7px 22px rgba(15,63,168,.38);display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;transition:transform .14s}
+.cta-btn:active{transform:scale(.975)}
 .cta-btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* ═══════════════════════════════════════════════════
-   MODALS (Bottom sheets)
-═══════════════════════════════════════════════════ */
-.overlay{
-  position:fixed;inset:0;z-index:50;
-  display:flex;align-items:flex-end;justify-content:center;
-  background:rgba(5,15,50,.55);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  opacity:0;pointer-events:none;transition:opacity .3s;
-}
+/* ─── MODALS ─── */
+.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,50,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.open{opacity:1;pointer-events:all}
-.modal{
-  background:#fff;border-radius:26px 26px 0 0;
-  padding:0 20px 34px;width:100%;max-width:430px;
-  transform:translateY(100%);transition:transform .36s cubic-bezier(.32,.72,0,1);
-}
+.modal{background:#fff;border-radius:26px 26px 0 0;padding:0 20px 34px;width:100%;max-width:430px;transform:translateY(100%);transition:transform .36s cubic-bezier(.32,.72,0,1)}
 .overlay.open .modal{transform:translateY(0)}
 .modal-handle{width:38px;height:4px;background:#d8e3f0;border-radius:2px;margin:13px auto 20px}
 .modal-title{font-size:19px;font-weight:900;color:var(--t1);margin-bottom:3px}
 .modal-sub{font-size:12px;color:var(--t3);margin-bottom:18px}
-.modal-bal-row{
-  background:#f3f8ff;border:1px solid #d0e4fa;border-radius:15px;
-  padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;
-}
-.modal-bal-lbl{font-size:11px;color:#7a95ba;margin-bottom:2px}
-.modal-bal-val{font-size:21px;font-weight:900;color:var(--b2);font-variant-numeric:tabular-nums}
+
+.bal-row2{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:15px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.bal-lbl2{font-size:11px;color:#7a95ba;margin-bottom:2px}
+.bal-val2{font-size:21px;font-weight:900;color:var(--b2);font-variant-numeric:tabular-nums}
 .min-badge{font-size:11px;color:#c06000;font-weight:700;background:#fff8e0;padding:3px 9px;border-radius:9px;border:1px solid #fde090}
-.fee-warn{
-  background:#fff4e0;border:1px solid #ffd090;border-radius:11px;
-  padding:9px 13px;font-size:11.5px;color:#c05000;font-weight:600;
-  display:flex;align-items:flex-start;gap:7px;margin-bottom:16px;line-height:1.55;
-}
-.label-sm{display:block;font-size:12px;font-weight:800;color:var(--t2);margin-bottom:7px}
-.input-wrap{position:relative;margin-bottom:6px}
-.amount-input{
-  width:100%;border:2px solid #d5e5f8;border-radius:14px;
-  padding:14px 54px 14px 16px;
-  font-family:var(--ff);font-size:21px;font-weight:900;color:var(--t1);
-  outline:none;transition:border .2s;
-  -moz-appearance:textfield;appearance:none;
-}
-.amount-input::-webkit-outer-spin-button,.amount-input::-webkit-inner-spin-button{-webkit-appearance:none}
-.amount-input:focus{border-color:var(--b3)}
-.amount-input::placeholder{color:#c0d0ea;font-size:16px;font-weight:700}
-.input-unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:var(--t3)}
+
+.fee-warn{background:#fff4e0;border:1px solid #ffd090;border-radius:11px;padding:9px 13px;font-size:11.5px;color:#c05000;font-weight:600;display:flex;align-items:flex-start;gap:7px;margin-bottom:16px;line-height:1.55}
+.lbl-sm{display:block;font-size:12px;font-weight:800;color:var(--t2);margin-bottom:7px}
+.inp-wrap{position:relative;margin-bottom:6px}
+.amt-inp{width:100%;border:2px solid #d5e5f8;border-radius:14px;padding:14px 54px 14px 16px;font-family:var(--ff);font-size:21px;font-weight:900;color:var(--t1);outline:none;transition:border .2s;-moz-appearance:textfield;appearance:none}
+.amt-inp::-webkit-outer-spin-button,.amt-inp::-webkit-inner-spin-button{-webkit-appearance:none}
+.amt-inp:focus{border-color:var(--b3)}
+.amt-inp::placeholder{color:#c0d0ea;font-size:16px;font-weight:700}
+.inp-unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:var(--t3)}
 .fee-box{background:#fffbee;border:1px solid #fde890;border-radius:13px;padding:12px;margin:10px 0 18px}
 .fee-row{display:flex;justify-content:space-between;font-size:12px;color:#7a6030;padding:3px 0}
-.fee-row.total{font-size:13.5px;font-weight:800;color:var(--t1);border-top:1px solid #fde890;margin-top:6px;padding-top:9px}
+.fee-row.tot{font-size:13.5px;font-weight:800;color:var(--t1);border-top:1px solid #fde890;margin-top:6px;padding-top:9px}
 .fee-row .fv{font-variant-numeric:tabular-nums;font-weight:700}
-.fee-row.total .fv{color:#00a050}
+.fee-row.tot .fv{color:#00a050}
+
 /* Instruction box */
-.instruction-box{
-  background:linear-gradient(135deg,#fff9e6,#fff3cc);
-  border:1.5px solid #fde090;border-radius:15px;padding:14px;margin-bottom:14px;
-}
-.instruction-box h4{font-size:13px;font-weight:800;color:#7a4800;margin-bottom:8px;font-family:var(--ff-mm)}
-.instruction-box p{font-size:12.5px;color:#6a4000;line-height:1.7;font-family:var(--ff-mm)}
-.instruction-box .phone{font-size:16px;font-weight:900;color:#c06000;letter-spacing:.3px;display:block;margin:4px 0}
-/* Upload area */
-.upload-area{
-  border:2px dashed #c0d4f0;border-radius:15px;
-  min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:14px;
-  background:#f8fbff;
-}
-.upload-area:hover,.upload-area.has-file{border-color:var(--b3);background:#f0f7ff}
-.upload-area.has-file img{max-height:160px;border-radius:10px;object-fit:contain}
+.instr-box{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:1.5px solid #fde090;border-radius:15px;padding:14px;margin-bottom:14px}
+.instr-box h4{font-size:13px;font-weight:800;color:#7a4800;margin-bottom:8px;font-family:var(--ff-mm)}
+.instr-box p{font-size:12.5px;color:#6a4000;line-height:1.7;font-family:var(--ff-mm)}
+.instr-phone{font-size:17px;font-weight:900;color:#c06000;letter-spacing:.3px;display:block;margin:5px 0 3px}
+
+/* Upload */
+.upload-area{border:2px dashed #c0d4f0;border-radius:15px;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:14px;background:#f8fbff}
+.upload-area.has-file,.upload-area:hover{border-color:var(--b3);background:#f0f7ff}
+.upload-area img{max-height:160px;border-radius:10px;object-fit:contain}
 .upload-icon{font-size:36px;line-height:1}
-.upload-text{font-size:13px;font-weight:700;color:var(--b2)}
+.upload-txt{font-size:13px;font-weight:700;color:var(--b2)}
 .upload-hint{font-size:11px;color:var(--t3)}
+
 /* Steps */
-.step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px}
-.step{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
-.step.done{background:var(--green);color:#fff}
-.step.active{background:var(--b2);color:#fff}
-.step.todo{background:#e0e8f4;color:var(--t3)}
-.step-line{flex:1;height:2px;background:#e0e8f4;border-radius:1px}
-.step-line.done{background:var(--green)}
-/* Buttons in modal */
-.btn-primary{
-  width:100%;padding:15px;border-radius:14px;
-  font-family:var(--ff-mm);font-size:14px;font-weight:800;color:#fff;
-  background:linear-gradient(135deg,var(--b3),var(--b1));
-  box-shadow:0 6px 20px rgba(15,63,168,.32);
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  transition:transform .14s;margin-bottom:10px;
-}
-.btn-primary:active{transform:scale(.975)}
-.btn-primary:disabled{opacity:.42;cursor:not-allowed}
-.btn-gold{
-  width:100%;padding:15px;border-radius:14px;
-  font-family:var(--ff-mm);font-size:14px;font-weight:900;color:#3d1800;
-  background:linear-gradient(135deg,var(--gold-lt),var(--gold));
-  box-shadow:0 6px 20px rgba(245,166,35,.42);
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  transition:transform .14s;margin-bottom:10px;
-}
+.step-ind{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px}
+.si{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.si.done{background:var(--green);color:#fff}.si.active{background:var(--b2);color:#fff}.si.todo{background:#e0e8f4;color:var(--t3)}
+.sl{flex:1;height:2px;background:#e0e8f4;border-radius:1px}.sl.done{background:var(--green)}
+
+/* Buttons */
+.btn-p{width:100%;padding:15px;border-radius:14px;font-family:var(--ff-mm);font-size:14px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--b3),var(--b1));box-shadow:0 6px 20px rgba(15,63,168,.32);display:flex;align-items:center;justify-content:center;gap:7px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:10px}
+.btn-p:active{transform:scale(.975)}
+.btn-p:disabled{opacity:.42;cursor:not-allowed}
+.btn-gold{width:100%;padding:15px;border-radius:14px;font-family:var(--ff-mm);font-size:14px;font-weight:900;color:#3d1800;background:linear-gradient(135deg,var(--gold-lt),var(--gold));box-shadow:0 6px 20px rgba(245,166,35,.42);display:flex;align-items:center;justify-content:center;gap:7px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:10px}
 .btn-gold:active{transform:scale(.975)}
-.btn-ghost{
-  width:100%;padding:13px;border-radius:14px;
-  font-family:var(--ff-mm);font-size:13px;font-weight:700;color:var(--t3);
-  background:#edf2fb;transition:background .14s;
-}
+.btn-ghost{width:100%;padding:13px;border-radius:14px;font-family:var(--ff-mm);font-size:13px;font-weight:700;color:var(--t3);background:#edf2fb;border:none;cursor:pointer;transition:background .14s}
 .btn-ghost:active{background:#dce8f4}
-/* ref stats */
+
+/* Ref modal */
 .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .ref-card{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:14px;padding:14px;text-align:center}
-.ref-card .num{font-size:27px;font-weight:900;color:var(--b2);font-variant-numeric:tabular-nums}
-.ref-card .lbl{font-size:11px;color:var(--t3);margin-top:2px;font-family:var(--ff-mm)}
+.ref-num{font-size:27px;font-weight:900;color:var(--b2);font-variant-numeric:tabular-nums}
+.ref-lbl{font-size:11px;color:var(--t3);margin-top:2px;font-family:var(--ff-mm)}
 .ref-link-row{display:flex;gap:8px;margin-bottom:16px}
-.ref-link-input{
-  flex:1;background:#f3f8ff;border:1.5px solid #ccdcf6;border-radius:12px;
-  padding:11px 12px;font-size:11px;color:#2a4880;font-family:monospace;
-  overflow:hidden;text-overflow:ellipsis;outline:none;white-space:nowrap;
-}
-.ref-copy-btn{
-  background:linear-gradient(135deg,var(--b3),var(--b1));color:#fff;
-  border:none;border-radius:12px;padding:0 17px;
-  font-size:12px;font-weight:800;cursor:pointer;
-  font-family:var(--ff-mm);transition:transform .12s;
-}
-.ref-copy-btn:active{transform:scale(.94)}
+.ref-inp{flex:1;background:#f3f8ff;border:1.5px solid #ccdcf6;border-radius:12px;padding:11px 12px;font-size:11px;color:#2a4880;font-family:monospace;overflow:hidden;text-overflow:ellipsis;outline:none;white-space:nowrap}
+.ref-copy{background:linear-gradient(135deg,var(--b3),var(--b1));color:#fff;border:none;border-radius:12px;padding:0 17px;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--ff-mm);transition:transform .12s}
+.ref-copy:active{transform:scale(.94)}
 
-/* ═══════════════════════════════════════════════════
-   SHIMMER LOADER
-═══════════════════════════════════════════════════ */
-.shim{
-  background:linear-gradient(90deg,#edf2fa 25%,#f6f9ff 50%,#edf2fa 75%);
-  background-size:600px 100%;animation:shim 1.5s infinite linear;border-radius:12px;
-}
+/* Shimmer */
+.shim{background:linear-gradient(90deg,#edf2fa 25%,#f6f9ff 50%,#edf2fa 75%);background-size:600px 100%;animation:shim 1.5s infinite linear;border-radius:12px}
 @keyframes shim{from{background-position:-600px 0}to{background-position:600px 0}}
 
-/* ═══════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════ */
-#toast{
-  position:fixed;bottom:115px;left:50%;
-  transform:translateX(-50%) translateY(18px);
-  background:var(--t1);color:#fff;
-  padding:12px 22px;border-radius:26px;
-  font-size:13px;font-weight:700;white-space:nowrap;
-  opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;
-  box-shadow:0 8px 28px rgba(0,0,0,.22);
-  max-width:90vw;text-align:center;white-space:normal;
-}
+/* Toast */
+#toast{position:fixed;bottom:115px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--t1);color:#fff;padding:12px 22px;border-radius:26px;font-size:13px;font-weight:700;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.22);max-width:88vw;text-align:center;white-space:normal}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{background:linear-gradient(135deg,#00c875,#009d55)}
 #toast.err{background:linear-gradient(135deg,#f44336,#c62828)}
 
-/* ═══════════════════════════════════════════════════
-   SPINNER
-═══════════════════════════════════════════════════ */
-.spinner{
-  width:20px;height:20px;border:2.5px solid rgba(255,255,255,.3);
-  border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;
-}
+/* Spinner */
+.spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Success screen */
-.success-screen{text-align:center;padding:16px 0 4px}
-.success-screen .big-icon{font-size:64px;margin-bottom:14px;line-height:1}
-.success-screen h2{font-size:21px;font-weight:900;color:var(--t1);margin-bottom:6px;font-family:var(--ff-mm)}
-.success-screen p{font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:22px;font-family:var(--ff-mm)}
+/* Success */
+.success-sc{text-align:center;padding:16px 0 4px}
+.success-sc .big-ic{font-size:64px;margin-bottom:14px;line-height:1}
+.success-sc h2{font-size:21px;font-weight:900;color:var(--t1);margin-bottom:6px;font-family:var(--ff-mm)}
+.success-sc p{font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:22px;font-family:var(--ff-mm)}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ══════════ HERO ══════════ -->
+  <!-- ═══ HERO ═══ -->
   <div class="hero">
     <div class="hero-dust"></div>
-    <!-- Top bar -->
     <div class="topbar">
-      <div class="user-cluster">
+      <div class="user-cl">
         <div class="avatar" id="avatarEl">
-          <svg viewBox="0 0 24 24" fill="rgba(255,255,255,.85)" width="24" height="24">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="rgba(255,255,255,.85)" width="24" height="24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         </div>
         <div>
           <div class="greet-sub">Good Afternoon</div>
@@ -467,65 +263,46 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
       </div>
     </div>
 
-    <!-- Balance -->
     <div class="balance-block">
       <div class="bal-label">
         e–Wallet Balance(Ks)
         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
       </div>
-      <div class="bal-row">
-        <span class="bal-main" id="balMain">0</span>
-        <span class="bal-dec">.00</span>
-      </div>
+      <div class="bal-row"><span class="bal-main" id="balMain">0</span><span class="bal-dec">.00</span></div>
       <div class="bal-total">Total Balance (Ks): <span id="balTotal">0.00</span></div>
       <div class="rate-chip">🇺🇸 1 USD = 🇲🇲 3,657 MMK</div>
     </div>
 
-    <!-- Quick actions -->
     <div class="quick-row">
-      <!-- Scan -->
       <div class="qbtn" onclick="showToast('Scan မရနိုင်သေးပါ','err')">
-        <div class="qbtn-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><line x1="16" y1="16" x2="21" y2="16"/><line x1="19" y1="16" x2="19" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/><line x1="3" y1="11" x2="21" y2="11"/></svg>
-        </div>
+        <div class="qbtn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><line x1="16" y1="16" x2="21" y2="16"/><line x1="19" y1="16" x2="19" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/><line x1="3" y1="11" x2="21" y2="11"/></svg></div>
         <span class="qbtn-label">Scan</span>
       </div>
-      <!-- ငွေထုတ်ရန် -->
       <div class="qbtn" onclick="openWdModal()">
-        <div class="qbtn-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="9" x2="12" y2="15"/><polyline points="9 12 12 15 15 12"/></svg>
-        </div>
+        <div class="qbtn-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="9" x2="12" y2="15"/><polyline points="9 12 12 15 15 12"/></svg></div>
         <span class="qbtn-label mm">ငွေထုတ်ရန်</span>
       </div>
-      <!-- ငွေဖြည့်ရန် (gold) -->
       <div class="qbtn gold" onclick="openRefModal()">
-        <div class="qbtn-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="9" x2="12" y2="15"/><polyline points="9 12 12 9 15 12"/></svg>
-        </div>
+        <div class="qbtn-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="9" x2="12" y2="15"/><polyline points="9 12 12 9 15 12"/></svg></div>
         <span class="qbtn-label mm">ငွေဖြည့်ရန်</span>
       </div>
-      <!-- ဖိတ်သူများ -->
       <div class="qbtn" onclick="openRefModal()">
-        <div class="qbtn-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
+        <div class="qbtn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <span class="qbtn-label mm" style="font-size:9.5px">ဖိတ်သူများ</span>
       </div>
     </div>
-  </div><!-- /hero -->
+  </div>
 
-  <!-- ══════════ WHITE SHEET ══════════ -->
+  <!-- ═══ SHEET ═══ -->
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <!-- Tabs -->
     <div class="tabs">
       <button class="tab active mm" id="tab-pop" onclick="switchTab('pop')">Popular</button>
-      <button class="tab mm" id="tab-wd"  onclick="switchTab('wd')"  style="font-size:12px">ငွေထုတ်ထားသူများ</button>
+      <button class="tab mm" id="tab-wd" onclick="switchTab('wd')" style="font-size:12px">ငွေထုတ်ထားသူများ</button>
     </div>
-    <!-- Content -->
     <div class="tab-content">
 
-      <!-- ── LEADERBOARD TAB ── -->
+      <!-- Leaderboard -->
       <div class="tab-panel active" id="panel-pop">
         <div class="sec-hdr">
           <span class="sec-title mm">🏆 ထိပ်တန်းလူဖိတ်သူများ</span>
@@ -533,12 +310,8 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
         </div>
         <div class="banner blue">
           <span class="banner-icon">🎁</span>
-          <div class="banner-body mm">
-            <p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p>
-            <p>သင်၏ link မှ စာရင်းသွင်းသူတိုင်း ငွေကြေးအလိုအလျောက် ရရှိမည်</p>
-          </div>
+          <div class="banner-body mm"><p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p><p>သင်၏ link မှ စာရင်းသွင်းသူတိုင်း ငွေကြေးအလိုအလျောက် ရရှိမည်</p></div>
         </div>
-        <!-- Podium -->
         <div class="podium" id="podiumEl">
           <div class="shim" style="height:130px"></div>
           <div class="shim" style="height:162px"></div>
@@ -549,9 +322,9 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
           <div class="shim" style="height:60px;margin-bottom:8px"></div>
           <div class="shim" style="height:60px"></div>
         </div>
-      </div><!-- /panel-pop -->
+      </div>
 
-      <!-- ── WITHDRAWALS TAB ── -->
+      <!-- Withdrawals -->
       <div class="tab-panel" id="panel-wd">
         <div class="sec-hdr">
           <span class="sec-title mm">✅ ငွေထုတ်ယူမှု မှတ်တမ်း</span>
@@ -559,140 +332,113 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
         </div>
         <div class="banner amber">
           <span class="banner-icon">⚠️</span>
-          <div class="banner-body mm">
-            <p><strong>အနည်းဆုံး ၁၀၀,၀၀၀ ကျပ်ပြည့်မှ ထုတ်ယူနိုင်ပါသည်</strong></p>
-            <p>ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</p>
-          </div>
+          <div class="banner-body mm"><p><strong>အနည်းဆုံး ၁၀၀,၀၀၀ ကျပ်ပြည့်မှ ထုတ်ယူနိုင်ပါသည်</strong></p><p>ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</p></div>
         </div>
         <div id="wdListEl">
           <div class="shim" style="height:64px;margin-bottom:8px"></div>
           <div class="shim" style="height:64px;margin-bottom:8px"></div>
           <div class="shim" style="height:64px"></div>
         </div>
-      </div><!-- /panel-wd -->
+      </div>
 
-    </div><!-- /tab-content -->
-
-    <!-- CTA -->
+    </div>
     <div class="bottom-cta">
-      <button class="cta-btn mm" id="ctaBtn" onclick="openWdModal()">
-        💸 ငွေထုတ်ယူမည် — အနည်းဆုံး ၁၀၀,၀၀၀ Ks
-      </button>
+      <button class="cta-btn mm" id="ctaBtn" onclick="openWdModal()">💸 ငွေထုတ်ယူမည် — အနည်းဆုံး ၁၀၀,၀၀၀ Ks</button>
     </div>
-  </div><!-- /sheet -->
-</div><!-- /app -->
+  </div>
+</div>
 
-<!-- ══════════════════════════════════════════
-     WITHDRAW MODAL
-══════════════════════════════════════════ -->
-<div class="overlay" id="wdOverlay" onclick="handleOverlayClick(event,'wdOverlay')">
-  <div class="modal" id="wdModal">
+<!-- ═══ WITHDRAW MODAL ═══ -->
+<div class="overlay" id="wdOverlay" onclick="if(event.target===this)closeWdModal()">
+  <div class="modal">
     <div class="modal-handle"></div>
-
-    <!-- Step indicator -->
-    <div class="step-indicator" id="stepIndicator">
-      <div class="step active" id="s1">1</div>
-      <div class="step-line" id="sl12"></div>
-      <div class="step todo" id="s2">2</div>
-      <div class="step-line" id="sl23"></div>
-      <div class="step todo" id="s3">✓</div>
+    <div class="step-ind">
+      <div class="si active" id="si1">1</div><div class="sl" id="sl12"></div>
+      <div class="si todo" id="si2">2</div><div class="sl" id="sl23"></div>
+      <div class="si todo" id="si3">✓</div>
     </div>
 
-    <!-- STEP 1: Amount -->
-    <div id="wdStep1">
+    <!-- Step 1 -->
+    <div id="ws1">
       <div class="modal-title mm">💸 ငွေထုတ်ရန်</div>
       <div class="modal-sub mm">ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</div>
-      <div class="modal-bal-row">
-        <div>
-          <div class="modal-bal-lbl mm">လက်ကျန်ငွေ</div>
-          <div class="modal-bal-val" id="wdBalEl">0 Ks</div>
-        </div>
+      <div class="bal-row2">
+        <div><div class="bal-lbl2 mm">လက်ကျန်ငွေ</div><div class="bal-val2" id="wdBalEl">0 Ks</div></div>
         <div class="min-badge mm">Min: ၁၀၀,၀၀၀ Ks</div>
       </div>
-      <!-- Low balance warning -->
       <div class="banner red mm" id="lowBalWarn" style="display:none">
         <span class="banner-icon">🚫</span>
-        <div class="banner-body">
-          <p><strong>လက်ကျန်ငွေ မလုံလောက်ပါ</strong></p>
-          <p>မိတ်ဆွေများကို ဖိတ်ကြားပြီး ငွေရှာပါ</p>
-        </div>
+        <div class="banner-body"><p><strong>လက်ကျန်ငွေ မလုံလောက်ပါ</strong></p><p>မိတ်ဆွေများကို ဖိတ်ကြားပြီး ငွေရှာပါ</p></div>
       </div>
-      <div id="wdAmtSection">
+      <div id="wdAmtSec">
         <div class="fee-warn mm">⚠️ ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ်ပေးသွင်းရန် လိုအပ်သည်</div>
-        <label class="label-sm mm">ထုတ်ယူမည့် ပမာဏ (Ks)</label>
-        <div class="input-wrap">
-          <input type="number" class="amount-input" id="wdAmtInput" placeholder="100,000" min="100000" step="1000" oninput="onAmtInput()"/>
-          <span class="input-unit">Ks</span>
+        <label class="lbl-sm mm">ထုတ်ယူမည့် ပမာဏ (Ks)</label>
+        <div class="inp-wrap">
+          <input type="number" class="amt-inp" id="wdAmt" placeholder="100,000" min="100000" step="1000" oninput="onAmtInput()"/>
+          <span class="inp-unit">Ks</span>
         </div>
         <div class="fee-box" id="feeBox" style="display:none">
           <div class="fee-row mm"><span>ထုတ်ယူမည့်ငွေ</span><span class="fv" id="feeAmt">0 Ks</span></div>
           <div class="fee-row mm"><span>ဝန်ဆောင်ခ</span><span class="fv" style="color:#c05000">− 5,000 Ks</span></div>
-          <div class="fee-row total mm"><span>လက်ခံရမည့်ငွေ</span><span class="fv" id="feeNet">0 Ks</span></div>
+          <div class="fee-row tot mm"><span>လက်ခံရမည့်ငွေ</span><span class="fv" id="feeNet">0 Ks</span></div>
         </div>
-        <button class="btn-primary mm" id="toStep2Btn" onclick="goToStep2()" disabled>ရှေ့ဆက်မည် →</button>
+        <button class="btn-p mm" id="toS2Btn" onclick="goStep(2)" disabled>ရှေ့ဆက်မည် →</button>
       </div>
       <button class="btn-ghost mm" onclick="closeWdModal()">မလုပ်တော့ပါ</button>
-    </div><!-- /step1 -->
+    </div>
 
-    <!-- STEP 2: Instruction + screenshot -->
-    <div id="wdStep2" style="display:none">
+    <!-- Step 2 -->
+    <div id="ws2" style="display:none">
       <div class="modal-title mm">📸 Screenshot တင်ပါ</div>
       <div class="modal-sub mm">ငွေလွှဲပြီးနောက် Screenshot ကိုတင်ပါ</div>
-
-      <div class="instruction-box">
+      <div class="instr-box">
         <h4>📋 ငွေလွှဲနည်း</h4>
         <p>ဝန်ဆောင်ခအတွက်</p>
-        <span class="phone" id="paymentPhone">09702310926</span>
-        <p>(<span id="paymentName">Daw Mi Thaung</span>) သို့</p>
-        <p>ငွေလွှဲပြီး Screenshot တင်ပါ</p>
+        <span class="instr-phone">09702310926</span>
+        <p>(Daw Mi Thaung) သို့ ငွေလွှဲပြီး Screenshot တင်ပါ</p>
       </div>
-
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('screenshotInput').click()">
-        <div id="uploadPlaceholder">
+      <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInp').click()">
+        <div id="uplPlaceholder" style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <span class="upload-icon">📁</span>
-          <span class="upload-text">Screenshot ရွေးမည်</span>
+          <span class="upload-txt">Screenshot ရွေးမည်</span>
           <span class="upload-hint">JPG, PNG, WEBP — Max 10MB</span>
         </div>
-        <img id="uploadPreview" style="display:none;max-height:160px;border-radius:10px;object-fit:contain"/>
+        <img id="uplPreview" style="display:none;max-height:160px;border-radius:10px;object-fit:contain"/>
       </div>
-      <input type="file" id="screenshotInput" accept="image/*" style="display:none" onchange="onFileSelect(event)"/>
-
-      <button class="btn-primary mm" id="submitBtn" onclick="submitWithdrawal()" disabled>
-        <span id="submitBtnText">💸 တင်မည်</span>
+      <input type="file" id="fileInp" accept="image/*" style="display:none" onchange="onFileSelect(event)"/>
+      <button class="btn-p mm" id="submitBtn" onclick="submitWd()" disabled>
+        <span id="submitTxt">💸 တင်မည်</span>
         <div class="spinner" id="submitSpinner" style="display:none"></div>
       </button>
-      <button class="btn-ghost mm" onclick="backToStep1()">← နောက်သို့</button>
-    </div><!-- /step2 -->
+      <button class="btn-ghost mm" onclick="goStep(1)">← နောက်သို့</button>
+    </div>
 
-    <!-- STEP 3: Success -->
-    <div id="wdStep3" style="display:none">
-      <div class="success-screen">
-        <div class="big-icon">✅</div>
+    <!-- Step 3 -->
+    <div id="ws3" style="display:none">
+      <div class="success-sc">
+        <div class="big-ic">✅</div>
         <h2>တင်ပြီးပါပြီ!</h2>
         <p>Admin မှ စစ်ဆေးပြီးနောက်<br>Telegram မှ အကြောင်းကြားပါမည်</p>
-        <button class="btn-primary mm" onclick="closeWdModal()">ပိတ်မည်</button>
+        <button class="btn-p mm" onclick="closeWdModal()">ပိတ်မည်</button>
       </div>
-    </div><!-- /step3 -->
-
+    </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     REFERRAL MODAL
-══════════════════════════════════════════ -->
-<div class="overlay" id="refOverlay" onclick="handleOverlayClick(event,'refOverlay')">
+<!-- ═══ REFERRAL MODAL ═══ -->
+<div class="overlay" id="refOverlay" onclick="if(event.target===this)closeRefModal()">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title mm">👥 မိမိဖိတ်ထားသူများ</div>
     <div class="modal-sub mm">တစ်ဦးဖိတ်ကြားလျှင် ၅,၀၀၀ ကျပ် ရရှိမည်</div>
     <div class="ref-grid">
-      <div class="ref-card"><div class="num" id="refCountEl">0</div><div class="lbl">ဖိတ်ကြားသူ ဦးရေ</div></div>
-      <div class="ref-card"><div class="num" id="refEarnedEl" style="font-size:20px">0</div><div class="lbl">Ks ရရှိပြီး</div></div>
+      <div class="ref-card"><div class="ref-num" id="refCountEl">0</div><div class="ref-lbl">ဖိတ်ကြားသူ ဦးရေ</div></div>
+      <div class="ref-card"><div class="ref-num" id="refEarnedEl" style="font-size:20px">0</div><div class="ref-lbl">Ks ရရှိပြီး</div></div>
     </div>
-    <div class="label-sm mm" style="margin-bottom:8px">သင်၏ Referral Link</div>
+    <div class="lbl-sm mm" style="margin-bottom:8px">သင်၏ Referral Link</div>
     <div class="ref-link-row">
-      <input class="ref-link-input" id="refLinkEl" readonly/>
-      <button class="ref-copy-btn" onclick="copyRefLink()">ကူးယူ</button>
+      <input class="ref-inp" id="refLinkEl" readonly/>
+      <button class="ref-copy" onclick="copyRefLink()">ကူးယူ</button>
     </div>
     <div class="banner blue">
       <span class="banner-icon">💡</span>
@@ -705,335 +451,240 @@ button{font-family:var(--ff);cursor:pointer;border:none;outline:none}
 
 <div id="toast"></div>
 
-<!-- ══════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════ -->
 <script>
-// ── Config ──────────────────────────────────────────────────────────────────
-const API    = (window.ENV_API_URL || 'https://your-backend.onrender.com');
-const SVC_FEE = 5000, MIN_WD = 100000;
-const COLORS = ['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
-const ac = i => COLORS[i % COLORS.length];
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const API      = 'https://kbzpaybackend.onrender.com';
+const SVC_FEE  = 5000;
+const MIN_WD   = 100000;
+const COLORS   = ['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
+const ac       = i => COLORS[i % COLORS.length];
+const fmt      = n => Number(n||0).toLocaleString('en-US');
 
-// ── State ────────────────────────────────────────────────────────────────────
 let tg = window.Telegram?.WebApp;
-let tgId = 'demo', user = null, refLink = '#';
-let selectedFile = null;
+let tgId = 'demo', user = null, refLink = '#', selFile = null;
 
-// ── Init ─────────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   if (tg) {
-    tg.ready(); tg.expand();
-    tg.setHeaderColor('#1565c0');
+    tg.ready(); tg.expand(); tg.setHeaderColor('#1565c0');
     if (tg.initDataUnsafe?.user) tgId = String(tg.initDataUnsafe.user.id);
   }
   await loadUser();
   loadLeaderboard();
   loadWithdrawals();
-  loadPaymentInfo();
 });
 
-// ── API helpers ───────────────────────────────────────────────────────────────
-const apiFetch = async (path, opts = {}) => {
-  const r = await fetch(API + path, {
-    headers: { 'x-telegram-id': tgId, ...(opts.headers || {}) },
-    ...opts,
-  });
-  return r.json();
-};
+// ── API helper ────────────────────────────────────────────────────────────────
+const apiFetch = (path, opts={}) => fetch(API+path, {
+  headers:{'x-telegram-id':tgId,...(opts.headers||{})}, ...opts
+}).then(r=>r.json());
 
-// ── Load user ─────────────────────────────────────────────────────────────────
+// ── LOAD USER ─────────────────────────────────────────────────────────────────
 async function loadUser() {
   try {
     const tgUser = tg?.initDataUnsafe?.user;
-    const startParam = tg?.initDataUnsafe?.start_param || '';
+    const sp = tg?.initDataUnsafe?.start_param || '';
     const res = await apiFetch('/api/users/me', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         telegramId: tgId,
-        firstName: tgUser?.first_name || 'Guest',
-        lastName:  tgUser?.last_name  || '',
-        username:  tgUser?.username   || '',
-        referralCode: startParam.startsWith('ref_') ? startParam : undefined,
+        firstName:  tgUser?.first_name || 'Guest',
+        lastName:   tgUser?.last_name  || '',
+        username:   tgUser?.username   || '',
+        referralCode: sp.startsWith('ref_') ? sp : undefined,
       }),
     });
     if (!res.success) throw 0;
     user = res.data; refLink = res.data.referralLink;
     renderUser();
   } catch {
-    user = { firstName:'Guest', balance:0, referrals:0, referralCode:`ref_${tgId}`, referralLink:'#' };
+    user = {firstName:'Guest',balance:0,referrals:0,referralLink:'#'};
     renderUser();
   }
 }
 
 function renderUser() {
-  const { firstName, balance, referrals } = user;
-  const ini = firstName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-  document.getElementById('avatarEl').textContent = ini;
-  document.getElementById('avatarEl').style.fontSize = '17px';
+  const {firstName,balance,referrals} = user;
+  const ini = firstName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const av = document.getElementById('avatarEl');
+  av.innerHTML=''; av.textContent=ini; av.style.fontSize='17px';
   document.getElementById('userNameEl').textContent = firstName;
   animNum('balMain', balance);
-  document.getElementById('balTotal').textContent = fmt(balance) + '.00';
-  document.getElementById('wdBalEl').textContent  = fmt(balance) + ' Ks';
+  document.getElementById('balTotal').textContent = fmt(balance)+'.00';
+  document.getElementById('wdBalEl').textContent  = fmt(balance)+' Ks';
   document.getElementById('refCountEl').textContent  = referrals;
-  document.getElementById('refEarnedEl').textContent = fmt(referrals * 5000);
+  document.getElementById('refEarnedEl').textContent = fmt(referrals*5000);
   document.getElementById('refLinkEl').value = refLink;
-  const cta = document.getElementById('ctaBtn');
-  cta.disabled = balance < MIN_WD;
-  // Show/hide low balance warning in modal
-  if (document.getElementById('lowBalWarn')) {
-    document.getElementById('lowBalWarn').style.display = balance < MIN_WD ? 'flex' : 'none';
-    document.getElementById('wdAmtSection').style.display = balance < MIN_WD ? 'none' : 'block';
-  }
+  document.getElementById('ctaBtn').disabled = balance < MIN_WD;
 }
 
-// ── Load payment info from backend ───────────────────────────────────────────
-async function loadPaymentInfo() {
-  try {
-    const res = await apiFetch('/api/config');
-    if (res.success) {
-      document.getElementById('paymentPhone').textContent = res.data.paymentPhone || '09702310926';
-      document.getElementById('paymentName').textContent  = res.data.paymentName  || 'Daw Mi Thaung';
-    }
-  } catch {}
-}
-
-// ── Leaderboard ───────────────────────────────────────────────────────────────
+// ── LEADERBOARD ───────────────────────────────────────────────────────────────
 async function loadLeaderboard() {
   try {
     const res = await apiFetch('/api/users/leaderboard');
     if (!res.success) throw 0;
-    renderLeaderboard(res.data);
-  } catch {
-    document.getElementById('podiumEl').innerHTML = '<p style="grid-column:span 3;text-align:center;color:#8a9cc0;font-size:12px" class="mm">မရနိုင်ပါ</p>';
-  }
-}
-
-function renderLeaderboard(data) {
-  const t3 = data.slice(0, 3), rest = data.slice(3);
-  const order = [1, 0, 2];
-  const cls   = ['p2','p1','p3'];
-  const badges = ['<span class="rank-badge rb-s">🥈 #2</span>','<span class="rank-badge rb-g">🥇 #1</span>','<span class="rank-badge rb-b">🥉 #3</span>'];
-  const pel = document.getElementById('podiumEl');
-  pel.innerHTML = '';
-  order.forEach(i => {
-    const p = t3[i]; if (!p) { pel.innerHTML += '<div></div>'; return; }
-    pel.innerHTML += `
-      <div class="pod-card ${cls[i]}">
+    const t3=res.data.slice(0,3), rest=res.data.slice(3);
+    const order=[1,0,2], cls=['p2','p1','p3'];
+    const badges=['<span class="rank-badge rb-s">🥈 #2</span>','<span class="rank-badge rb-g">🥇 #1</span>','<span class="rank-badge rb-b">🥉 #3</span>'];
+    const pel=document.getElementById('podiumEl'); pel.innerHTML='';
+    order.forEach(i=>{
+      const p=t3[i]; if(!p){pel.innerHTML+='<div></div>';return;}
+      pel.innerHTML+=`<div class="pod-card ${cls[i]}">
         ${i===0?'<div class="pod-crown">👑</div>':''}
-        <div class="pod-avatar" style="background:${ac(i)}">${p.avatar}</div>
+        <div class="pod-av" style="background:${ac(i)}">${p.avatar}</div>
         ${badges[i]}
         <div class="pod-name mm">${p.name.split(' ')[0]}</div>
         <div class="pod-stat">${p.referrals} ဖိတ်</div>
       </div>`;
-  });
-  let h = '';
-  rest.forEach(p => {
-    h += `<div class="row">
-      <div class="row-rank">#${p.rank}</div>
-      <div class="row-avatar" style="background:${ac(p.rank)}">${p.avatar}</div>
-      <div class="row-body">
-        <div class="row-name">${p.name}</div>
-        <div class="row-sub mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div>
-      </div>
-      <div class="row-right">
-        <div class="row-amount">+${fmt(p.earned)}</div>
-        <div style="font-size:10px;color:#8a9cc0">Ks</div>
-      </div>
-    </div>`;
-  });
-  document.getElementById('lbListEl').innerHTML = h;
+    });
+    let h='';
+    rest.forEach(p=>{
+      h+=`<div class="row">
+        <div class="row-rank">#${p.rank}</div>
+        <div class="row-av" style="background:${ac(p.rank)}">${p.avatar}</div>
+        <div class="row-body"><div class="row-name">${p.name}</div><div class="row-sub mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div></div>
+        <div class="row-right"><div class="row-amt">+${fmt(p.earned)}</div><div style="font-size:10px;color:#8a9cc0">Ks</div></div>
+      </div>`;
+    });
+    document.getElementById('lbListEl').innerHTML = h;
+  } catch {
+    document.getElementById('podiumEl').innerHTML='<p style="grid-column:span 3;text-align:center;color:#8a9cc0;font-size:12px" class="mm">မရနိုင်ပါ</p>';
+  }
 }
 
-// ── Withdrawals ───────────────────────────────────────────────────────────────
+// ── WITHDRAWALS ───────────────────────────────────────────────────────────────
 async function loadWithdrawals() {
   try {
     const res = await apiFetch('/api/withdrawals/recent');
     if (!res.success) throw 0;
-    renderWithdrawals(res.data);
-  } catch {
-    document.getElementById('wdListEl').innerHTML = '<p style="text-align:center;color:#8a9cc0;font-size:12px;padding:20px" class="mm">မရနိုင်ပါ</p>';
-  }
+    if (!res.data.length) {
+      document.getElementById('wdListEl').innerHTML='<p style="text-align:center;padding:24px;color:#8a9cc0;font-size:13px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';
+      return;
+    }
+    let h='';
+    res.data.forEach((w,i)=>{
+      h+=`<div class="row">
+        <div class="row-av" style="background:${ac(i)}">${w.avatar}</div>
+        <div class="row-body"><div class="row-name">${w.name}</div><div class="row-sub mm">${w.date} · ဝန်ဆောင်ခ 5,000 Ks</div></div>
+        <div class="row-right"><div class="row-amt">+${fmt(w.net)} Ks</div><div class="row-badge mm"><span style="width:6px;height:6px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div>
+      </div>`;
+    });
+    document.getElementById('wdListEl').innerHTML = h;
+  } catch { document.getElementById('wdListEl').innerHTML='<p style="text-align:center;color:#8a9cc0;font-size:12px;padding:20px" class="mm">မရနိုင်ပါ</p>'; }
 }
 
-function renderWithdrawals(data) {
-  if (!data.length) {
-    document.getElementById('wdListEl').innerHTML = '<p style="text-align:center;padding:24px;color:#8a9cc0;font-size:13px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';
-    return;
-  }
-  let h = '';
-  data.forEach((w, i) => {
-    h += `<div class="row">
-      <div class="row-avatar" style="background:${ac(i)}">${w.avatar}</div>
-      <div class="row-body">
-        <div class="row-name">${w.name}</div>
-        <div class="row-sub mm">${w.date} · ဝန်ဆောင်ခ 5,000 Ks</div>
-      </div>
-      <div class="row-right">
-        <div class="row-amount">+${fmt(w.net)} Ks</div>
-        <div class="row-badge mm"><span style="width:6px;height:6px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div>
-      </div>
-    </div>`;
-  });
-  document.getElementById('wdListEl').innerHTML = h;
-}
-
-// ── Tabs ──────────────────────────────────────────────────────────────────────
+// ── TABS ──────────────────────────────────────────────────────────────────────
 function switchTab(t) {
-  ['pop','wd'].forEach(id => {
-    document.getElementById('tab-'  +id).classList.toggle('active', id===t);
-    document.getElementById('panel-'+id).classList.toggle('active', id===t);
+  ['pop','wd'].forEach(id=>{
+    document.getElementById('tab-'+id).classList.toggle('active',id===t);
+    document.getElementById('panel-'+id).classList.toggle('active',id===t);
   });
 }
 
-// ── Withdraw modal ────────────────────────────────────────────────────────────
+// ── WITHDRAW MODAL ────────────────────────────────────────────────────────────
 function openWdModal() {
-  document.getElementById('wdBalEl').textContent = fmt(user?.balance||0) + ' Ks';
-  document.getElementById('lowBalWarn').style.display = (user?.balance||0) < MIN_WD ? 'flex' : 'none';
-  document.getElementById('wdAmtSection').style.display = (user?.balance||0) < MIN_WD ? 'none' : 'block';
-  document.getElementById('wdAmtInput').value = '';
+  const bal = user?.balance||0;
+  document.getElementById('wdBalEl').textContent = fmt(bal)+' Ks';
+  document.getElementById('lowBalWarn').style.display  = bal<MIN_WD?'flex':'none';
+  document.getElementById('wdAmtSec').style.display    = bal<MIN_WD?'none':'block';
+  document.getElementById('wdAmt').value = '';
   document.getElementById('feeBox').style.display = 'none';
-  setStep(1);
+  goStep(1);
   document.getElementById('wdOverlay').classList.add('open');
 }
 function closeWdModal() {
   document.getElementById('wdOverlay').classList.remove('open');
-  selectedFile = null;
-  document.getElementById('uploadPreview').style.display = 'none';
-  document.getElementById('uploadPlaceholder').style.display = 'flex';
+  selFile=null;
+  document.getElementById('uplPreview').style.display='none';
+  document.getElementById('uplPlaceholder').style.display='flex';
   document.getElementById('uploadArea').classList.remove('has-file');
-  document.getElementById('screenshotInput').value = '';
-  document.getElementById('submitBtn').disabled = true;
-}
-function handleOverlayClick(e, id) {
-  if (e.target === document.getElementById(id)) {
-    if (id === 'wdOverlay') closeWdModal();
-    else closeRefModal();
-  }
+  document.getElementById('fileInp').value='';
+  document.getElementById('submitBtn').disabled=true;
 }
 
-function setStep(n) {
-  [1,2,3].forEach(i => {
-    document.getElementById('wdStep'+i).style.display = i===n ? 'block' : 'none';
-    const s = document.getElementById('s'+i);
-    if (s) {
-      s.className = 'step ' + (i<n?'done':i===n?'active':'todo');
-      if (i===3&&n===3) { s.textContent='✓'; s.className='step done'; }
-    }
+function goStep(n) {
+  [1,2,3].forEach(i=>{
+    document.getElementById('ws'+i).style.display = i===n?'block':'none';
+    const s=document.getElementById('si'+i);
+    if(s){ s.className='si '+(i<n?'done':i===n?'active':'todo'); if(i===3&&n===3){s.textContent='✓';s.className='si done';} }
   });
-  ['sl12','sl23'].forEach((id,idx) => {
-    const el = document.getElementById(id);
-    if (el) el.className = 'step-line' + (n>idx+1?' done':'');
-  });
+  ['sl12','sl23'].forEach((id,idx)=>{ const el=document.getElementById(id); if(el) el.className='sl'+(n>idx+1?' done':''); });
 }
 
 function onAmtInput() {
-  const v = parseInt(document.getElementById('wdAmtInput').value) || 0;
-  const bal = user?.balance || 0;
-  const fb = document.getElementById('feeBox');
-  const btn = document.getElementById('toStep2Btn');
-  if (v >= MIN_WD && bal >= v + SVC_FEE) {
-    fb.style.display = 'block';
-    document.getElementById('feeAmt').textContent = fmt(v) + ' Ks';
-    document.getElementById('feeNet').textContent = fmt(v - SVC_FEE) + ' Ks';
-    btn.disabled = false;
-  } else {
-    fb.style.display = 'none'; btn.disabled = true;
-  }
+  const v=parseInt(document.getElementById('wdAmt').value)||0;
+  const bal=user?.balance||0;
+  const fb=document.getElementById('feeBox');
+  const btn=document.getElementById('toS2Btn');
+  if(v>=MIN_WD && bal>=v+SVC_FEE){
+    fb.style.display='block';
+    document.getElementById('feeAmt').textContent=fmt(v)+' Ks';
+    document.getElementById('feeNet').textContent=fmt(v-SVC_FEE)+' Ks';
+    btn.disabled=false;
+  } else { fb.style.display='none'; btn.disabled=true; }
 }
 
-function goToStep2() { setStep(2); }
-function backToStep1() { setStep(1); }
-
 function onFileSelect(e) {
-  const f = e.target.files?.[0];
-  if (!f) return;
-  selectedFile = f;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const img = document.getElementById('uploadPreview');
-    img.src = ev.target.result;
-    img.style.display = 'block';
-    document.getElementById('uploadPlaceholder').style.display = 'none';
+  const f=e.target.files?.[0]; if(!f) return;
+  selFile=f;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('uplPreview');
+    img.src=ev.target.result; img.style.display='block';
+    document.getElementById('uplPlaceholder').style.display='none';
     document.getElementById('uploadArea').classList.add('has-file');
   };
   reader.readAsDataURL(f);
-  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').disabled=false;
 }
 
-async function submitWithdrawal() {
-  if (!selectedFile) { showToast('Screenshot မတင်ရသေးပါ', 'err'); return; }
-  const amt = parseInt(document.getElementById('wdAmtInput').value);
-  if (!amt || amt < MIN_WD) { showToast('ပမာဏ မမှန်ကန်ပါ', 'err'); return; }
-
-  document.getElementById('submitBtn').disabled = true;
-  document.getElementById('submitBtnText').textContent = 'တင်နေသည်...';
-  document.getElementById('submitSpinner').style.display = 'block';
-
+async function submitWd() {
+  if(!selFile){showToast('Screenshot မတင်ရသေးပါ','err');return;}
+  const amt=parseInt(document.getElementById('wdAmt').value);
+  if(!amt||amt<MIN_WD){showToast('ပမာဏ မမှန်ကန်ပါ','err');return;}
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('submitTxt').textContent='တင်နေသည်...';
+  document.getElementById('submitSpinner').style.display='block';
   try {
-    const fd = new FormData();
-    fd.append('amount', amt);
-    fd.append('screenshot', selectedFile);
-    const res = await fetch(API + '/api/withdrawals', {
-      method: 'POST',
-      headers: { 'x-telegram-id': tgId },
-      body: fd,
-    }).then(r => r.json());
-
-    if (!res.success) throw new Error(res.message);
-    user.balance = res.data.newBalance;
-    renderUser();
-    setStep(3);
-    showToast('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!', 'ok');
-    loadWithdrawals();
-  } catch (err) {
-    showToast(err.message || 'မအောင်မြင်ပါ', 'err');
-    document.getElementById('submitBtn').disabled = false;
-  } finally {
-    document.getElementById('submitBtnText').textContent = '💸 တင်မည်';
-    document.getElementById('submitSpinner').style.display = 'none';
-  }
+    const fd=new FormData();
+    fd.append('amount',amt); fd.append('screenshot',selFile);
+    const res=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tgId},body:fd}).then(r=>r.json());
+    if(!res.success) throw new Error(res.message);
+    user.balance=res.data.newBalance; renderUser();
+    goStep(3); showToast('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok'); loadWithdrawals();
+  } catch(err){ showToast(err.message||'မအောင်မြင်ပါ','err'); document.getElementById('submitBtn').disabled=false; }
+  finally{ document.getElementById('submitTxt').textContent='💸 တင်မည်'; document.getElementById('submitSpinner').style.display='none'; }
 }
 
-// ── Referral modal ────────────────────────────────────────────────────────────
+// ── REFERRAL MODAL ────────────────────────────────────────────────────────────
 function openRefModal() {
-  document.getElementById('refCountEl').textContent  = user?.referrals || 0;
-  document.getElementById('refEarnedEl').textContent = fmt((user?.referrals || 0) * 5000);
+  document.getElementById('refCountEl').textContent  = user?.referrals||0;
+  document.getElementById('refEarnedEl').textContent = fmt((user?.referrals||0)*5000);
   document.getElementById('refLinkEl').value = refLink;
   document.getElementById('refOverlay').classList.add('open');
 }
-function closeRefModal() { document.getElementById('refOverlay').classList.remove('open'); }
-function copyRefLink() {
-  navigator.clipboard.writeText(refLink).then(() => showToast('📋 Link ကူးယူပြီး!', 'ok'));
-}
-function shareRefLink() {
-  if (tg?.openTelegramLink) tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(refLink)}`);
+function closeRefModal(){ document.getElementById('refOverlay').classList.remove('open'); }
+function copyRefLink(){ navigator.clipboard.writeText(refLink).then(()=>showToast('📋 Link ကူးယူပြီး!','ok')); }
+function shareRefLink(){
+  if(tg?.openTelegramLink) tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(refLink));
   else copyRefLink();
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function fmt(n) { return Number(n).toLocaleString('en-US'); }
-
-function animNum(id, target) {
-  const el = document.getElementById(id);
-  const dur = 900, start = Date.now();
-  const from = parseInt((el.textContent || '0').replace(/,/g, '')) || 0;
-  (function tick() {
-    const p = Math.min((Date.now() - start) / dur, 1);
-    const e = 1 - Math.pow(1 - p, 3);
-    el.textContent = fmt(Math.round(from + (target - from) * e));
-    if (p < 1) requestAnimationFrame(tick);
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function animNum(id,target){
+  const el=document.getElementById(id);
+  const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;
+  (function tick(){
+    const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);
+    el.textContent=fmt(Math.round(from+(target-from)*e));
+    if(p<1)requestAnimationFrame(tick);
   })();
 }
-
 let _tt;
-function showToast(msg, type = '') {
-  const el = document.getElementById('toast');
-  clearTimeout(_tt);
-  el.textContent = msg;
-  el.className = 'show ' + type;
-  _tt = setTimeout(() => { el.className = ''; }, 3600);
+function showToast(msg,type=''){
+  const el=document.getElementById('toast');
+  clearTimeout(_tt); el.textContent=msg; el.className='show '+type;
+  _tt=setTimeout(()=>{el.className=''},3600);
 }
 </script>
 </body>
