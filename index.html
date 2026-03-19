@@ -46,12 +46,12 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
 .total-balance{font-size:12.5px;color:rgba(255,255,255,.8);margin-bottom:13px}
 .exchange-rate{background:rgba(255,255,255,.15);display:inline-flex;align-items:center;padding:5px 12px;border-radius:14px;font-size:12px;gap:5px}
 
-/* ══ QUICK ACTIONS — PNG Icons ══ */
+/* ══ QUICK ACTIONS — SVG inline icons ══ */
 .top-actions{display:flex;justify-content:space-around;padding:0 4px;margin-bottom:16px}
 .action-item{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;cursor:pointer;transition:opacity .15s}
 .action-item:active{opacity:.65}
 
-/* Glass icon wrapper for PNG */
+/* Glass icon wrapper */
 .action-icon-wrap{
   width:52px;height:52px;border-radius:15px;
   background:rgba(255,255,255,.17);
@@ -59,13 +59,11 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
   display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   box-shadow:0 4px 14px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.24);
-  transition:background .15s;overflow:hidden;
+  transition:background .15s;
 }
 .action-item:active .action-icon-wrap{background:rgba(255,255,255,.28)}
-.action-icon-wrap img{
-  width:28px;height:28px;object-fit:contain;
-  filter:brightness(0) invert(1);/* make PNG white */
-}
+.action-icon-wrap svg{width:30px;height:30px}
+
 /* FA icon wrapper for Scan */
 .action-icon-fa{
   width:52px;height:52px;border-radius:15px;
@@ -250,35 +248,68 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
       <div class="exchange-rate">🇺🇸 1 USD = 🇲🇲 3,657 MMK</div>
     </div>
 
-    <!-- Quick Actions with PNG images -->
+    <!-- Quick Actions — Inline SVG (matching uploaded images exactly) -->
     <div class="top-actions">
 
-      <!-- Scan (FontAwesome) -->
+      <!-- Scan (QR frame) -->
       <div class="action-item" onclick="showToast('Scan မရနိုင်သေးပါ','err')">
-        <div class="action-icon-fa"><i class="fa-solid fa-expand"></i></div>
+        <div class="action-icon-fa">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="5" height="5" rx="1"/>
+            <rect x="16" y="3" width="5" height="5" rx="1"/>
+            <rect x="3" y="16" width="5" height="5" rx="1"/>
+            <line x1="3" y1="11" x2="21" y2="11"/>
+            <line x1="16" y1="16" x2="21" y2="16"/>
+            <line x1="19" y1="16" x2="19" y2="21"/>
+            <line x1="16" y1="19" x2="16" y2="21"/>
+          </svg>
+        </div>
         <span class="action-label">Scan</span>
       </div>
 
-      <!-- ငွေထုတ်ရန် → transfer.png -->
+      <!-- ငွေထုတ်ရန် — Image 2: two horizontal transfer arrows (left←  →right) -->
       <div class="action-item" onclick="openWdModal()">
         <div class="action-icon-wrap">
-          <img src="images/transfer.png" alt="transfer"/>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Top arrow: pointing RIGHT -->
+            <line x1="4" y1="11" x2="24" y2="11" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+            <polyline points="19,6 25,11 19,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- Bottom arrow: pointing LEFT -->
+            <line x1="28" y1="21" x2="8" y2="21" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+            <polyline points="13,26 7,21 13,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
         </div>
         <span class="action-label mm">ငွေထုတ်ရန်</span>
       </div>
 
-      <!-- ငွေဖြည့်ရန် → Luphate.png -->
+      <!-- ငွေဖြည့်ရန် — Image 1: card/wallet + $ + arrow pointing INTO card -->
       <div class="action-item" onclick="openRefModal()">
         <div class="action-icon-wrap">
-          <img src="images/Luphate.png" alt="luphate"/>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Card body (rounded rect) -->
+            <rect x="3" y="7" width="22" height="16" rx="3" stroke="white" stroke-width="2.2" fill="none"/>
+            <!-- Dollar sign inside card -->
+            <text x="10" y="20" font-size="10" font-weight="700" fill="white" font-family="Arial">$</text>
+            <!-- Arrow shaft going INTO card from right -->
+            <line x1="23" y1="15" x2="29" y2="15" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- Arrowhead pointing LEFT (into card) -->
+            <polyline points="26,11 23,15 26,19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
         </div>
         <span class="action-label mm">ငွေဖြည့်ရန်</span>
       </div>
 
-      <!-- ဖိတ်ထားသူများ → History.png -->
+      <!-- ဖိတ်ထားသူများ — Image 3: two person silhouette (users/group) -->
       <div class="action-item" onclick="openRefModal()">
         <div class="action-icon-wrap">
-          <img src="images/History.png" alt="history"/>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Back person (right, slightly offset) -->
+            <circle cx="20" cy="11" r="4" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M13 28c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <!-- Front person (left, main) -->
+            <circle cx="12" cy="11" r="4.5" stroke="white" stroke-width="2.2" fill="none"/>
+            <path d="M3 28c0-4.5 3.8-7.5 9-7.5s9 3 9 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          </svg>
         </div>
         <span class="action-label mm" style="font-size:9.5px">ဖိတ်ထားသူများ</span>
       </div>
