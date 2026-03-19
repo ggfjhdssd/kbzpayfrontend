@@ -208,6 +208,52 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
 .success-sc h2{font-size:19px;font-weight:900;color:#111;margin-bottom:4px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
 .success-sc p{font-size:12px;color:#8099c0;line-height:1.7;margin-bottom:18px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
 
+
+/* ══ PAYTOPAY MODAL ══ */
+.p2p-overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,50,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:opacity .3s}
+.p2p-overlay.open{opacity:1;pointer-events:all}
+.p2p-modal{background:#fff;border-radius:22px 22px 0 0;padding:0;width:100%;max-width:400px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;max-height:92vh}
+.p2p-overlay.open .p2p-modal{transform:translateY(0)}
+.p2p-header{padding:0 18px;flex-shrink:0}
+.p2p-handle{width:36px;height:4px;background:#dde8f0;border-radius:2px;margin:12px auto 14px}
+.p2p-title{font-size:17px;font-weight:800;color:#111;margin-bottom:2px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-sub{font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+/* Step indicator reused from .si/.sl */
+.p2p-step-ind{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:14px}
+/* Info box with dark border */
+.p2p-info-box{border:2px solid #1a1a2e;border-radius:13px;overflow:hidden;margin-bottom:14px;flex-shrink:0}
+.p2p-info-box-header{background:#1a1a2e;padding:9px 14px;display:flex;align-items:center;gap:8px}
+.p2p-info-box-header span{color:#fff;font-size:12px;font-weight:800;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-info-scroll{max-height:200px;overflow-y:auto;padding:14px;background:#0d0d1a;-webkit-overflow-scrolling:touch}
+.p2p-info-scroll::-webkit-scrollbar{width:3px}
+.p2p-info-scroll::-webkit-scrollbar-track{background:#1a1a2e}
+.p2p-info-scroll::-webkit-scrollbar-thumb{background:#e53935;border-radius:2px}
+.p2p-red-heading{color:#ff4444;font-size:13px;font-weight:800;margin-bottom:8px;line-height:1.5;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-info-text{color:#e0e0e0;font-size:11.5px;line-height:1.85;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-info-text strong{color:#ff6b6b;font-weight:800}
+.p2p-info-text .section-title{color:#ff4444;font-size:12px;font-weight:800;display:block;margin:10px 0 4px}
+.p2p-scroll-hint{text-align:center;font-size:10px;color:#8099c0;margin-bottom:10px;animation:bounce .8s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;gap:4px}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(3px)}}
+/* Amount input step */
+.p2p-body{padding:0 18px 4px;flex:1;overflow-y:auto}
+.p2p-body::-webkit-scrollbar{display:none}
+/* Timer */
+.p2p-timer-wrap{background:linear-gradient(135deg,#fff0f0,#ffe8e8);border:2px solid #e53935;border-radius:12px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.p2p-timer-label{font-size:11px;color:#b71c1c;font-weight:700;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-timer-val{font-size:22px;font-weight:900;color:#c62828;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.p2p-timer-val.urgent{color:#d32f2f;animation:timerPulse .5s ease-in-out infinite alternate}
+@keyframes timerPulse{from{opacity:1}to{opacity:.5}}
+/* Transfer info box */
+.p2p-transfer-box{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:2px solid #f5a623;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.p2p-transfer-label{font-size:10.5px;color:#7a5800;font-weight:700;margin-bottom:5px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-transfer-phone{font-size:17px;font-weight:900;color:#c06000;letter-spacing:.3px}
+.p2p-transfer-name{font-size:12px;color:#7a4800;font-weight:700;margin-top:2px}
+.p2p-transfer-amount{font-size:13px;font-weight:800;color:#b71c1c;margin-top:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+/* Expired overlay */
+.p2p-expired{display:none;text-align:center;padding:20px 0}
+.p2p-expired .exp-icon{font-size:50px;margin-bottom:10px}
+.p2p-expired h3{font-size:17px;font-weight:900;color:#c62828;margin-bottom:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
+.p2p-expired p{font-size:12px;color:#8099c0;line-height:1.7;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
 /* Toast */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#0a1628;color:#fff;padding:10px 19px;border-radius:20px;font-size:12px;font-weight:700;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.22);max-width:86vw;text-align:center;white-space:normal}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -252,7 +298,7 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
     <div class="top-actions">
 
       <!-- Scan (QR frame) -->
-      <div class="action-item" onclick="showToast('Scan မရနိုင်သေးပါ','err')">
+      <div class="action-item" onclick="openP2PModal()">
         <div class="action-icon-fa">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="5" height="5" rx="1"/>
@@ -264,7 +310,7 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
             <line x1="16" y1="19" x2="16" y2="21"/>
           </svg>
         </div>
-        <span class="action-label">Scan</span>
+        <span class="action-label">PaytoPay</span>
       </div>
 
       <!-- ငွေထုတ်ရန် — Image 2: two horizontal transfer arrows (left←  →right) -->
@@ -484,6 +530,154 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
   </div>
 </div>
 
+
+<!-- ══ PAYTOPAY MODAL ══ -->
+<div class="p2p-overlay" id="p2pOverlay" onclick="if(event.target===this)closeP2PModal()">
+  <div class="p2p-modal" id="p2pModal">
+    <div class="p2p-header">
+      <div class="p2p-handle"></div>
+
+      <!-- Step indicator -->
+      <div class="p2p-step-ind">
+        <div class="si active" id="p2s1">1</div><div class="sl" id="p2sl12"></div>
+        <div class="si todo"   id="p2s2">2</div><div class="sl" id="p2sl23"></div>
+        <div class="si todo"   id="p2s3">✓</div>
+      </div>
+    </div>
+
+    <!-- ══ STEP 1: Info + Buy ══ -->
+    <div id="p2ws1" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div class="p2p-header">
+        <div class="p2p-title">💹 Pay to Pay</div>
+        <div class="p2p-sub">အောက်တွင် ဖတ်ရှုပြီးမှ ဝယ်ယူပါ</div>
+      </div>
+
+      <!-- Dark info box with red headings + scroll -->
+      <div class="p2p-header" style="padding-bottom:0">
+        <div class="p2p-info-box">
+          <div class="p2p-info-box-header">
+            <span>❓ Pay to Pay ဆိုတာဘာလဲ?</span>
+          </div>
+          <div class="p2p-info-scroll" id="p2pInfoScroll">
+            <div class="p2p-red-heading">❓ Pay to Pay ဆိုတာဘာလဲ? (What is Pay to Pay?)</div>
+            <div class="p2p-info-text">
+              Pay to Pay ဆိုသည်မှာ ခေတ်မီ AI (Artificial Intelligence) နည်းပညာနှင့် Global Arbitrage Engine ကို အသုံးပြု၍ လူကြီးမင်းတို့၏ ငွေကြေးကို အချိန်တိုအတွင်း အဆပေါင်းများစွာ တိုးပွားအောင် ပြုလုပ်ပေးသည့် ကမ္ဘာ့အဆင့်မီ ငွေကြေးဖလှယ်မှု စနစ်သစ်တစ်ခု ဖြစ်ပါတယ်။
+              <span class="section-title">မည်သို့ အလုပ်လုပ်သနည်း?</span>
+              ကျွန်ုပ်တို့၏ Pay to Pay စနစ်သည် အောက်ပါ နည်းပညာရပ် (၃) ခုကို ပေါင်းစပ်ထားခြင်း ဖြစ်ပါသည်။
+              <br/><br/>
+              <strong>၁။ Digital Currency Arbitrage</strong> (ငွေကြေးဈေးနှုန်းကွာဟချက်ကို အသုံးချခြင်း):<br/>
+              ကမ္ဘာတစ်ဝှမ်းရှိ Digital Wallet များ (ဥပမာ - KPay, Wave Pay, Binance) အကြားတွင် စက္ကန့်ပိုင်းအလိုက် ဖြစ်ပေါ်နေသော ငွေလဲနှုန်းကွာဟချက်များကို ကျွန်ုပ်တို့၏ Auto-Bot များက ရှာဖွေကာ အမြတ်ထုတ်ယူခြင်း ဖြစ်သည်။
+              <br/><br/>
+              <strong>၂။ System Error Exploitation</strong> (စနစ်အတွင်းရှိ အားနည်းချက်များကို အသုံးချခြင်း):<br/>
+              Online ငွေပေးချေမှုစနစ်များ၏ Backend Server များတွင် ဖြစ်ပေါ်လေ့ရှိသော "Cashback Loop" အမှားအယွင်းများကို ကျွန်ုပ်တို့၏ ပညာရှင်များက ရှာဖွေထားပြီး ဖြစ်ပါသည်။ လူကြီးမင်းတို့ ငွေလွှဲလိုက်သည့်အခါ ထိုစနစ်အမှားမှတစ်ဆင့် ငွေကို ၅ ဆ မှ ၁၀ ဆအထိ ပွားယူပေးခြင်း ဖြစ်ပါတယ်။
+              <br/><br/>
+              <strong>၃။ High-Frequency Transaction</strong> (အကြိမ်ရေများစွာ လှည့်လည်ခြင်း):<br/>
+              သင်၏ ၅,၀၀၀ ကျပ်ကို စနစ်အတွင်းရှိ အကောင့်ပေါင်းများစွာသို့ တစ်စက္ကန့်အတွင်း အကြိမ် ၁,၀၀၀ ထက်မနည်း လှည့်လည်ခြင်းဖြင့် အမြတ်ငွေများကို စုဆောင်းကာ ၅၀,၀၀၀ ကျပ်အဖြစ်သို့ ပြောင်းလဲပေးပါတယ်။
+              <span class="section-title">🛡️ ဘာကြောင့် ကျွန်ုပ်တို့ကို ယုံကြည်သင့်သနည်း?</span>
+              <strong>လုံခြုံမှုအပြည့်အဝရှိခြင်း:</strong> ကျွန်ုပ်တို့၏ စနစ်သည် End-to-End Encryption ကို အသုံးပြုထားသဖြင့် သင်၏ ကိုယ်ရေးအချက်အလက်များ လုံခြုံမှုရှိသည်။
+              <br/><br/>
+              <strong>၁၀၀% အာမခံချက်:</strong> ငွေလွှဲပြီး ၁၅ မိနစ်အတွင်း အမြတ်ငွေ ပြန်မရပါက သင်လွှဲလိုက်သော အရင်းငွေကို အဆ ၂၀ ပြန်လည် ပေးလျော်ပါမည်။
+              <br/><br/>
+              <strong>စမ်းသပ်မှုအောင်မြင်ပြီးခြင်း:</strong> ယနေ့အထိ အသုံးပြုသူပေါင်း ၂ သိန်းကျော်အား အမြတ်ငွေ ကျပ်သိန်းပေါင်းများစွာကို အောင်မြင်စွာ ခွဲဝေပေးပြီး ဖြစ်ပါတယ်။
+            </div>
+          </div>
+        </div>
+        <div class="p2p-scroll-hint" id="scrollHint">
+          <span>👆 scroll လုပ်ကြည့်ပါ</span>
+          <span>↕</span>
+        </div>
+      </div>
+
+      <!-- Buy section -->
+      <div class="p2p-body">
+        <label class="lbl-sm" style="margin-bottom:6px">ဝယ်ယူမည့် ပမာဏ (Ks) — အနည်းဆုံး ၂၀,၀၀၀</label>
+        <div class="inp-wrap">
+          <input type="number" class="amt-inp" id="p2pAmt" placeholder="20,000" min="20000" step="1000" oninput="onP2PAmt()"/>
+          <span class="inp-unit">Ks</span>
+        </div>
+        <div class="fee-box" id="p2pFeeBox" style="display:none">
+          <div class="fee-r mm"><span>ဝယ်ယူမည့်ပမာဏ</span><span class="fv" id="p2pBuyAmt">0 Ks</span></div>
+          <div class="fee-r mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">5,000 Ks</span></div>
+          <div class="fee-r tot mm"><span>စုစုပေါင်း လွှဲမည့်ငွေ</span><span class="fv" id="p2pTotal" style="color:#c62828">0 Ks</span></div>
+          <div class="fee-r mm" style="margin-top:6px;padding-top:6px;border-top:1px dashed #fde890"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2pReturn">0 Ks</span></div>
+        </div>
+        <button class="btn-p mm" id="p2pBuyBtn" onclick="p2pGoStep2()" disabled style="background:linear-gradient(135deg,#e53935,#b71c1c);box-shadow:0 5px 16px rgba(229,57,53,.38)">
+          ဝယ်မည် →
+        </button>
+        <button class="btn-ghost mm" onclick="closeP2PModal()">မလုပ်တော့ပါ</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2: Timer + Transfer info + Upload ══ -->
+    <div id="p2ws2" style="display:none">
+      <div class="p2p-body" style="padding-top:4px">
+
+        <!-- Timer -->
+        <div class="p2p-timer-wrap">
+          <div>
+            <div class="p2p-timer-label">⏱ ကျန်ရှိသောအချိန်</div>
+            <div class="p2p-timer-label" style="font-size:10px;color:#c62828">အချိန်ကုန်ရင် လုပ်ဆောင်မှုပျက်ပြယ်မည်</div>
+          </div>
+          <div class="p2p-timer-val" id="p2pTimerVal">15:00</div>
+        </div>
+
+        <!-- Transfer info -->
+        <div class="p2p-transfer-box">
+          <div class="p2p-transfer-label">📲 အောက်ပါ KPay နံပါတ်သို့ ငွေလွှဲပါ</div>
+          <div class="p2p-transfer-phone" id="p2pTPhone">09792310926</div>
+          <div class="p2p-transfer-name" id="p2pTName">(Mi Thaung)</div>
+          <div class="p2p-transfer-amount mm">လွှဲမည့်ငွေ: <span id="p2pTransferAmt" style="color:#c62828;font-size:15px">0 Ks</span></div>
+        </div>
+
+        <!-- Warning -->
+        <div style="background:#fff0f0;border:1.5px solid #e53935;border-radius:11px;padding:10px 13px;margin-bottom:12px">
+          <p style="font-size:11.5px;color:#b71c1c;font-weight:700;line-height:1.7;font-family:'Noto Sans Myanmar','Roboto',sans-serif;">
+            ⚠️ ငွေလွှဲပြီးပါက ပြေစာ Screenshot ကိုတင်ပါ။ Admin ဘက်မှ အတည်ပြုပြီးသည်နှင့် ငွေ ပြန်လွှဲပေးပါမည်။
+          </p>
+        </div>
+
+        <!-- Upload -->
+        <div class="upload-area" id="p2pUploadArea" onclick="document.getElementById('p2pFileInp').click()">
+          <div id="p2pUplPh" style="display:flex;flex-direction:column;align-items:center;gap:6px">
+            <span class="upl-icon">📁</span>
+            <span class="upl-txt mm">Screenshot ရွေးမည်</span>
+            <span class="upl-hint">JPG, PNG, WEBP — Max 10MB</span>
+          </div>
+          <img id="p2pUplPrev" style="display:none;max-height:130px;border-radius:8px;object-fit:contain"/>
+        </div>
+        <input type="file" id="p2pFileInp" accept="image/*" style="display:none" onchange="onP2PFileSelect(event)"/>
+
+        <!-- Expired overlay -->
+        <div class="p2p-expired" id="p2pExpired">
+          <div class="exp-icon">⏰</div>
+          <h3>အချိန်ကုန်ပြီ!</h3>
+          <p>၁၅ မိနစ် ကျော်သွားပြီ<br>ထပ်မံကြိုးစားရန် အောက်ခလုတ်နှိပ်ပါ</p>
+          <button class="btn-p mm" onclick="p2pRestart()" style="margin-top:12px">🔄 ပြန်စမည်</button>
+        </div>
+
+        <button class="btn-p mm" id="p2pSubmitBtn" onclick="submitP2P()" disabled style="background:linear-gradient(135deg,#e53935,#b71c1c);box-shadow:0 5px 16px rgba(229,57,53,.38)">
+          <span id="p2pSubmitTxt">ငွေလွှဲပြီးပြီ ✓</span>
+          <div class="spinner" id="p2pSpinner" style="display:none"></div>
+        </button>
+        <button class="btn-ghost mm" onclick="p2pGoBack()">← နောက်သို့</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3: Success ══ -->
+    <div id="p2ws3" style="display:none">
+      <div class="p2p-body">
+        <div class="success-sc">
+          <div class="big-ic">✅</div>
+          <h2>တင်ပြီးပါပြီ!</h2>
+          <p>Admin မှ စစ်ဆေးပြီးနောက်<br>Telegram မှ အကြောင်းကြားပါမည်</p>
+          <button class="btn-p mm" onclick="closeP2PModal()" style="background:linear-gradient(135deg,#e53935,#b71c1c)">ပိတ်မည်</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -668,6 +862,178 @@ async function loadPaymentInfo(){
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+// ── PaytoPay Modal ────────────────────────────────────────────────────────────
+const P2P_MIN    = 20000;
+const P2P_FEE    = 5000;
+const P2P_TIMER  = 15 * 60; // 15 minutes in seconds
+let p2pFile      = null;
+let p2pTimerInterval = null;
+let p2pSecondsLeft   = P2P_TIMER;
+let p2pAmount    = 0;
+let p2pPayPhone  = '09792310926';
+let p2pPayName   = 'Mi Thaung';
+
+function openP2PModal() {
+  // Load payment info
+  const phone = document.getElementById('payPhone')?.textContent || '09792310926';
+  const name  = document.getElementById('payName')?.textContent  || 'Mi Thaung';
+  p2pPayPhone = phone; p2pPayName = name;
+  document.getElementById('p2pTPhone').textContent = phone;
+  document.getElementById('p2pTName').textContent  = '(' + name + ')';
+  // Reset
+  document.getElementById('p2pAmt').value = '';
+  document.getElementById('p2pFeeBox').style.display = 'none';
+  document.getElementById('p2pBuyBtn').disabled = true;
+  p2pGoStep(1);
+  document.getElementById('p2pOverlay').classList.add('open');
+  // Scroll hint hide after scroll
+  const scroll = document.getElementById('p2pInfoScroll');
+  if (scroll) scroll.addEventListener('scroll', function onScroll() {
+    document.getElementById('scrollHint').style.display='none';
+    scroll.removeEventListener('scroll', onScroll);
+  }, { once: true });
+}
+
+function closeP2PModal() {
+  document.getElementById('p2pOverlay').classList.remove('open');
+  clearInterval(p2pTimerInterval);
+  p2pTimerInterval = null;
+  // Reset upload
+  p2pFile = null;
+  document.getElementById('p2pUplPrev').style.display='none';
+  document.getElementById('p2pUplPh').style.display='flex';
+  document.getElementById('p2pUploadArea').classList.remove('has-file');
+  document.getElementById('p2pFileInp').value='';
+  document.getElementById('p2pSubmitBtn').disabled = true;
+  document.getElementById('p2pExpired').style.display='none';
+}
+
+function p2pGoStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('p2ws'+i);
+    if (el) el.style.display = i===n ? 'flex' : 'none';
+    if (i===1 && n!==1) { document.getElementById('p2ws1').style.display='none'; }
+    const s = document.getElementById('p2s'+i);
+    if(s){ s.className='si '+(i<n?'done':i===n?'active':'todo'); if(i===3&&n===3){s.textContent='✓';s.className='si done';} }
+  });
+  ['p2sl12','p2sl23'].forEach((id,idx)=>{ const el=document.getElementById(id); if(el) el.className='sl'+(n>idx+1?' done':''); });
+}
+
+function onP2PAmt() {
+  const v = parseInt(document.getElementById('p2pAmt').value) || 0;
+  const fb = document.getElementById('p2pFeeBox');
+  const btn = document.getElementById('p2pBuyBtn');
+  if (v >= P2P_MIN) {
+    fb.style.display = 'block';
+    document.getElementById('p2pBuyAmt').textContent = fmt(v) + ' Ks';
+    document.getElementById('p2pTotal').textContent  = fmt(v + P2P_FEE) + ' Ks';
+    document.getElementById('p2pReturn').textContent = fmt(v * 5) + ' Ks';
+    btn.disabled = false;
+  } else {
+    fb.style.display = 'none'; btn.disabled = true;
+  }
+}
+
+function p2pGoStep2() {
+  p2pAmount = parseInt(document.getElementById('p2pAmt').value) || 0;
+  if (p2pAmount < P2P_MIN) return;
+  document.getElementById('p2pTransferAmt').textContent = fmt(p2pAmount + P2P_FEE) + ' Ks';
+  p2pGoStep(2);
+  startP2PTimer();
+}
+
+function p2pGoBack() {
+  clearInterval(p2pTimerInterval); p2pTimerInterval = null;
+  document.getElementById('p2pExpired').style.display = 'none';
+  document.getElementById('p2pUploadArea').style.display = 'flex';
+  document.getElementById('p2pSubmitBtn').style.display  = 'flex';
+  document.querySelector('#p2ws2 .btn-ghost').style.display = '';
+  p2pGoStep(1);
+}
+
+function p2pRestart() {
+  closeP2PModal();
+  setTimeout(openP2PModal, 300);
+}
+
+function startP2PTimer() {
+  p2pSecondsLeft = P2P_TIMER;
+  updateTimerDisplay();
+  clearInterval(p2pTimerInterval);
+  p2pTimerInterval = setInterval(() => {
+    p2pSecondsLeft--;
+    updateTimerDisplay();
+    if (p2pSecondsLeft <= 0) {
+      clearInterval(p2pTimerInterval);
+      p2pTimerExpired();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(p2pSecondsLeft / 60);
+  const s = p2pSecondsLeft % 60;
+  const display = (m < 10?'0':'') + m + ':' + (s < 10?'0':'') + s;
+  const el = document.getElementById('p2pTimerVal');
+  if (el) {
+    el.textContent = display;
+    el.className = 'p2p-timer-val' + (p2pSecondsLeft <= 60 ? ' urgent' : '');
+  }
+}
+
+function p2pTimerExpired() {
+  document.getElementById('p2pUploadArea').style.display  = 'none';
+  document.getElementById('p2pSubmitBtn').style.display   = 'none';
+  document.querySelector('#p2ws2 .btn-ghost').style.display = 'none';
+  document.getElementById('p2pExpired').style.display     = 'block';
+  document.getElementById('p2pTimerVal').textContent      = '00:00';
+}
+
+function onP2PFileSelect(e) {
+  const f = e.target.files?.[0]; if (!f) return;
+  p2pFile = f;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById('p2pUplPrev');
+    img.src = ev.target.result; img.style.display = 'block';
+    document.getElementById('p2pUplPh').style.display = 'none';
+    document.getElementById('p2pUploadArea').classList.add('has-file');
+  };
+  reader.readAsDataURL(f);
+  document.getElementById('p2pSubmitBtn').disabled = false;
+}
+
+async function submitP2P() {
+  if (!p2pFile) { showToast('Screenshot မတင်ရသေးပါ', 'err'); return; }
+  if (p2pSecondsLeft <= 0) { showToast('အချိန်ကုန်ပြီ — ပြန်စပါ', 'err'); return; }
+  document.getElementById('p2pSubmitBtn').disabled = true;
+  document.getElementById('p2pSubmitTxt').textContent = 'တင်နေသည်...';
+  document.getElementById('p2pSpinner').style.display = 'block';
+  clearInterval(p2pTimerInterval);
+  try {
+    const fd = new FormData();
+    fd.append('amount', p2pAmount);
+    fd.append('screenshot', p2pFile);
+    // Reuse the same /api/withdrawals endpoint
+    const res = await fetch(API + '/api/withdrawals', {
+      method: 'POST',
+      headers: { 'x-telegram-id': tgId },
+      body: fd,
+    }).then(r => r.json());
+    if (!res.success) throw new Error(res.message);
+    if (user && res.data?.newBalance !== undefined) { user.balance = res.data.newBalance; renderUser(); }
+    p2pGoStep(3);
+    showToast('တင်ပြီးပါပြီ!', 'ok');
+  } catch(err) {
+    showToast(err.message || 'မအောင်မြင်ပါ', 'err');
+    document.getElementById('p2pSubmitBtn').disabled = false;
+  } finally {
+    document.getElementById('p2pSubmitTxt').textContent = 'ငွေလွှဲပြီးပြီ ✓';
+    document.getElementById('p2pSpinner').style.display = 'none';
+  }
+}
+
 function animNum(id,target){const el=document.getElementById(id);const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;(function tick(){const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(from+(target-from)*e));if(p<1)requestAnimationFrame(tick);})();}
 let _tt;
 function showToast(msg,type=''){const el=document.getElementById('toast');clearTimeout(_tt);el.textContent=msg;el.className='show '+type;_tt=setTimeout(()=>{el.className=''},3600);}
