@@ -594,6 +594,7 @@ function wStep(n){
 function onWA(){
   const v=parseInt(document.getElementById('wAmt').value)||0,b=user?.balance||0;
   const fb=document.getElementById('wFeeBox'),btn=document.getElementById('wNBtn');
+  // Only check amount >= min — fee is paid externally
   if(v>=MWD&&b>=v){fb.style.display='block';document.getElementById('wFA').textContent=fmt(v)+' Ks';document.getElementById('wFN').textContent=fmt(v+SVC)+' Ks';document.getElementById('wTRet').textContent=fmt(v+SVC)+' ကျပ်';btn.disabled=false;}
   else{fb.style.display='none';btn.disabled=true;}
 }
