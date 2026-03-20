@@ -10,1033 +10,623 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Roboto','Noto Sans Myanmar',sans-serif;background:#e0e0e0;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;overflow:hidden}
-.mm{font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-
-/* ══ APP SHELL ══ */
-.app-container{
-  width:100%;max-width:400px;height:100vh;
-  background-color:#005bb5;
-  background-image:linear-gradient(180deg,#0053a6 0%,#0072bc 40%);
-  position:relative;display:flex;flex-direction:column;
-  overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.2);
-}
-
-/* ══ TOP BLUE SECTION ══ */
-.top-section{padding:20px 16px 0;color:white;position:relative;z-index:1;flex-shrink:0}
-
-/* Header */
+body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;display:flex;justify-content:center;min-height:100vh;overflow:hidden}
+.mm{font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.app{width:100%;max-width:400px;height:100vh;background:#005bb5;background-image:linear-gradient(180deg,#0053a6 0%,#0072bc 40%);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.top{padding:20px 16px 0;color:#fff;flex-shrink:0}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.profile-greeting{display:flex;align-items:center;gap:12px}
-.profile-icon{width:42px;height:42px;background-color:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;overflow:hidden;flex-shrink:0}
-.profile-icon i{color:#b0c4de;font-size:28px}
-.profile-icon .ini{color:#0053a6;font-size:16px;font-weight:800}
-.greeting{font-size:14px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
-.search-bar{background-color:rgba(0,0,0,.2);padding:7px 12px;border-radius:20px;display:flex;align-items:center;gap:7px;min-width:130px}
-.search-bar i{font-size:13px;color:rgba(255,255,255,.7)}
-.search-bar span{color:rgba(255,255,255,.9);font-size:13px}
-
-/* Balance */
-.balance-section{text-align:center;margin-bottom:20px}
-.e-wallet-text{font-size:13.5px;margin-bottom:7px;display:flex;justify-content:center;align-items:center;gap:8px;opacity:.9}
-.e-wallet-text i{cursor:pointer;font-size:15px;transition:opacity .2s}
-.main-balance{font-size:40px;font-weight:700;margin-bottom:7px;display:flex;justify-content:center;align-items:baseline;position:relative}
-.main-balance .decimal{font-size:22px;font-weight:500}
-.main-balance .chev{font-size:10px;position:absolute;right:36px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);width:19px;height:19px;border-radius:50%;display:flex;justify-content:center;align-items:center}
-.total-balance{font-size:12.5px;color:rgba(255,255,255,.8);margin-bottom:13px}
-.exchange-rate{background:rgba(255,255,255,.15);display:inline-flex;align-items:center;padding:5px 12px;border-radius:14px;font-size:12px;gap:5px}
-
-/* ══ QUICK ACTIONS — SVG inline icons ══ */
-.top-actions{display:flex;justify-content:space-around;padding:0 4px;margin-bottom:16px}
-.action-item{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;cursor:pointer;transition:opacity .15s}
-.action-item:active{opacity:.65}
-
-/* Glass icon wrapper */
-.action-icon-wrap{
-  width:52px;height:52px;border-radius:15px;
-  background:rgba(255,255,255,.17);
-  border:1.5px solid rgba(255,255,255,.34);
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  box-shadow:0 4px 14px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.24);
-  transition:background .15s;
-}
-.action-item:active .action-icon-wrap{background:rgba(255,255,255,.28)}
-.action-icon-wrap svg{width:30px;height:30px}
-
-/* FA icon wrapper for Scan */
-.action-icon-fa{
-  width:52px;height:52px;border-radius:15px;
-  background:rgba(255,255,255,.17);border:1.5px solid rgba(255,255,255,.34);
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.24);
-}
-.action-icon-fa i{font-size:21px;color:#fff}
-.action-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.95);text-align:center;line-height:1.3}
-
-/* ══ BOTTOM WHITE SECTION ══ */
-.bottom-section{
-  background:#fff;border-radius:20px 20px 0 0;
-  flex:1;display:flex;flex-direction:column;
-  overflow:hidden;z-index:2;margin-top:0;
-  box-shadow:0 -5px 20px rgba(0,0,0,.07);
-}
-
-/* Tabs */
-.tabs{display:flex;justify-content:center;gap:55px;position:relative;border-bottom:1.5px solid #f0f0f0;padding:0 16px;flex-shrink:0}
-.tab{font-size:15px;color:#666;cursor:pointer;position:relative;padding:14px 0 11px;font-weight:500;transition:color .2s}
-.tab.active{color:#111;font-weight:700}
-.tab.active::after{content:'';position:absolute;bottom:-1.5px;left:50%;transform:translateX(-50%);width:32px;height:3px;background:#0056a3;border-radius:3px}
-.tab-star{color:#29b6f6;font-size:9px;position:absolute;top:14px;right:-11px}
-
-/* Scrollable tab content */
-.tab-content{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 15px 100px}
-.tab-content::-webkit-scrollbar{display:none}
-.panel{display:none}.panel.active{display:block}
-
-/* Section headers */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.sec-title{font-size:13.5px;font-weight:700;color:#111}
-.live-badge{display:flex;align-items:center;gap:4px;background:#e4f9ee;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:800;color:#00924a}
-.live-dot{width:6px;height:6px;background:#00c875;border-radius:50%;animation:lp 1.8s infinite}
+.pcl{display:flex;align-items:center;gap:12px}
+.av{width:42px;height:42px;background:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;overflow:hidden;flex-shrink:0}
+.av i{color:#b0c4de;font-size:28px}
+.av .ini{color:#0053a6;font-size:16px;font-weight:800}
+.greet{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.sb{background:rgba(0,0,0,.2);padding:7px 12px;border-radius:20px;display:flex;align-items:center;gap:7px}
+.sb i{font-size:13px;color:rgba(255,255,255,.7)}
+.sb span{color:rgba(255,255,255,.9);font-size:13px}
+.bsec{text-align:center;margin-bottom:20px}
+.ewt{font-size:13.5px;margin-bottom:7px;display:flex;justify-content:center;align-items:center;gap:8px;opacity:.9}
+.ewt i{cursor:pointer;font-size:15px}
+.balrow{font-size:40px;font-weight:700;margin-bottom:7px;display:flex;justify-content:center;align-items:baseline;position:relative}
+.balrow .dec{font-size:22px;font-weight:500}
+.balrow .chv{font-size:10px;position:absolute;right:36px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);width:19px;height:19px;border-radius:50%;display:flex;justify-content:center;align-items:center}
+.tbal{font-size:12.5px;color:rgba(255,255,255,.8);margin-bottom:13px}
+.exrt{background:rgba(255,255,255,.15);display:inline-flex;align-items:center;padding:5px 12px;border-radius:14px;font-size:12px;gap:5px}
+.qrow{display:flex;justify-content:space-around;padding:0 4px;margin-bottom:16px}
+.act{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;cursor:pointer;transition:opacity .15s}
+.act:active{opacity:.65}
+.aiwrap{width:52px;height:52px;border-radius:15px;background:rgba(255,255,255,.17);border:1.5px solid rgba(255,255,255,.34);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.24);transition:background .15s}
+.act:active .aiwrap{background:rgba(255,255,255,.28)}
+.aiwrap svg{width:30px;height:30px}
+.aifa{width:52px;height:52px;border-radius:15px;background:rgba(255,255,255,.17);border:1.5px solid rgba(255,255,255,.34);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.24)}
+.aifa i{font-size:22px}
+.albl{font-size:11px;font-weight:600;color:rgba(255,255,255,.95);text-align:center;line-height:1.3}
+.sheet{background:#fff;border-radius:20px 20px 0 0;flex:1;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -5px 20px rgba(0,0,0,.07)}
+.tabs{display:flex;justify-content:center;gap:55px;border-bottom:1.5px solid #f0f0f0;padding:0 16px;flex-shrink:0}
+.tab{font-size:15px;color:#666;cursor:pointer;position:relative;padding:14px 0 11px;font-weight:500;transition:color .2s;background:none;border:none}
+.tab.on{color:#111;font-weight:700}
+.tab.on::after{content:'';position:absolute;bottom:-1.5px;left:50%;transform:translateX(-50%);width:32px;height:3px;background:#0056a3;border-radius:3px}
+.tc{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 15px 100px}
+.tc::-webkit-scrollbar{display:none}
+.pn{display:none}.pn.on{display:block}
+.sechdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.sectit{font-size:13.5px;font-weight:700;color:#111}
+.lvbadge{display:flex;align-items:center;gap:4px;background:#e4f9ee;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:800;color:#00924a}
+.lvdot{width:6px;height:6px;background:#00c875;border-radius:50%;animation:lp 1.8s infinite}
 @keyframes lp{0%{box-shadow:0 0 0 0 rgba(0,200,117,.5)}70%{box-shadow:0 0 0 7px rgba(0,200,117,0)}100%{box-shadow:0 0 0 0 rgba(0,200,117,0)}}
-
-/* Info banners */
 .banner{border-radius:12px;padding:11px 13px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px}
 .banner.blue{background:linear-gradient(135deg,#e6f0ff,#d4e6ff);border:1px solid #b8d4fa}
 .banner.amber{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:1px solid #fde090}
 .banner.red{background:linear-gradient(135deg,#fff0f0,#ffe0e0);border:1px solid #ffb8b8}
-.bicon{font-size:18px;flex-shrink:0;margin-top:1px}
-.bbody p{font-size:11px;line-height:1.65;color:#2a4880}
-.bbody p strong{font-weight:800;color:#0056a3}
-.banner.amber .bbody p{color:#7a5800}.banner.amber .bbody p strong{color:#c06000}
-.banner.red   .bbody p{color:#7a0000}.banner.red   .bbody p strong{color:#c00000}
-
-/* Podium */
+.bi{font-size:18px;flex-shrink:0;margin-top:1px}
+.bb p{font-size:11px;line-height:1.65;color:#2a4880}
+.bb p strong{font-weight:800;color:#0056a3}
+.banner.amber .bb p{color:#7a5800}.banner.amber .bb p strong{color:#c06000}
+.banner.red .bb p{color:#7a0000}.banner.red .bb p strong{color:#c00000}
 .podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px;align-items:flex-end}
 .pod{border-radius:13px;display:flex;flex-direction:column;align-items:center;padding:10px 4px;gap:5px;position:relative}
 .pod.p1{background:linear-gradient(160deg,#fffae4,#fff7c8);border:1.5px solid #f5d870;box-shadow:0 4px 12px rgba(245,166,35,.14);padding-top:18px}
 .pod.p2{background:linear-gradient(160deg,#f3f8ff,#e7f0fc);border:1.5px solid #ccd9f0}
 .pod.p3{background:linear-gradient(160deg,#fff5ea,#fce8d5);border:1.5px solid #edcaa0}
-.pod-crown{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:19px}
-.pod-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;border:2px solid rgba(255,255,255,.75)}
+.pcrown{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:19px}
+.pav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;border:2px solid rgba(255,255,255,.75)}
 .rb{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:9px}
 .rbg{background:linear-gradient(135deg,#ffd166,#f5a623);color:#7a3400}
 .rbs{background:linear-gradient(135deg,#dbe8f5,#c3d8eb);color:#3a4f6e}
 .rbb{background:linear-gradient(135deg,#f5c48a,#d48638);color:#5a2400}
-.pod-name{font-size:10px;font-weight:700;color:#111;text-align:center;line-height:1.25}
-.pod-stat{font-size:9.5px;font-weight:800;color:#0056a3;font-variant-numeric:tabular-nums}
-
-/* List rows */
+.pnm{font-size:10px;font-weight:700;color:#111;text-align:center;line-height:1.25}
+.pst{font-size:9.5px;font-weight:800;color:#0056a3;font-variant-numeric:tabular-nums}
 .row{background:#fff;border-radius:11px;padding:10px 12px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 8px rgba(0,50,150,.05);margin-bottom:7px;border:1px solid #eaf0f9;transition:transform .12s}
 .row:active{transform:scale(.98)}
-.row-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
-.row-rank{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;background:#edf2fa;color:#4a6080}
-.row-body{flex:1;min-width:0}
-.row-name{font-size:12px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row-sub{font-size:10px;color:#8099c0;margin-top:1px}
-.row-right{text-align:right;flex-shrink:0}
-.row-amt{font-size:12.5px;font-weight:800;color:#00a050;font-variant-numeric:tabular-nums}
-.row-badge{display:inline-flex;align-items:center;gap:3px;background:#e4f9ee;color:#00a050;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-top:2px}
-
-/* Shimmer */
+.rav{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+.rrk{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;background:#edf2fa;color:#4a6080}
+.rbdy{flex:1;min-width:0}
+.rnm{font-size:12px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rsb{font-size:10px;color:#8099c0;margin-top:1px}
+.rrt{text-align:right;flex-shrink:0}
+.ramt{font-size:12.5px;font-weight:800;color:#00a050;font-variant-numeric:tabular-nums}
+.rbadge{display:inline-flex;align-items:center;gap:3px;background:#e4f9ee;color:#00a050;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-top:2px}
 .shim{background:linear-gradient(90deg,#f0f4fa 25%,#f8faff 50%,#f0f4fa 75%);background-size:500px 100%;animation:shim 1.4s infinite linear;border-radius:10px}
 @keyframes shim{from{background-position:-500px 0}to{background-position:500px 0}}
-
-/* ══ FIXED BOTTOM CTA ══ */
-.bottom-cta{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:400px;padding:10px 15px 18px;background:linear-gradient(to top,#fff 55%,transparent);z-index:20}
-.cta-btn{width:100%;padding:13px;border-radius:13px;font-family:'Noto Sans Myanmar','Roboto',sans-serif;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,#1976d2,#0053a6);box-shadow:0 6px 18px rgba(0,83,166,.38);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s}
-.cta-btn:active{transform:scale(.975)}
-.cta-btn:disabled{opacity:.45;cursor:not-allowed}
-
-/* ══ MODALS ══ */
+.bcta{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:400px;padding:10px 15px 18px;background:linear-gradient(to top,#fff 55%,transparent);z-index:20}
+.ctabtn{width:100%;padding:13px;border-radius:13px;font-family:"Noto Sans Myanmar","Roboto",sans-serif;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,#1976d2,#0053a6);box-shadow:0 6px 18px rgba(0,83,166,.38);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s}
+.ctabtn:active{transform:scale(.975)}
+.ctabtn:disabled{opacity:.45;cursor:not-allowed}
+/* Modals */
 .overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,50,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.open{opacity:1;pointer-events:all}
-.modal{background:#fff;border-radius:22px 22px 0 0;padding:0 18px 32px;width:100%;max-width:400px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:0 18px 28px;width:100%;max-width:400px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
 .overlay.open .modal{transform:translateY(0)}
-.modal-handle{width:36px;height:4px;background:#dde8f0;border-radius:2px;margin:12px auto 18px}
-.modal-title{font-size:17px;font-weight:800;color:#111;margin-bottom:3px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.modal-sub{font-size:11px;color:#8099c0;margin-bottom:15px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.bal-row2{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:13px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
-.bal-lbl2{font-size:10.5px;color:#7a95ba;margin-bottom:2px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.bal-val2{font-size:19px;font-weight:900;color:#0056a3;font-variant-numeric:tabular-nums}
-.min-badge{font-size:10px;color:#c06000;font-weight:700;background:#fff8e0;padding:3px 8px;border-radius:8px;border:1px solid #fde090}
-.fee-warn{background:#fff4e0;border:1px solid #ffd090;border-radius:10px;padding:8px 12px;font-size:10.5px;color:#c05000;font-weight:600;display:flex;align-items:flex-start;gap:6px;margin-bottom:13px;line-height:1.55;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.lbl-sm{display:block;font-size:11px;font-weight:800;color:#2d4878;margin-bottom:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.inp-wrap{position:relative;margin-bottom:5px}
-.amt-inp{width:100%;border:2px solid #d5e5f8;border-radius:12px;padding:12px 48px 12px 14px;font-family:'Roboto',sans-serif;font-size:19px;font-weight:800;color:#111;outline:none;transition:border .2s;-moz-appearance:textfield;appearance:none}
-.amt-inp::-webkit-outer-spin-button,.amt-inp::-webkit-inner-spin-button{-webkit-appearance:none}
-.amt-inp:focus{border-color:#1976d2}
-.amt-inp::placeholder{color:#c0d0ea;font-size:14px;font-weight:500}
-.inp-unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:#8099c0}
-.fee-box{background:#fffbee;border:1px solid #fde890;border-radius:11px;padding:10px;margin:7px 0 15px}
-.fee-r{display:flex;justify-content:space-between;font-size:11px;color:#7a6030;padding:2px 0}
-.fee-r.tot{font-size:12.5px;font-weight:800;color:#111;border-top:1px solid #fde890;margin-top:5px;padding-top:7px}
-.fee-r .fv{font-variant-numeric:tabular-nums;font-weight:700}
-.fee-r.tot .fv{color:#00a050}
-.instr-box{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:1.5px solid #fde090;border-radius:12px;padding:12px;margin-bottom:12px}
-.instr-box h4{font-size:12px;font-weight:800;color:#7a4800;margin-bottom:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.instr-box p{font-size:11.5px;color:#6a4000;line-height:1.7;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.instr-phone{font-size:15px;font-weight:900;color:#c06000;letter-spacing:.3px;display:block;margin:3px 0 2px}
-.upload-area{border:2px dashed #b8d4f0;border-radius:12px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:12px;background:#f8fbff}
-.upload-area.has-file,.upload-area:hover{border-color:#1976d2;background:#f0f7ff}
-.upload-area img{max-height:140px;border-radius:8px;object-fit:contain}
-.upl-icon{font-size:30px;line-height:1}
-.upl-txt{font-size:12px;font-weight:700;color:#1976d2}
-.upl-hint{font-size:10px;color:#8099c0}
-.step-ind{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:16px}
+.mhnd{width:36px;height:4px;background:#dde8f0;border-radius:2px;margin:12px auto 16px}
+.mtit{font-size:17px;font-weight:800;color:#111;margin-bottom:3px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.sind{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:14px}
 .si{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
 .si.done{background:#00c875;color:#fff}.si.active{background:#0056a3;color:#fff}.si.todo{background:#e0e8f4;color:#8099c0}
 .sl{flex:1;height:2px;background:#e0e8f4;border-radius:1px}.sl.done{background:#00c875}
-.btn-p{width:100%;padding:13px;border-radius:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,#1976d2,#0053a6);box-shadow:0 5px 16px rgba(0,83,166,.30);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:8px}
-.btn-p:active{transform:scale(.975)}
-.btn-p:disabled{opacity:.42;cursor:not-allowed}
-.btn-ghost{width:100%;padding:11px;border-radius:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif;font-size:12px;font-weight:700;color:#8099c0;background:#edf2fb;border:none;cursor:pointer;transition:background .14s}
-.btn-ghost:active{background:#dce8f4}
-.btn-gold{width:100%;padding:13px;border-radius:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif;font-size:13px;font-weight:900;color:#3d1800;background:linear-gradient(135deg,#ffd166,#f5a623);box-shadow:0 5px 16px rgba(245,166,35,.38);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:8px}
-.btn-gold:active{transform:scale(.975)}
-.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
-.ref-card{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:12px;padding:12px;text-align:center}
-.ref-num{font-size:24px;font-weight:900;color:#0056a3;font-variant-numeric:tabular-nums}
-.ref-lbl{font-size:10px;color:#8099c0;margin-top:2px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.ref-link-row{display:flex;gap:7px;margin-bottom:13px}
-.ref-inp{flex:1;background:#f3f8ff;border:1.5px solid #ccdcf6;border-radius:10px;padding:9px 10px;font-size:10px;color:#2a4880;font-family:monospace;overflow:hidden;text-overflow:ellipsis;outline:none;white-space:nowrap}
-.ref-copy{background:linear-gradient(135deg,#1976d2,#0053a6);color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Noto Sans Myanmar','Roboto',sans-serif;transition:transform .12s}
-.ref-copy:active{transform:scale(.94)}
-.success-sc{text-align:center;padding:12px 0}
-.success-sc .big-ic{font-size:56px;margin-bottom:10px;line-height:1}
-.success-sc h2{font-size:19px;font-weight:900;color:#111;margin-bottom:4px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.success-sc p{font-size:12px;color:#8099c0;line-height:1.7;margin-bottom:18px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-
-
-/* ══ PAYTOPAY MODAL ══ */
-.p2p-overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,50,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:opacity .3s}
-.p2p-overlay.open{opacity:1;pointer-events:all}
-.p2p-modal{background:#fff;border-radius:22px 22px 0 0;padding:0;width:100%;max-width:400px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;max-height:92vh}
-.p2p-overlay.open .p2p-modal{transform:translateY(0)}
-.p2p-header{padding:0 18px;flex-shrink:0}
-.p2p-handle{width:36px;height:4px;background:#dde8f0;border-radius:2px;margin:12px auto 14px}
-.p2p-title{font-size:17px;font-weight:800;color:#111;margin-bottom:2px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-sub{font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-/* Step indicator reused from .si/.sl */
-.p2p-step-ind{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:14px}
-/* Info box with dark border */
-.p2p-info-box{border:2px solid #1a1a2e;border-radius:13px;overflow:hidden;margin-bottom:14px;flex-shrink:0}
-.p2p-info-box-header{background:#1a1a2e;padding:9px 14px;display:flex;align-items:center;gap:8px}
-.p2p-info-box-header span{color:#fff;font-size:12px;font-weight:800;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-info-scroll{max-height:200px;overflow-y:auto;padding:14px;background:#0d0d1a;-webkit-overflow-scrolling:touch}
-.p2p-info-scroll::-webkit-scrollbar{width:3px}
-.p2p-info-scroll::-webkit-scrollbar-track{background:#1a1a2e}
-.p2p-info-scroll::-webkit-scrollbar-thumb{background:#e53935;border-radius:2px}
-.p2p-red-heading{color:#ff4444;font-size:13px;font-weight:800;margin-bottom:8px;line-height:1.5;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-info-text{color:#e0e0e0;font-size:11.5px;line-height:1.85;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-info-text strong{color:#ff6b6b;font-weight:800}
-.p2p-info-text .section-title{color:#ff4444;font-size:12px;font-weight:800;display:block;margin:10px 0 4px}
-.p2p-scroll-hint{text-align:center;font-size:10px;color:#8099c0;margin-bottom:10px;animation:bounce .8s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;gap:4px}
-@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(3px)}}
-/* Amount input step */
-.p2p-body{padding:0 18px 4px;flex:1;overflow-y:auto}
-.p2p-body::-webkit-scrollbar{display:none}
-/* Timer */
-.p2p-timer-wrap{background:linear-gradient(135deg,#fff0f0,#ffe8e8);border:2px solid #e53935;border-radius:12px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.p2p-timer-label{font-size:11px;color:#b71c1c;font-weight:700;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-timer-val{font-size:22px;font-weight:900;color:#c62828;font-variant-numeric:tabular-nums;letter-spacing:1px}
-.p2p-timer-val.urgent{color:#d32f2f;animation:timerPulse .5s ease-in-out infinite alternate}
-@keyframes timerPulse{from{opacity:1}to{opacity:.5}}
-/* Transfer info box */
-.p2p-transfer-box{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:2px solid #f5a623;border-radius:12px;padding:12px 14px;margin-bottom:12px}
-.p2p-transfer-label{font-size:10.5px;color:#7a5800;font-weight:700;margin-bottom:5px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-transfer-phone{font-size:17px;font-weight:900;color:#c06000;letter-spacing:.3px}
-.p2p-transfer-name{font-size:12px;color:#7a4800;font-weight:700;margin-top:2px}
-.p2p-transfer-amount{font-size:13px;font-weight:800;color:#b71c1c;margin-top:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-/* Expired overlay */
-.p2p-expired{display:none;text-align:center;padding:20px 0}
-.p2p-expired .exp-icon{font-size:50px;margin-bottom:10px}
-.p2p-expired h3{font-size:17px;font-weight:900;color:#c62828;margin-bottom:6px;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-.p2p-expired p{font-size:12px;color:#8099c0;line-height:1.7;font-family:'Noto Sans Myanmar','Roboto',sans-serif}
-/* Toast */
+.balbox{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:13px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.ballbl{font-size:10.5px;color:#7a95ba;margin-bottom:2px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.balval{font-size:19px;font-weight:900;color:#0056a3;font-variant-numeric:tabular-nums}
+.minb{font-size:10px;color:#c06000;font-weight:700;background:#fff8e0;padding:3px 8px;border-radius:8px;border:1px solid #fde090}
+.lsm{display:block;font-size:11px;font-weight:800;color:#2d4878;margin-bottom:6px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.inpw{position:relative;margin-bottom:5px}
+.aminp{width:100%;border:2px solid #d5e5f8;border-radius:12px;padding:12px 48px 12px 14px;font-family:"Roboto",sans-serif;font-size:19px;font-weight:800;color:#111;outline:none;transition:border .2s;-moz-appearance:textfield;appearance:none}
+.aminp::-webkit-outer-spin-button,.aminp::-webkit-inner-spin-button{-webkit-appearance:none}
+.aminp:focus{border-color:#1976d2}
+.aminp::placeholder{color:#c0d0ea;font-size:14px;font-weight:500}
+.iunit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:#8099c0}
+.feebox{background:#fffbee;border:1px solid #fde890;border-radius:11px;padding:10px;margin:7px 0 14px}
+.feer{display:flex;justify-content:space-between;font-size:11px;color:#7a6030;padding:2px 0}
+.feer.tot{font-size:12.5px;font-weight:800;color:#111;border-top:1px solid #fde890;margin-top:5px;padding-top:7px}
+.feer .fv{font-variant-numeric:tabular-nums;font-weight:700}
+.upa{border:2px dashed #b8d4f0;border-radius:12px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:12px;background:#f8fbff}
+.upa.has,.upa:hover{border-color:#1976d2;background:#f0f7ff}
+.upa img{max-height:120px;border-radius:8px;object-fit:contain}
+.uico{font-size:28px;line-height:1}
+.utxt{font-size:12px;font-weight:700;color:#1976d2}
+.uhnt{font-size:10px;color:#8099c0}
+.btnp{width:100%;padding:13px;border-radius:12px;font-family:"Noto Sans Myanmar","Roboto",sans-serif;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,#1976d2,#0053a6);box-shadow:0 5px 16px rgba(0,83,166,.30);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:8px}
+.btnp:active{transform:scale(.975)}
+.btnp:disabled{opacity:.42;cursor:not-allowed}
+.btnr{background:linear-gradient(135deg,#e53935,#b71c1c)!important;box-shadow:0 5px 16px rgba(229,57,53,.38)!important}
+.btng{width:100%;padding:13px;border-radius:12px;font-family:"Noto Sans Myanmar","Roboto",sans-serif;font-size:13px;font-weight:900;color:#3d1800;background:linear-gradient(135deg,#ffd166,#f5a623);box-shadow:0 5px 16px rgba(245,166,35,.38);display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;transition:transform .14s;margin-bottom:8px}
+.btng:active{transform:scale(.975)}
+.bghst{width:100%;padding:11px;border-radius:12px;font-family:"Noto Sans Myanmar","Roboto",sans-serif;font-size:12px;font-weight:700;color:#8099c0;background:#edf2fb;border:none;cursor:pointer;transition:background .14s}
+.bghst:active{background:#dce8f4}
+.refgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
+.refcard{background:#f3f8ff;border:1px solid #d0e4fa;border-radius:12px;padding:12px;text-align:center}
+.refnum{font-size:24px;font-weight:900;color:#0056a3;font-variant-numeric:tabular-nums}
+.reflbl{font-size:10px;color:#8099c0;margin-top:2px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.reflr{display:flex;gap:7px;margin-bottom:13px}
+.refinp{flex:1;background:#f3f8ff;border:1.5px solid #ccdcf6;border-radius:10px;padding:9px 10px;font-size:10px;color:#2a4880;font-family:monospace;overflow:hidden;text-overflow:ellipsis;outline:none;white-space:nowrap}
+.refcpy{background:linear-gradient(135deg,#1976d2,#0053a6);color:#fff;border:none;border-radius:10px;padding:0 14px;font-size:11px;font-weight:800;cursor:pointer;font-family:"Noto Sans Myanmar","Roboto",sans-serif;transition:transform .12s}
+.refcpy:active{transform:scale(.94)}
+.sucsc{text-align:center;padding:12px 0}
+.sucsc .bic{font-size:56px;margin-bottom:10px;line-height:1}
+.sucsc h2{font-size:19px;font-weight:900;color:#111;margin-bottom:4px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.sucsc p{font-size:12px;color:#8099c0;line-height:1.7;margin-bottom:18px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.spin{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spn .7s linear infinite;flex-shrink:0}
+@keyframes spn{to{transform:rotate(360deg)}}
+/* P2P specific */
+.p2mov{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,50,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:opacity .3s}
+.p2mov.open{opacity:1;pointer-events:all}
+.p2mbox{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:400px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;max-height:92vh;overflow:hidden}
+.p2mov.open .p2mbox{transform:translateY(0)}
+.p2hdr{padding:0 18px;flex-shrink:0}
+.timerw{background:linear-gradient(135deg,#fff0f0,#ffe8e8);border:2px solid #e53935;border-radius:12px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.timerlbl{font-size:11px;color:#b71c1c;font-weight:700;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.timerlbl small{display:block;font-size:9.5px;color:#c62828;margin-top:2px}
+.timerval{font-size:24px;font-weight:900;color:#c62828;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.timerval.urg{animation:tpls .5s ease-in-out infinite alternate}
+@keyframes tpls{from{opacity:1}to{opacity:.4}}
+.txbox{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:2px solid #f5a623;border-radius:13px;padding:13px 15px;margin-bottom:12px}
+.txlbl{font-size:11px;color:#7a5800;font-weight:700;margin-bottom:6px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.txphone{font-size:18px;font-weight:900;color:#c06000;letter-spacing:.3px}
+.txname{font-size:12px;color:#7a4800;font-weight:700;margin-top:2px}
+.txamt{font-size:12.5px;font-family:"Noto Sans Myanmar","Roboto",sans-serif;margin-top:8px;color:#7a5800}
+.txamt strong{font-size:17px;color:#c62828}
+.darkbox{border:2px solid #1a1a2e;border-radius:13px;overflow:hidden;margin-bottom:12px}
+.darkhdr{background:#1a1a2e;padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
+.darkhdr span{color:#ff4444;font-size:12px;font-weight:900;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.darkhdr small{color:rgba(255,255,255,.45);font-size:10px}
+.darkscroll{max-height:170px;overflow-y:auto;padding:13px;background:#0d0d1a;-webkit-overflow-scrolling:touch}
+.darkscroll::-webkit-scrollbar{width:3px}
+.darkscroll::-webkit-scrollbar-track{background:#1a1a2e}
+.darkscroll::-webkit-scrollbar-thumb{background:#e53935;border-radius:2px}
+.redh{display:block;color:#ff4444;font-size:12px;font-weight:900;margin:10px 0 4px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.redh:first-child{margin-top:0}
+.infotxt{color:#d0d0d0;font-size:11.5px;line-height:1.85;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.infotxt strong{color:#ff8888}
+.wblk{display:block;background:#2a0000;border:1px solid #ff4444;border-radius:8px;padding:9px 11px;margin-top:10px}
+.wblk b{color:#ff4444;font-size:11.5px}
+.wblk em{color:#ffcccc;font-size:11px;display:block;margin-top:3px;line-height:1.6;font-style:normal}
+.expsc{display:none;text-align:center;padding:18px 0}
+.expsc .bic{font-size:50px;margin-bottom:10px}
+.expsc h3{font-size:17px;font-weight:900;color:#c62828;margin-bottom:5px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.expsc p{font-size:12px;color:#8099c0;line-height:1.7;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.wdwarn{background:#fff0f0;border:2px solid #e53935;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.wdwarn p{font-size:11.5px;color:#b71c1c;font-weight:700;line-height:1.85;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.wdwarn .ph{font-size:15px;font-weight:900;color:#c62828;letter-spacing:.3px}
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#0a1628;color:#fff;padding:10px 19px;border-radius:20px;font-size:12px;font-weight:700;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.22);max-width:86vw;text-align:center;white-space:normal}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{background:linear-gradient(135deg,#00c875,#009d55)}
 #toast.err{background:linear-gradient(135deg,#f44336,#c62828)}
-.spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="app-container">
-
-  <!-- ══ TOP SECTION ══ -->
-  <div class="top-section">
+<div class="app">
+  <div class="top">
     <div class="header">
-      <div class="profile-greeting">
-        <div class="profile-icon" id="avatarEl">
-          <i class="fa-solid fa-user"></i>
-        </div>
-        <div class="greeting mm" id="userNameEl">Loading...</div>
+      <div class="pcl"><div class="av" id="avEl"><i class="fa-solid fa-user"></i></div><div class="greet mm" id="nameEl">Loading...</div></div>
+      <div class="sb"><i class="fa-solid fa-magnifying-glass"></i><span>Watch Bay</span></div>
+    </div>
+    <div class="bsec">
+      <div class="ewt">e-Wallet Balance(Ks)<i class="fa-regular fa-eye" id="eyeBtn"></i></div>
+      <div class="balrow"><span id="balMain">0</span><span class="dec">.00</span><div class="chv"><i class="fa-solid fa-chevron-right" style="font-size:8px"></i></div></div>
+      <div class="tbal">Total Balance (Ks): <span id="balTot">0.00</span></div>
+      <div class="exrt">🇺🇸 1 USD = 🇲🇲 3,657 MMK</div>
+    </div>
+    <div class="qrow">
+      <div class="act" onclick="openP2P()">
+        <div class="aifa"><i class="fa-solid fa-bolt" style="color:#ffd166"></i></div>
+        <span class="albl">PaytoPay</span>
       </div>
-      <div class="search-bar">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <span>Watch Bay</span>
+      <div class="act" onclick="openWd()">
+        <div class="aiwrap">
+          <svg viewBox="0 0 32 32" fill="none"><line x1="4" y1="11" x2="24" y2="11" stroke="white" stroke-width="2.8" stroke-linecap="round"/><polyline points="19,6 25,11 19,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="28" y1="21" x2="8" y2="21" stroke="white" stroke-width="2.8" stroke-linecap="round"/><polyline points="13,26 7,21 13,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <span class="albl mm">ငွေထုတ်ရန်</span>
+      </div>
+      <div class="act" onclick="openRef()">
+        <div class="aiwrap">
+          <svg viewBox="0 0 32 32" fill="none"><rect x="3" y="7" width="22" height="16" rx="3" stroke="white" stroke-width="2.2" fill="none"/><text x="10" y="20" font-size="10" font-weight="700" fill="white" font-family="Arial">$</text><line x1="23" y1="15" x2="29" y2="15" stroke="white" stroke-width="2.2" stroke-linecap="round"/><polyline points="26,11 23,15 26,19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <span class="albl mm">ငွေဖြည့်ရန်</span>
+      </div>
+      <div class="act" onclick="openRef()">
+        <div class="aiwrap">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="20" cy="11" r="4" stroke="white" stroke-width="2" fill="none"/><path d="M13 28c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="11" r="4.5" stroke="white" stroke-width="2.2" fill="none"/><path d="M3 28c0-4.5 3.8-7.5 9-7.5s9 3 9 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <span class="albl mm" style="font-size:9.5px">ဖိတ်ထားသူများ</span>
       </div>
     </div>
+  </div>
 
-    <div class="balance-section">
-      <div class="e-wallet-text">
-        e-Wallet Balance(Ks)
-        <i class="fa-regular fa-eye" id="toggleVis"></i>
-      </div>
-      <div class="main-balance">
-        <span id="balMain">0</span><span class="decimal">.00</span>
-        <div class="chev"><i class="fa-solid fa-chevron-right" style="font-size:8px"></i></div>
-      </div>
-      <div class="total-balance">Total Balance (Ks): <span id="balTotal">0.00</span></div>
-      <div class="exchange-rate">🇺🇸 1 USD = 🇲🇲 3,657 MMK</div>
-    </div>
-
-    <!-- Quick Actions — Inline SVG (matching uploaded images exactly) -->
-    <div class="top-actions">
-
-      <!-- Scan (QR frame) -->
-      <div class="action-item" onclick="openP2PModal()">
-        <div class="action-icon-fa">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="5" height="5" rx="1"/>
-            <rect x="16" y="3" width="5" height="5" rx="1"/>
-            <rect x="3" y="16" width="5" height="5" rx="1"/>
-            <line x1="3" y1="11" x2="21" y2="11"/>
-            <line x1="16" y1="16" x2="21" y2="16"/>
-            <line x1="19" y1="16" x2="19" y2="21"/>
-            <line x1="16" y1="19" x2="16" y2="21"/>
-          </svg>
-        </div>
-        <span class="action-label">PaytoPay</span>
-      </div>
-
-      <!-- ငွေထုတ်ရန် — Image 2: two horizontal transfer arrows (left←  →right) -->
-      <div class="action-item" onclick="openWdModal()">
-        <div class="action-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Top arrow: pointing RIGHT -->
-            <line x1="4" y1="11" x2="24" y2="11" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
-            <polyline points="19,6 25,11 19,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <!-- Bottom arrow: pointing LEFT -->
-            <line x1="28" y1="21" x2="8" y2="21" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
-            <polyline points="13,26 7,21 13,16" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </div>
-        <span class="action-label mm">ငွေထုတ်ရန်</span>
-      </div>
-
-      <!-- ငွေဖြည့်ရန် — Image 1: card/wallet + $ + arrow pointing INTO card -->
-      <div class="action-item" onclick="openRefModal()">
-        <div class="action-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Card body (rounded rect) -->
-            <rect x="3" y="7" width="22" height="16" rx="3" stroke="white" stroke-width="2.2" fill="none"/>
-            <!-- Dollar sign inside card -->
-            <text x="10" y="20" font-size="10" font-weight="700" fill="white" font-family="Arial">$</text>
-            <!-- Arrow shaft going INTO card from right -->
-            <line x1="23" y1="15" x2="29" y2="15" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-            <!-- Arrowhead pointing LEFT (into card) -->
-            <polyline points="26,11 23,15 26,19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </div>
-        <span class="action-label mm">ငွေဖြည့်ရန်</span>
-      </div>
-
-      <!-- ဖိတ်ထားသူများ — Image 3: two person silhouette (users/group) -->
-      <div class="action-item" onclick="openRefModal()">
-        <div class="action-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Back person (right, slightly offset) -->
-            <circle cx="20" cy="11" r="4" stroke="white" stroke-width="2" fill="none"/>
-            <path d="M13 28c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <!-- Front person (left, main) -->
-            <circle cx="12" cy="11" r="4.5" stroke="white" stroke-width="2.2" fill="none"/>
-            <path d="M3 28c0-4.5 3.8-7.5 9-7.5s9 3 9 7.5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <span class="action-label mm" style="font-size:9.5px">ဖိတ်ထားသူများ</span>
-      </div>
-
-    </div>
-  </div><!-- /top-section -->
-
-  <!-- ══ BOTTOM WHITE SECTION ══ -->
-  <div class="bottom-section">
-
-    <!-- Tabs -->
+  <div class="sheet">
     <div class="tabs">
-      <div class="tab active" id="tab-pop" onclick="switchTab('pop')">Popular</div>
-      <div class="tab mm" id="tab-wd" onclick="switchTab('wd')" style="font-size:12.5px">
-        ငွေထုတ်ထားသူများ
+      <button class="tab on" id="tp" onclick="swTab('p')">Popular</button>
+      <button class="tab mm" id="tw" onclick="swTab('w')" style="font-size:12.5px">ငွေထုတ်ထားသူများ</button>
+    </div>
+    <div class="tc">
+      <div class="pn on" id="pnp">
+        <div class="sechdr"><span class="sectit mm">🏆 ထိပ်တန်းလူဖိတ်သူများ</span><div class="lvbadge"><span class="lvdot"></span>Live</div></div>
+        <div class="banner blue"><span class="bi">🎁</span><div class="bb mm"><p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p><p>သင်၏ link မှ စာရင်းသွင်းသူတိုင်း ငွေကြေးအလိုအလျောက် ရရှိမည်</p></div></div>
+        <div class="podium" id="podEl"><div class="shim" style="height:125px"></div><div class="shim" style="height:155px"></div><div class="shim" style="height:125px"></div></div>
+        <div id="lbEl"><div class="shim" style="height:56px;margin-bottom:7px"></div><div class="shim" style="height:56px;margin-bottom:7px"></div><div class="shim" style="height:56px"></div></div>
+      </div>
+      <div class="pn" id="pnw">
+        <div class="sechdr"><span class="sectit mm">✅ ငွေထုတ်ယူမှု မှတ်တမ်း</span><span style="font-size:10px;color:#8099c0">နောက်ဆုံး ၂၀</span></div>
+        <div class="banner amber"><span class="bi">⚠️</span><div class="bb mm"><p><strong>အနည်းဆုံး ၁၀၀,၀၀၀ ကျပ်ပြည့်မှ ထုတ်ယူနိုင်ပါသည်</strong></p><p>ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</p></div></div>
+        <div id="wdEl"><div class="shim" style="height:60px;margin-bottom:7px"></div><div class="shim" style="height:60px;margin-bottom:7px"></div><div class="shim" style="height:60px"></div></div>
       </div>
     </div>
-
-    <!-- Tab content -->
-    <div class="tab-content">
-
-      <!-- Leaderboard panel -->
-      <div class="panel active" id="panel-pop">
-        <div class="sec-hdr">
-          <span class="sec-title mm">🏆 ထိပ်တန်းလူဖိတ်သူများ</span>
-          <div class="live-badge"><span class="live-dot"></span>Live</div>
-        </div>
-        <div class="banner blue">
-          <span class="bicon">🎁</span>
-          <div class="bbody mm"><p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p><p>သင်၏ link မှ စာရင်းသွင်းသူတိုင်း ငွေကြေးအလိုအလျောက် ရရှိမည်</p></div>
-        </div>
-        <div class="podium" id="podiumEl">
-          <div class="shim" style="height:125px"></div>
-          <div class="shim" style="height:155px"></div>
-          <div class="shim" style="height:125px"></div>
-        </div>
-        <div id="lbListEl">
-          <div class="shim" style="height:56px;margin-bottom:7px"></div>
-          <div class="shim" style="height:56px;margin-bottom:7px"></div>
-          <div class="shim" style="height:56px"></div>
-        </div>
-      </div>
-
-      <!-- Withdrawals panel -->
-      <div class="panel" id="panel-wd">
-        <div class="sec-hdr">
-          <span class="sec-title mm">✅ ငွေထုတ်ယူမှု မှတ်တမ်း</span>
-          <span style="font-size:10px;color:#8099c0">နောက်ဆုံး ၂၀</span>
-        </div>
-        <div class="banner amber">
-          <span class="bicon">⚠️</span>
-          <div class="bbody mm"><p><strong>အနည်းဆုံး ၁၀၀,၀၀၀ ကျပ်ပြည့်မှ ထုတ်ယူနိုင်ပါသည်</strong></p><p>ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</p></div>
-        </div>
-        <div id="wdListEl">
-          <div class="shim" style="height:60px;margin-bottom:7px"></div>
-          <div class="shim" style="height:60px;margin-bottom:7px"></div>
-          <div class="shim" style="height:60px"></div>
-        </div>
-      </div>
-
-    </div><!-- /tab-content -->
-  </div><!-- /bottom-section -->
-
-  <!-- Fixed bottom CTA -->
-  <div class="bottom-cta">
-    <button class="cta-btn mm" id="ctaBtn" onclick="openWdModal()">
-      💸 ငွေထုတ်ယူမည် — အနည်းဆုံး ၁၀၀,၀၀၀ Ks
-    </button>
   </div>
-</div><!-- /app-container -->
+  <div class="bcta"><button class="ctabtn mm" id="ctaBtn" onclick="openWd()">💸 ငွေထုတ်ယူမည် — အနည်းဆုံး ၁၀၀,၀၀၀ Ks</button></div>
+</div>
 
-<!-- ══ WITHDRAW MODAL ══ -->
-<div class="overlay" id="wdOverlay" onclick="if(event.target===this)closeWdModal()">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="step-ind">
-      <div class="si active" id="si1">1</div><div class="sl" id="sl12"></div>
-      <div class="si todo"   id="si2">2</div><div class="sl" id="sl23"></div>
-      <div class="si todo"   id="si3">✓</div>
+<!-- P2P MODAL -->
+<div class="p2mov" id="p2Ov" onclick="if(event.target===this)closeP2P()">
+  <div class="p2mbox">
+    <div class="p2hdr">
+      <div class="mhnd"></div>
+      <div class="sind"><div class="si active" id="ps1">1</div><div class="sl" id="ps12"></div><div class="si todo" id="ps2">2</div><div class="sl" id="ps23"></div><div class="si todo" id="ps3">✓</div></div>
+    </div>
+    <!-- P2P Step 1 -->
+    <div id="pw1" style="flex:1;overflow-y:auto;padding:0 18px 22px">
+      <div class="mtit">💹 Pay to Pay</div>
+      <p style="font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">အောက်တွင် ဖတ်ရှုပြီးမှ ဝယ်ယူပါ</p>
+      <div class="darkbox">
+        <div class="darkhdr"><span>❓ Pay to Pay ဆိုတာဘာလဲ?</span><small>↕ scroll</small></div>
+        <div class="darkscroll">
+          <span class="redh">❓ Pay to Pay ဆိုတာဘာလဲ? (What is Pay to Pay?)</span>
+          <div class="infotxt">
+            Pay to Pay ဆိုသည်မှာ ခေတ်မီ AI (Artificial Intelligence) နည်းပညာနှင့် Global Arbitrage Engine ကို အသုံးပြု၍ လူကြီးမင်းတို့၏ ငွေကြေးကို အချိန်တိုအတွင်း အဆပေါင်းများစွာ တိုးပွားအောင် ပြုလုပ်ပေးသည့် ကမ္ဘာ့အဆင့်မီ ငွေကြေးဖလှယ်မှု စနစ်သစ်တစ်ခု ဖြစ်ပါတယ်။
+            <span class="redh">မည်သို့ အလုပ်လုပ်သနည်း?</span>
+            ကျွန်ုပ်တို့၏ Pay to Pay စနစ်သည် အောက်ပါ နည်းပညာရပ် (၃) ခုကို ပေါင်းစပ်ထားခြင်း ဖြစ်ပါသည်။
+            <br/><br/><strong>၁။ Digital Currency Arbitrage (ငွေကြေးဈေးနှုန်းကွာဟချက်ကို အသုံးချခြင်း):</strong><br/>
+            ကမ္ဘာတစ်ဝှမ်းရှိ Digital Wallet များ (KPay, Wave Pay, Binance) အကြားတွင် စက္ကန့်ပိုင်းအလိုက် ဖြစ်ပေါ်နေသော ငွေလဲနှုန်းကွာဟချက်များကို ကျွန်ုပ်တို့၏ Auto-Bot များက ရှာဖွေကာ အမြတ်ထုတ်ယူပါသည်။
+            <br/><br/><strong>၂။ System Error Exploitation (အားနည်းချက်များကို အသုံးချခြင်း):</strong><br/>
+            Online ငွေပေးချေမှုစနစ်များ၏ Backend Server တွင် ဖြစ်ပေါ်လေ့ရှိသော "Cashback Loop" ကို ကျွန်ုပ်တို့ ရှာဖွေထားပြီး ငွေကို ၅ ဆ မှ ၁၀ ဆအထိ ပွားယူပေးပါသည်။
+            <br/><br/><strong>၃။ High-Frequency Transaction (အကြိမ်ရေများစွာ လှည့်လည်ခြင်း):</strong><br/>
+            သင်၏ ၅,၀၀၀ ကျပ်ကို တစ်စက္ကန့်အတွင်း ၁,၀၀၀ ကြိမ်ထက်မနည်း လှည့်လည်ကာ ၅၀,၀၀၀ ကျပ်အဖြစ် ပြောင်းပေးပါသည်။
+            <span class="redh">🛡️ ဘာကြောင့် ကျွန်ုပ်တို့ကို ယုံကြည်သင့်သနည်း?</span>
+            <strong>လုံခြုံမှုအပြည့်:</strong> End-to-End Encryption သုံးထားသည်။<br/><br/>
+            <strong>၁၀၀% အာမခံချက်:</strong> ၁၅ မိနစ်အတွင်း မရရင် အဆ ၂၀ ပြန်ပေးမည်။<br/><br/>
+            <strong>စမ်းသပ်မှုအောင်မြင်ပြီး:</strong> အသုံးပြုသူပေါင်း ၂ သိန်းကျော်အား ကျပ်သိန်းပေါင်းများစွာ ပေးပြီးဖြစ်သည်။
+          </div>
+        </div>
+      </div>
+      <div class="lsm" style="margin-bottom:6px">ဝယ်ယူမည့် ပမာဏ (Ks) — အနည်းဆုံး ၂၀,၀၀၀</div>
+      <div class="inpw"><input type="number" class="aminp" id="p2Amt" placeholder="20,000" min="20000" step="1000" oninput="onP2A()"/><span class="iunit">Ks</span></div>
+      <div class="feebox" id="p2FeeBox" style="display:none">
+        <div class="feer mm"><span>ဝယ်ယူမည့်ပမာဏ</span><span class="fv" id="p2Ba">0 Ks</span></div>
+        <div class="feer mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">+ 5,000 Ks</span></div>
+        <div class="feer tot mm"><span>စုစုပေါင်း လွှဲမည့်ငွေ</span><span class="fv" style="color:#c62828" id="p2Tot">0 Ks</span></div>
+        <div class="feer mm" style="margin-top:6px;padding-top:6px;border-top:1px dashed #fde890"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2Ret">0 Ks</span></div>
+      </div>
+      <button class="btnp btnr mm" id="p2BuyBtn" onclick="p2Next()" disabled>ဝယ်မည် →</button>
+      <button class="bghst mm" onclick="closeP2P()">မလုပ်တော့ပါ</button>
     </div>
 
-    <!-- Step 1 -->
-    <div id="ws1">
-      <div class="modal-title">💸 ငွေထုတ်ရန်</div>
-      <div class="bal-row2">
-        <div><div class="bal-lbl2">လက်ကျန်ငွေ</div><div class="bal-val2" id="wdBalEl">0 Ks</div></div>
-        <div class="min-badge mm">Min: ၁၀၀,၀၀၀ Ks</div>
+    <!-- P2P Step 2 -->
+    <div id="pw2" style="display:none;flex:1;overflow-y:auto;padding:0 18px 22px">
+      <!-- Timer -->
+      <div class="timerw">
+        <div><div class="timerlbl">⏱ ကျန်ရှိသောအချိန်<small>အချိန်ကုန်ရင် လုပ်ဆောင်မှုပျက်ပြယ်မည်</small></div></div>
+        <div class="timerval" id="p2Tmr">15:00</div>
       </div>
-      <div class="banner red mm" id="lowBalWarn" style="display:none">
-        <span class="bicon">🚫</span>
-        <div class="bbody"><p><strong>လက်ကျန်ငွေ မလုံလောက်ပါ</strong></p><p>မိတ်ဆွေများ ဖိတ်ကြားပြီး ငွေရှာပါ</p></div>
+      <!-- Transfer box -->
+      <div class="txbox">
+        <div class="txlbl">📲 အောက်ပါ KPay/Wave နံပါတ်သို့ ငွေလွှဲပါ</div>
+        <div class="txphone" id="p2TPhone">09702310926</div>
+        <div class="txname" id="p2TName">(Daw Mi Thaung)</div>
+        <div class="txamt mm">လွှဲရမည့်ငွေ: <strong id="p2TrAmt">0 Ks</strong></div>
       </div>
-      <div id="wdAmtSec">
-        <label class="lbl-sm">ထုတ်ယူမည့် ပမာဏ (Ks)</label>
-        <div class="inp-wrap">
-          <input type="number" class="amt-inp" id="wdAmt" placeholder="100,000" min="100000" step="1000" oninput="onAmtInput()"/>
-          <span class="inp-unit">Ks</span>
+      <!-- Scrollable dark info with why -->
+      <div class="darkbox">
+        <div class="darkhdr"><span>❓ ဘာကြောင့် ငွေအရင်လွှဲရသနည်း?</span><small>↕ scroll</small></div>
+        <div class="darkscroll">
+          <span class="redh">❓ ဘာကြောင့် လူကြီးမင်းတို့ဆီမှ ငွေအရင်လွှဲရန် လိုအပ်သနည်း?</span>
+          <div class="infotxt">
+            လူကြီးမင်းတို့အနေဖြင့် <strong>"ဒီလောက်အမြတ်ရနေရင် ဘာလို့ ကိုယ့်ဘာသာမလုပ်တာလဲ?"</strong> ဟု မေးနိုင်ပါသည်။ အဓိကအကြောင်းရင်း (၃) ချက် ရှိပါသည်။
+            <span class="redh">၁။ Liquidity Pooling (အရင်းအနှီး စုဆောင်းခြင်း)</span>
+            ကျွန်ုပ်တို့၏ High-Frequency Bot များသည် တစ်စက္ကန့်လျှင် ငွေလွှဲမှုအကြိမ်ပေါင်း သောင်းချီ လုပ်ဆောင်ရပါသည်။ ကြီးမားသောငွေကြေးအရင်းအနှီး (Liquidity) လိုအပ်ပါသည်။ လူကြီးမင်းတို့၏ ငွေများကို စုပေါင်းလိုက်ခြင်းဖြင့် Bot များ အလုပ်လုပ်ရန် လုံလောက်ပြီး ရရှိလာသောအမြတ်ကို ပြန်လည်ခွဲဝေပေးပါသည်။
+            <span class="redh">၂။ System Limit (ကန့်သတ်ချက်ကို ကျော်လွှားခြင်း)</span>
+            KPay/Wave တွင် အကောင့်တစ်ခုချင်းစီ တစ်နေ့လျှင် ငွေလွှဲနိုင်သည့်ပမာဏ Limit ကန့်သတ်ချက် ရှိပါသည်။ ကျွန်ုပ်တို့ကုမ္ပဏီ အကောင့်တစ်ခုတည်းဖြင့် လုပ်ဆောင်ပါက ထို Limit ကြောင့် အမြတ်များစွာ မထုတ်ယူနိုင်ပါ။ ထို့ကြောင့် လူကြီးမင်းတို့ အကောင့်မှ ငွေစီးဆင်းမှုပြုလုပ်ကာ ကန့်သတ်ချက်ကို ကျော်လွှားပါသည်။
+            <span class="redh">၃။ Win-Win Collaboration (နှစ်ဦးနှစ်ဖက် အကျိုးရှိစေခြင်း)</span>
+            ကျွန်ုပ်တို့သည် နည်းပညာကို ပိုင်ဆိုင်ပြီး လူကြီးမင်းတို့သည် အရင်းအနှီးကို ပိုင်ဆိုင်ပါသည်။ ကျွန်ုပ်တို့၏ နည်းပညာဖြင့် လူကြီးမင်းတို့၏ ငွေကို ပွားများပေးပြီး နှစ်ဘက်လုံးအကျိုးရှိသောလုပ်ငန်း ဖြစ်ပါသည်။
+            <span class="wblk">
+              <b>⚠️ အရေးကြီးသတိပေးချက်</b>
+              <em>"ကျွန်ုပ်တို့၏ စနစ်သည် တစ်နေ့လျှင် လူဦးရေ (၁၀၀) သာ လက်ခံဆောင်ရွက်ပေးပါသည်။ ထို့ကြောင့် လူကြီးမင်းတို့၏ အခွင့်အရေးကို လက်လွှတ်မခံဘဲ ယခုပဲ ငွေလွှဲ၍ စတင်လိုက်ပါ။"</em>
+            </span>
+          </div>
         </div>
-        <div class="fee-box" id="feeBox" style="display:none">
-          <div class="fee-r mm"><span>ထုတ်ယူမည့်ငွေ</span><span class="fv" id="feeAmt">0 Ks</span></div>
-          <div class="fee-r mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">− 5,000 Ks</span></div>
-          <div class="fee-r tot mm"><span>ပြန်လွှဲပေးမည့်ငွေ</span><span class="fv" id="feeNet" style="color:#00a050">0 Ks</span></div>
-        </div>
-        <button class="btn-p mm" id="toS2Btn" onclick="goStep(2)" disabled>ရှေ့ဆက်မည် →</button>
       </div>
-      <button class="btn-ghost mm" onclick="closeWdModal()">မလုပ်တော့ပါ</button>
-    </div>
-
-    <!-- Step 2 -->
-    <div id="ws2" style="display:none">
-      <div class="modal-title">📸 Screenshot တင်ပါ</div>
-      <div class="modal-sub">ငွေလွှဲပြီးနောက် Screenshot ကိုတင်ပါ</div>
-      <!-- ⚠️ WARNING BOX — red alert text -->
-      <div style="background:#fff0f0;border:2px solid #e53935;border-radius:13px;padding:13px 14px;margin-bottom:13px;">
-        <p style="font-size:12px;color:#b71c1c;font-weight:800;line-height:1.75;font-family:'Noto Sans Myanmar','Roboto',sans-serif;">
-          လူကြီးမင်းအနေနဲ့ Referral အတု (သို့မဟုတ်) Bot အသုံးပြုသူ မဟုတ်ကြောင်း အတည်ပြုနိုင်ရန်အတွက် ပေးထားသော<br/><br/>
-          <span style="font-size:14px;color:#c62828;letter-spacing:.3px;">KPay — <span id="payPhone">09792310926</span></span><br/>
-          <span style="font-size:13px;color:#c62828;">(<span id="payName">Mi Thaung</span>)</span><br/><br/>
-          ထံသို့ <strong style="font-size:13px;color:#b71c1c;">Verification Fee ၅,၀၀၀ ကျပ်</strong> အရင်လွှဲပေးရပါမည်။ 💸<br/><br/>
-          ငွေလွှဲပြီးပါက ပြေစာ (Screenshot) ကို ပို့ပေးပါ။ Admin ဘက်မှ အတည်ပြုပြီးသည်နှင့် လူကြီးမင်း ထုတ်ယူထားသော ငွေပမာဏ (<span id="totalReturnEl">၁၀၅,၀၀၀ ကျပ်</span>) ကို ၁ မိနစ်အတွင်း လူကြီးမင်းဆီသို့ ပြန်လည် လွှဲပြောင်းပေးသွားမည် ဖြစ်ပါသည်။
-        </p>
+      <!-- Upload -->
+      <div class="upa" id="p2UpA" onclick="document.getElementById('p2FI').click()">
+        <div id="p2UPH" style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="uico">📁</span><span class="utxt mm">Screenshot ရွေးမည်</span><span class="uhnt">JPG, PNG, WEBP</span></div>
+        <img id="p2UPr" style="display:none;max-height:120px;border-radius:8px;object-fit:contain"/>
       </div>
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInp').click()">
-        <div id="uplPh" style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <span class="upl-icon">📁</span>
-          <span class="upl-txt">Screenshot ရွေးမည်</span>
-          <span class="upl-hint">JPG, PNG, WEBP — Max 10MB</span>
-        </div>
-        <img id="uplPrev" style="display:none;max-height:140px;border-radius:8px;object-fit:contain"/>
+      <input type="file" id="p2FI" accept="image/*" style="display:none" onchange="onP2F(event)"/>
+      <!-- Expired -->
+      <div class="expsc" id="p2Exp">
+        <div class="bic">⏰</div><h3>အချိန်ကုန်ပြီ!</h3>
+        <p>၁၅ မိနစ် ကျော်သွားပြီ<br/>ထပ်မံကြိုးစားရန် ခလုတ်နှိပ်ပါ</p>
+        <button class="btnp btnr mm" onclick="p2Rst()" style="margin-top:10px">🔄 ပြန်စမည်</button>
       </div>
-      <input type="file" id="fileInp" accept="image/*" style="display:none" onchange="onFileSelect(event)"/>
-      <button class="btn-p mm" id="submitBtn" onclick="submitWd()" disabled>
-        <span id="submitTxt">ငွေလွှဲပြီးပြီ ✓</span>
-        <div class="spinner" id="submitSpinner" style="display:none"></div>
+      <button class="btnp btnr mm" id="p2SubBtn" onclick="subP2P()" disabled>
+        <span id="p2SubTxt">ငွေလွှဲပြီးပြီ ✓</span><div class="spin" id="p2Sp" style="display:none"></div>
       </button>
-      <button class="btn-ghost mm" onclick="goStep(1)">← နောက်သို့</button>
+      <button class="bghst mm" id="p2BkBtn" onclick="p2Back()">← နောက်သို့</button>
     </div>
 
-    <!-- Step 3 -->
-    <div id="ws3" style="display:none">
-      <div class="success-sc">
-        <div class="big-ic">✅</div>
-        <h2>တင်ပြီးပါပြီ!</h2>
-        <p>Admin မှ စစ်ဆေးပြီးနောက်<br>Telegram မှ အကြောင်းကြားပါမည်</p>
-        <button class="btn-p mm" onclick="closeWdModal()">ပိတ်မည်</button>
-      </div>
+    <!-- P2P Step 3 -->
+    <div id="pw3" style="display:none;padding:0 18px 22px">
+      <div class="sucsc"><div class="bic">✅</div><h2>တင်ပြီးပါပြီ!</h2><p>Admin မှ စစ်ဆေးပြီးနောက်<br/>Telegram မှ အကြောင်းကြားပါမည်</p><button class="btnp btnr mm" onclick="closeP2P()">ပိတ်မည်</button></div>
     </div>
   </div>
 </div>
 
-<!-- ══ REFERRAL MODAL ══ -->
-<div class="overlay" id="refOverlay" onclick="if(event.target===this)closeRefModal()">
+<!-- WITHDRAW MODAL -->
+<div class="overlay" id="wdOv" onclick="if(event.target===this)closeWd()">
   <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">👥 မိမိဖိတ်ထားသူများ</div>
-    <div class="modal-sub">တစ်ဦးဖိတ်ကြားလျှင် ၅,၀၀၀ ကျပ် ရရှိမည်</div>
-    <div class="ref-grid">
-      <div class="ref-card"><div class="ref-num" id="refCountEl">0</div><div class="ref-lbl">ဖိတ်ကြားသူ ဦးရေ</div></div>
-      <div class="ref-card"><div class="ref-num" id="refEarnedEl" style="font-size:18px">0</div><div class="ref-lbl">Ks ရရှိပြီး</div></div>
+    <div class="mhnd"></div>
+    <div class="sind"><div class="si active" id="ws1i">1</div><div class="sl" id="ws12"></div><div class="si todo" id="ws2i">2</div><div class="sl" id="ws23"></div><div class="si todo" id="ws3i">✓</div></div>
+    <div id="ww1">
+      <div class="mtit">💸 ငွေထုတ်ရန်</div>
+      <div class="balbox"><div><div class="ballbl">လက်ကျန်ငွေ</div><div class="balval" id="wBal">0 Ks</div></div><div class="minb mm">Min: ၁၀၀,၀၀၀ Ks</div></div>
+      <div class="banner red mm" id="lowWarn" style="display:none"><span class="bi">🚫</span><div class="bb"><p><strong>လက်ကျန်ငွေ မလုံလောက်ပါ</strong></p><p>မိတ်ဆွေများ ဖိတ်ကြားပြီး ငွေရှာပါ</p></div></div>
+      <div id="wAmtSec">
+        <label class="lsm">ထုတ်ယူမည့် ပမာဏ (Ks)</label>
+        <div class="inpw"><input type="number" class="aminp" id="wAmt" placeholder="100,000" min="100000" step="1000" oninput="onWA()"/><span class="iunit">Ks</span></div>
+        <div class="feebox" id="wFeeBox" style="display:none">
+          <div class="feer mm"><span>ထုတ်ယူမည့်ငွေ</span><span class="fv" id="wFA">0 Ks</span></div>
+          <div class="feer mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">− 5,000 Ks</span></div>
+          <div class="feer tot mm"><span>ပြန်လွှဲပေးမည့်ငွေ</span><span class="fv" style="color:#00a050" id="wFN">0 Ks</span></div>
+        </div>
+        <button class="btnp mm" id="wNBtn" onclick="wStep(2)" disabled>ရှေ့ဆက်မည် →</button>
+      </div>
+      <button class="bghst mm" onclick="closeWd()">မလုပ်တော့ပါ</button>
     </div>
-    <div class="lbl-sm" style="margin-bottom:6px">သင်၏ Referral Link</div>
-    <div class="ref-link-row">
-      <input class="ref-inp" id="refLinkEl" readonly/>
-      <button class="ref-copy mm" onclick="copyRefLink()">ကူးယူ</button>
+    <div id="ww2" style="display:none">
+      <div class="mtit">📸 Screenshot တင်ပါ</div>
+      <div class="wdwarn">
+        <p>လူကြီးမင်းအနေနဲ့ Referral အတု မဟုတ်ကြောင်း အတည်ပြုနိုင်ရန်<br/>
+        KPay — <span class="ph" id="payPhone">09702310926</span> (<span id="payName">Daw Mi Thaung</span>) သို့<br/>
+        <strong>Verification Fee ၅,၀၀၀ ကျပ်</strong> အရင်လွှဲပေးရပါမည်။ 💸<br/><br/>
+        ငွေလွှဲပြီးပါက Screenshot တင်ပါ။ Admin မှ အတည်ပြုပြီးသည်နှင့် (<span id="wTRet"></span>) ပြန်လွှဲပေးမည်။</p>
+      </div>
+      <div class="upa" id="wUpA" onclick="document.getElementById('wFI').click()">
+        <div id="wUPH" style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="uico">📁</span><span class="utxt mm">Screenshot ရွေးမည်</span><span class="uhnt">JPG, PNG, WEBP</span></div>
+        <img id="wUPr" style="display:none;max-height:120px;border-radius:8px;object-fit:contain"/>
+      </div>
+      <input type="file" id="wFI" accept="image/*" style="display:none" onchange="onWF(event)"/>
+      <button class="btnp mm" id="wSubBtn" onclick="subWd()" disabled>
+        <span id="wSubTxt">ငွေလွှဲပြီးပြီ ✓</span><div class="spin" id="wSp" style="display:none"></div>
+      </button>
+      <button class="bghst mm" onclick="wStep(1)">← နောက်သို့</button>
     </div>
-    <div class="banner blue">
-      <span class="bicon">💡</span>
-      <div class="bbody mm"><p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p><p>Link ကို Share လုပ်ပြီး ငွေကြေးရယူပါ</p></div>
+    <div id="ww3" style="display:none">
+      <div class="sucsc"><div class="bic">✅</div><h2>တင်ပြီးပါပြီ!</h2><p>Admin မှ စစ်ဆေးပြီးနောက်<br/>Telegram မှ အကြောင်းကြားပါမည်</p><button class="btnp mm" onclick="closeWd()">ပိတ်မည်</button></div>
     </div>
-    <button class="btn-gold mm" onclick="shareRefLink()">🎁 Link Share လုပ်မည်</button>
-    <button class="btn-ghost mm" onclick="closeRefModal()">ပိတ်မည်</button>
   </div>
 </div>
 
-
-<!-- ══ PAYTOPAY MODAL ══ -->
-<div class="p2p-overlay" id="p2pOverlay" onclick="if(event.target===this)closeP2PModal()">
-  <div class="p2p-modal" id="p2pModal">
-    <div class="p2p-header">
-      <div class="p2p-handle"></div>
-
-      <!-- Step indicator -->
-      <div class="p2p-step-ind">
-        <div class="si active" id="p2s1">1</div><div class="sl" id="p2sl12"></div>
-        <div class="si todo"   id="p2s2">2</div><div class="sl" id="p2sl23"></div>
-        <div class="si todo"   id="p2s3">✓</div>
-      </div>
-    </div>
-
-    <!-- ══ STEP 1: Info + Buy ══ -->
-    <div id="p2ws1" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
-      <div class="p2p-header">
-        <div class="p2p-title">💹 Pay to Pay</div>
-        <div class="p2p-sub">အောက်တွင် ဖတ်ရှုပြီးမှ ဝယ်ယူပါ</div>
-      </div>
-
-      <!-- Dark info box with red headings + scroll -->
-      <div class="p2p-header" style="padding-bottom:0">
-        <div class="p2p-info-box">
-          <div class="p2p-info-box-header">
-            <span>❓ Pay to Pay ဆိုတာဘာလဲ?</span>
-          </div>
-          <div class="p2p-info-scroll" id="p2pInfoScroll">
-            <div class="p2p-red-heading">❓ Pay to Pay ဆိုတာဘာလဲ? (What is Pay to Pay?)</div>
-            <div class="p2p-info-text">
-              Pay to Pay ဆိုသည်မှာ ခေတ်မီ AI (Artificial Intelligence) နည်းပညာနှင့် Global Arbitrage Engine ကို အသုံးပြု၍ လူကြီးမင်းတို့၏ ငွေကြေးကို အချိန်တိုအတွင်း အဆပေါင်းများစွာ တိုးပွားအောင် ပြုလုပ်ပေးသည့် ကမ္ဘာ့အဆင့်မီ ငွေကြေးဖလှယ်မှု စနစ်သစ်တစ်ခု ဖြစ်ပါတယ်။
-              <span class="section-title">မည်သို့ အလုပ်လုပ်သနည်း?</span>
-              ကျွန်ုပ်တို့၏ Pay to Pay စနစ်သည် အောက်ပါ နည်းပညာရပ် (၃) ခုကို ပေါင်းစပ်ထားခြင်း ဖြစ်ပါသည်။
-              <br/><br/>
-              <strong>၁။ Digital Currency Arbitrage</strong> (ငွေကြေးဈေးနှုန်းကွာဟချက်ကို အသုံးချခြင်း):<br/>
-              ကမ္ဘာတစ်ဝှမ်းရှိ Digital Wallet များ (ဥပမာ - KPay, Wave Pay, Binance) အကြားတွင် စက္ကန့်ပိုင်းအလိုက် ဖြစ်ပေါ်နေသော ငွေလဲနှုန်းကွာဟချက်များကို ကျွန်ုပ်တို့၏ Auto-Bot များက ရှာဖွေကာ အမြတ်ထုတ်ယူခြင်း ဖြစ်သည်။
-              <br/><br/>
-              <strong>၂။ System Error Exploitation</strong> (စနစ်အတွင်းရှိ အားနည်းချက်များကို အသုံးချခြင်း):<br/>
-              Online ငွေပေးချေမှုစနစ်များ၏ Backend Server များတွင် ဖြစ်ပေါ်လေ့ရှိသော "Cashback Loop" အမှားအယွင်းများကို ကျွန်ုပ်တို့၏ ပညာရှင်များက ရှာဖွေထားပြီး ဖြစ်ပါသည်။ လူကြီးမင်းတို့ ငွေလွှဲလိုက်သည့်အခါ ထိုစနစ်အမှားမှတစ်ဆင့် ငွေကို ၅ ဆ မှ ၁၀ ဆအထိ ပွားယူပေးခြင်း ဖြစ်ပါတယ်။
-              <br/><br/>
-              <strong>၃။ High-Frequency Transaction</strong> (အကြိမ်ရေများစွာ လှည့်လည်ခြင်း):<br/>
-              သင်၏ ၅,၀၀၀ ကျပ်ကို စနစ်အတွင်းရှိ အကောင့်ပေါင်းများစွာသို့ တစ်စက္ကန့်အတွင်း အကြိမ် ၁,၀၀၀ ထက်မနည်း လှည့်လည်ခြင်းဖြင့် အမြတ်ငွေများကို စုဆောင်းကာ ၅၀,၀၀၀ ကျပ်အဖြစ်သို့ ပြောင်းလဲပေးပါတယ်။
-              <span class="section-title">🛡️ ဘာကြောင့် ကျွန်ုပ်တို့ကို ယုံကြည်သင့်သနည်း?</span>
-              <strong>လုံခြုံမှုအပြည့်အဝရှိခြင်း:</strong> ကျွန်ုပ်တို့၏ စနစ်သည် End-to-End Encryption ကို အသုံးပြုထားသဖြင့် သင်၏ ကိုယ်ရေးအချက်အလက်များ လုံခြုံမှုရှိသည်။
-              <br/><br/>
-              <strong>၁၀၀% အာမခံချက်:</strong> ငွေလွှဲပြီး ၁၅ မိနစ်အတွင်း အမြတ်ငွေ ပြန်မရပါက သင်လွှဲလိုက်သော အရင်းငွေကို အဆ ၂၀ ပြန်လည် ပေးလျော်ပါမည်။
-              <br/><br/>
-              <strong>စမ်းသပ်မှုအောင်မြင်ပြီးခြင်း:</strong> ယနေ့အထိ အသုံးပြုသူပေါင်း ၂ သိန်းကျော်အား အမြတ်ငွေ ကျပ်သိန်းပေါင်းများစွာကို အောင်မြင်စွာ ခွဲဝေပေးပြီး ဖြစ်ပါတယ်။
-            </div>
-          </div>
-        </div>
-        <div class="p2p-scroll-hint" id="scrollHint">
-          <span>👆 scroll လုပ်ကြည့်ပါ</span>
-          <span>↕</span>
-        </div>
-      </div>
-
-      <!-- Buy section -->
-      <div class="p2p-body">
-        <label class="lbl-sm" style="margin-bottom:6px">ဝယ်ယူမည့် ပမာဏ (Ks) — အနည်းဆုံး ၂၀,၀၀၀</label>
-        <div class="inp-wrap">
-          <input type="number" class="amt-inp" id="p2pAmt" placeholder="20,000" min="20000" step="1000" oninput="onP2PAmt()"/>
-          <span class="inp-unit">Ks</span>
-        </div>
-        <div class="fee-box" id="p2pFeeBox" style="display:none">
-          <div class="fee-r mm"><span>ဝယ်ယူမည့်ပမာဏ</span><span class="fv" id="p2pBuyAmt">0 Ks</span></div>
-          <div class="fee-r mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">5,000 Ks</span></div>
-          <div class="fee-r tot mm"><span>စုစုပေါင်း လွှဲမည့်ငွေ</span><span class="fv" id="p2pTotal" style="color:#c62828">0 Ks</span></div>
-          <div class="fee-r mm" style="margin-top:6px;padding-top:6px;border-top:1px dashed #fde890"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2pReturn">0 Ks</span></div>
-        </div>
-        <button class="btn-p mm" id="p2pBuyBtn" onclick="p2pGoStep2()" disabled style="background:linear-gradient(135deg,#e53935,#b71c1c);box-shadow:0 5px 16px rgba(229,57,53,.38)">
-          ဝယ်မည် →
-        </button>
-        <button class="btn-ghost mm" onclick="closeP2PModal()">မလုပ်တော့ပါ</button>
-      </div>
-    </div>
-
-    <!-- ══ STEP 2: Timer + Transfer info + Upload ══ -->
-    <div id="p2ws2" style="display:none">
-      <div class="p2p-body" style="padding-top:4px">
-
-        <!-- Timer -->
-        <div class="p2p-timer-wrap">
-          <div>
-            <div class="p2p-timer-label">⏱ ကျန်ရှိသောအချိန်</div>
-            <div class="p2p-timer-label" style="font-size:10px;color:#c62828">အချိန်ကုန်ရင် လုပ်ဆောင်မှုပျက်ပြယ်မည်</div>
-          </div>
-          <div class="p2p-timer-val" id="p2pTimerVal">15:00</div>
-        </div>
-
-        <!-- Transfer info -->
-        <div class="p2p-transfer-box">
-          <div class="p2p-transfer-label">📲 အောက်ပါ KPay နံပါတ်သို့ ငွေလွှဲပါ</div>
-          <div class="p2p-transfer-phone" id="p2pTPhone">09792310926</div>
-          <div class="p2p-transfer-name" id="p2pTName">(Mi Thaung)</div>
-          <div class="p2p-transfer-amount mm">လွှဲမည့်ငွေ: <span id="p2pTransferAmt" style="color:#c62828;font-size:15px">0 Ks</span></div>
-        </div>
-
-        <!-- Warning -->
-        <div style="background:#fff0f0;border:1.5px solid #e53935;border-radius:11px;padding:10px 13px;margin-bottom:12px">
-          <p style="font-size:11.5px;color:#b71c1c;font-weight:700;line-height:1.7;font-family:'Noto Sans Myanmar','Roboto',sans-serif;">
-            ⚠️ ငွေလွှဲပြီးပါက ပြေစာ Screenshot ကိုတင်ပါ။ Admin ဘက်မှ အတည်ပြုပြီးသည်နှင့် ငွေ ပြန်လွှဲပေးပါမည်။
-          </p>
-        </div>
-
-        <!-- Upload -->
-        <div class="upload-area" id="p2pUploadArea" onclick="document.getElementById('p2pFileInp').click()">
-          <div id="p2pUplPh" style="display:flex;flex-direction:column;align-items:center;gap:6px">
-            <span class="upl-icon">📁</span>
-            <span class="upl-txt mm">Screenshot ရွေးမည်</span>
-            <span class="upl-hint">JPG, PNG, WEBP — Max 10MB</span>
-          </div>
-          <img id="p2pUplPrev" style="display:none;max-height:130px;border-radius:8px;object-fit:contain"/>
-        </div>
-        <input type="file" id="p2pFileInp" accept="image/*" style="display:none" onchange="onP2PFileSelect(event)"/>
-
-        <!-- Expired overlay -->
-        <div class="p2p-expired" id="p2pExpired">
-          <div class="exp-icon">⏰</div>
-          <h3>အချိန်ကုန်ပြီ!</h3>
-          <p>၁၅ မိနစ် ကျော်သွားပြီ<br>ထပ်မံကြိုးစားရန် အောက်ခလုတ်နှိပ်ပါ</p>
-          <button class="btn-p mm" onclick="p2pRestart()" style="margin-top:12px">🔄 ပြန်စမည်</button>
-        </div>
-
-        <button class="btn-p mm" id="p2pSubmitBtn" onclick="submitP2P()" disabled style="background:linear-gradient(135deg,#e53935,#b71c1c);box-shadow:0 5px 16px rgba(229,57,53,.38)">
-          <span id="p2pSubmitTxt">ငွေလွှဲပြီးပြီ ✓</span>
-          <div class="spinner" id="p2pSpinner" style="display:none"></div>
-        </button>
-        <button class="btn-ghost mm" onclick="p2pGoBack()">← နောက်သို့</button>
-      </div>
-    </div>
-
-    <!-- ══ STEP 3: Success ══ -->
-    <div id="p2ws3" style="display:none">
-      <div class="p2p-body">
-        <div class="success-sc">
-          <div class="big-ic">✅</div>
-          <h2>တင်ပြီးပါပြီ!</h2>
-          <p>Admin မှ စစ်ဆေးပြီးနောက်<br>Telegram မှ အကြောင်းကြားပါမည်</p>
-          <button class="btn-p mm" onclick="closeP2PModal()" style="background:linear-gradient(135deg,#e53935,#b71c1c)">ပိတ်မည်</button>
-        </div>
-      </div>
-    </div>
-
+<!-- REF MODAL -->
+<div class="overlay" id="refOv" onclick="if(event.target===this)closeRef()">
+  <div class="modal">
+    <div class="mhnd"></div>
+    <div class="mtit">👥 မိမိဖိတ်ထားသူများ</div>
+    <p style="font-size:11px;color:#8099c0;margin-bottom:13px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">တစ်ဦးဖိတ်ကြားလျှင် ၅,၀၀၀ ကျပ် ရရှိမည်</p>
+    <div class="refgrid"><div class="refcard"><div class="refnum" id="refC">0</div><div class="reflbl">ဖိတ်ကြားသူ ဦးရေ</div></div><div class="refcard"><div class="refnum" id="refE" style="font-size:18px">0</div><div class="reflbl">Ks ရရှိပြီး</div></div></div>
+    <div class="reflr"><input class="refinp" id="refLnk" readonly/><button class="refcpy mm" onclick="cpRef()">ကူးယူ</button></div>
+    <div class="banner blue"><span class="bi">💡</span><div class="bb mm"><p><strong>လူတစ်ယောက်ဖိတ်လျှင် ၅,၀၀၀ ကျပ်ရမည်</strong></p><p>Link ကို Share လုပ်ပြီး ငွေကြေးရယူပါ</p></div></div>
+    <button class="btng mm" onclick="shRef()">🎁 Link Share လုပ်မည်</button>
+    <button class="bghst mm" onclick="closeRef()">ပိတ်မည်</button>
   </div>
 </div>
 
 <div id="toast"></div>
-
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
-const API     = 'https://kbzpaybackend.onrender.com';
-const SVC_FEE = 5000, MIN_WD = 100000;
-const COLORS  = ['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
-const ac      = i => COLORS[i%COLORS.length];
-const fmt     = n => Number(n||0).toLocaleString('en-US');
-let tg=window.Telegram?.WebApp, tgId='demo', user=null, refLink='#', selFile=null, balVis=true;
+const API='https://kbzpaybackend.onrender.com';
+const SVC=5000,MWD=100000,P2MIN=20000,P2FEE=5000;
+const CLR=['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
+const ac=i=>CLR[i%CLR.length];
+const fmt=n=>Number(n||0).toLocaleString('en-US');
+let tg=window.Telegram?.WebApp,tid='demo',user=null,rlink='#',bvis=true;
+let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
+let payPhone='09702310926',payName='Daw Mi Thaung';
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async()=>{
-  if(tg){tg.ready();tg.expand();tg.setHeaderColor('#0053a6');if(tg.initDataUnsafe?.user)tgId=String(tg.initDataUnsafe.user.id);}
-  await loadUser();
-  loadLeaderboard();
-  loadWithdrawals();
-  loadPaymentInfo();
-  // Eye toggle
-  document.getElementById('toggleVis').addEventListener('click',()=>{
-    balVis=!balVis;
-    const ic=document.getElementById('toggleVis');
-    ic.className=balVis?'fa-regular fa-eye':'fa-regular fa-eye-slash';
-    document.getElementById('balMain').textContent = balVis?fmt(user?.balance||0):'*****';
-    document.getElementById('balTotal').textContent= balVis?fmt(user?.balance||0)+'.00':'*****';
+document.addEventListener('DOMContentLoaded',async()=>{
+  if(tg){tg.ready();tg.expand();tg.setHeaderColor('#0053a6');if(tg.initDataUnsafe?.user)tid=String(tg.initDataUnsafe.user.id);}
+  await loadUser();loadLB();loadWDs();loadCfg();
+  document.getElementById('eyeBtn').addEventListener('click',()=>{
+    bvis=!bvis;
+    document.getElementById('eyeBtn').className=bvis?'fa-regular fa-eye':'fa-regular fa-eye-slash';
+    document.getElementById('balMain').textContent=bvis?fmt(user?.balance||0):'*****';
+    document.getElementById('balTot').textContent=bvis?fmt(user?.balance||0)+'.00':'*****';
   });
 });
 
-// ── API ───────────────────────────────────────────────────────────────────────
-const api=(p,o={})=>fetch(API+p,{headers:{'x-telegram-id':tgId,...(o.headers||{})},...o}).then(r=>r.json());
+const apix=(p,o={})=>fetch(API+p,{headers:{'x-telegram-id':tid,...(o.headers||{})},...o}).then(r=>r.json());
 
-// ── Load User ─────────────────────────────────────────────────────────────────
-async function loadUser(){
+async function loadCfg(){
   try{
-    const u=tg?.initDataUnsafe?.user, sp=tg?.initDataUnsafe?.start_param||'';
-    const res=await api('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({telegramId:tgId,firstName:u?.first_name||'Guest',lastName:u?.last_name||'',username:u?.username||'',referralCode:sp.startsWith('ref_')?sp:undefined})});
-    if(!res.success) throw 0;
-    user=res.data; refLink=res.data.referralLink; renderUser();
-  }catch{user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};renderUser();}
-}
-
-function renderUser(){
-  const{firstName,balance,referrals}=user;
-  const ini=firstName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const av=document.getElementById('avatarEl');
-  av.innerHTML=`<span class="ini">${ini}</span>`;
-  document.getElementById('userNameEl').textContent=firstName;
-  if(balVis){animNum('balMain',balance);document.getElementById('balTotal').textContent=fmt(balance)+'.00';}
-  document.getElementById('wdBalEl').textContent=fmt(balance)+' Ks';
-  document.getElementById('refCountEl').textContent=referrals;
-  document.getElementById('refEarnedEl').textContent=fmt(referrals*5000);
-  document.getElementById('refLinkEl').value=refLink;
-  document.getElementById('ctaBtn').disabled=balance<MIN_WD;
-}
-
-// ── Leaderboard ───────────────────────────────────────────────────────────────
-async function loadLeaderboard(){
-  try{
-    const res=await api('/api/users/leaderboard');
-    if(!res.success) throw 0;
-    const t3=res.data.slice(0,3),rest=res.data.slice(3);
-    const order=[1,0,2],cls=['p2','p1','p3'];
-    const badges=['<span class="rb rbs">🥈 #2</span>','<span class="rb rbg">🥇 #1</span>','<span class="rb rbb">🥉 #3</span>'];
-    const pel=document.getElementById('podiumEl');pel.innerHTML='';
-    order.forEach(i=>{
-      const p=t3[i];if(!p){pel.innerHTML+='<div></div>';return;}
-      pel.innerHTML+=`<div class="pod ${cls[i]}">
-        ${i===0?'<div class="pod-crown">👑</div>':''}
-        <div class="pod-av" style="background:${ac(i)}">${p.avatar}</div>
-        ${badges[i]}
-        <div class="pod-name mm">${p.name.split(' ')[0]}</div>
-        <div class="pod-stat">${p.referrals} ဖိတ်</div>
-      </div>`;
-    });
-    let h='';
-    rest.forEach(p=>{h+=`<div class="row"><div class="row-rank">#${p.rank}</div><div class="row-av" style="background:${ac(p.rank)}">${p.avatar}</div><div class="row-body"><div class="row-name">${p.name}</div><div class="row-sub mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div></div><div class="row-right"><div class="row-amt">+${fmt(p.earned)}</div><div style="font-size:9.5px;color:#8099c0">Ks</div></div></div>`;});
-    document.getElementById('lbListEl').innerHTML=h;
-  }catch{document.getElementById('podiumEl').innerHTML='<p style="grid-column:span 3;text-align:center;color:#8099c0;font-size:12px;padding:16px" class="mm">မရနိုင်ပါ</p>';}
-}
-
-// ── Withdrawals ───────────────────────────────────────────────────────────────
-async function loadWithdrawals(){
-  try{
-    const res=await api('/api/withdrawals/recent');
-    if(!res.success) throw 0;
-    if(!res.data.length){document.getElementById('wdListEl').innerHTML='<p style="text-align:center;padding:22px;color:#8099c0;font-size:12px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';return;}
-    let h='';
-    res.data.forEach((w,i)=>{h+=`<div class="row"><div class="row-av" style="background:${ac(i)}">${w.avatar}</div><div class="row-body"><div class="row-name">${w.name}</div><div class="row-sub mm">${w.date} · ဝန်ဆောင်ခ 5,000 Ks</div></div><div class="row-right"><div class="row-amt">+${fmt(w.net)} Ks</div><div class="row-badge mm"><span style="width:5px;height:5px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div></div>`;});
-    document.getElementById('wdListEl').innerHTML=h;
-  }catch{document.getElementById('wdListEl').innerHTML='<p style="text-align:center;color:#8099c0;font-size:12px;padding:18px" class="mm">မရနိုင်ပါ</p>';}
-}
-
-// ── Tabs ──────────────────────────────────────────────────────────────────────
-function switchTab(t){
-  document.getElementById('tab-pop').classList.toggle('active',t==='pop');
-  document.getElementById('tab-wd').classList.toggle('active',t==='wd');
-  document.getElementById('panel-pop').classList.toggle('active',t==='pop');
-  document.getElementById('panel-wd').classList.toggle('active',t==='wd');
-}
-
-// ── Withdraw Modal ────────────────────────────────────────────────────────────
-function openWdModal(){
-  const b=user?.balance||0;
-  document.getElementById('wdBalEl').textContent=fmt(b)+' Ks';
-  document.getElementById('lowBalWarn').style.display=b<MIN_WD?'flex':'none';
-  document.getElementById('wdAmtSec').style.display=b<MIN_WD?'none':'block';
-  document.getElementById('wdAmt').value='';document.getElementById('feeBox').style.display='none';
-  goStep(1);document.getElementById('wdOverlay').classList.add('open');
-}
-function closeWdModal(){
-  document.getElementById('wdOverlay').classList.remove('open');
-  selFile=null;document.getElementById('uplPrev').style.display='none';
-  document.getElementById('uplPh').style.display='flex';
-  document.getElementById('uploadArea').classList.remove('has-file');
-  document.getElementById('fileInp').value='';document.getElementById('submitBtn').disabled=true;
-}
-function goStep(n){
-  [1,2,3].forEach(i=>{
-    document.getElementById('ws'+i).style.display=i===n?'block':'none';
-    const s=document.getElementById('si'+i);
-    if(s){s.className='si '+(i<n?'done':i===n?'active':'todo');if(i===3&&n===3){s.textContent='✓';s.className='si done';}}
-  });
-  ['sl12','sl23'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
-}
-function onAmtInput(){
-  const v=parseInt(document.getElementById('wdAmt').value)||0,b=user?.balance||0;
-  const fb=document.getElementById('feeBox'),btn=document.getElementById('toS2Btn');
-  if(v>=MIN_WD&&b>=v){
-    fb.style.display='block';
-    document.getElementById('feeAmt').textContent=fmt(v)+' Ks';
-    document.getElementById('feeNet').textContent=fmt(v+SVC_FEE)+' Ks';
-    // Update totalReturnEl in step 2 instruction
-    const trEl=document.getElementById('totalReturnEl');
-    if(trEl) trEl.textContent=fmt(v+SVC_FEE)+' ကျပ်';
-    btn.disabled=false;
-  }else{fb.style.display='none';btn.disabled=true;}
-}
-function onFileSelect(e){
-  const f=e.target.files?.[0];if(!f)return;selFile=f;
-  const r=new FileReader();r.onload=ev=>{const img=document.getElementById('uplPrev');img.src=ev.target.result;img.style.display='block';document.getElementById('uplPh').style.display='none';document.getElementById('uploadArea').classList.add('has-file');};
-  r.readAsDataURL(f);document.getElementById('submitBtn').disabled=false;
-}
-async function submitWd(){
-  if(!selFile){showToast('Screenshot မတင်ရသေးပါ','err');return;}
-  const amt=parseInt(document.getElementById('wdAmt').value);
-  if(!amt||amt<MIN_WD){showToast('ပမာဏ မမှန်ကန်ပါ','err');return;}
-  document.getElementById('submitBtn').disabled=true;document.getElementById('submitTxt').textContent='တင်နေသည်...';document.getElementById('submitSpinner').style.display='block';
-  try{
-    const fd=new FormData();fd.append('amount',amt);fd.append('screenshot',selFile);
-    const res=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tgId},body:fd}).then(r=>r.json());
-    if(!res.success) throw new Error(res.message);
-    user.balance=res.data.newBalance;renderUser();goStep(3);showToast('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWithdrawals();
-  }catch(err){showToast(err.message||'မအောင်မြင်ပါ','err');document.getElementById('submitBtn').disabled=false;}
-  finally{document.getElementById('submitTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('submitSpinner').style.display='none';}
-}
-
-// ── Referral Modal ────────────────────────────────────────────────────────────
-function openRefModal(){
-  document.getElementById('refCountEl').textContent=user?.referrals||0;
-  document.getElementById('refEarnedEl').textContent=fmt((user?.referrals||0)*5000);
-  document.getElementById('refLinkEl').value=refLink;
-  document.getElementById('refOverlay').classList.add('open');
-}
-function closeRefModal(){document.getElementById('refOverlay').classList.remove('open');}
-function copyRefLink(){navigator.clipboard.writeText(refLink).then(()=>showToast('📋 Link ကူးယူပြီး!','ok'));}
-function shareRefLink(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(refLink));else copyRefLink();}
-
-// ── Load payment info from backend ───────────────────────────────────────────
-async function loadPaymentInfo(){
-  try{
-    const res=await api('/api/config');
-    if(res.success){
-      const phone=res.data.paymentPhone||'09792310926';
-      const name=res.data.paymentName||'Mi Thaung';
-      const pp=document.getElementById('payPhone');
-      const pn=document.getElementById('payName');
-      if(pp) pp.textContent=phone;
-      if(pn) pn.textContent=name;
+    const r=await apix('/api/config');
+    if(r.success){
+      payPhone=r.data.paymentPhone||'09702310926';payName=r.data.paymentName||'Daw Mi Thaung';
+      ['payPhone','p2TPhone'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payPhone;});
+      ['payName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payName;});
+      const p2tn=document.getElementById('p2TName');if(p2tn)p2tn.textContent='('+payName+')';
     }
   }catch{}
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-// ── PaytoPay Modal ────────────────────────────────────────────────────────────
-const P2P_MIN    = 20000;
-const P2P_FEE    = 5000;
-const P2P_TIMER  = 15 * 60; // 15 minutes in seconds
-let p2pFile      = null;
-let p2pTimerInterval = null;
-let p2pSecondsLeft   = P2P_TIMER;
-let p2pAmount    = 0;
-let p2pPayPhone  = '09792310926';
-let p2pPayName   = 'Mi Thaung';
-
-function openP2PModal() {
-  // Load payment info
-  const phone = document.getElementById('payPhone')?.textContent || '09792310926';
-  const name  = document.getElementById('payName')?.textContent  || 'Mi Thaung';
-  p2pPayPhone = phone; p2pPayName = name;
-  document.getElementById('p2pTPhone').textContent = phone;
-  document.getElementById('p2pTName').textContent  = '(' + name + ')';
-  // Reset
-  document.getElementById('p2pAmt').value = '';
-  document.getElementById('p2pFeeBox').style.display = 'none';
-  document.getElementById('p2pBuyBtn').disabled = true;
-  p2pGoStep(1);
-  document.getElementById('p2pOverlay').classList.add('open');
-  // Scroll hint hide after scroll
-  const scroll = document.getElementById('p2pInfoScroll');
-  if (scroll) scroll.addEventListener('scroll', function onScroll() {
-    document.getElementById('scrollHint').style.display='none';
-    scroll.removeEventListener('scroll', onScroll);
-  }, { once: true });
+async function loadUser(){
+  try{
+    const u=tg?.initDataUnsafe?.user,sp=tg?.initDataUnsafe?.start_param||'';
+    const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({telegramId:tid,firstName:u?.first_name||'Guest',lastName:u?.last_name||'',username:u?.username||'',referralCode:sp.startsWith('ref_')?sp:undefined})});
+    if(!r.success)throw 0;
+    user=r.data;rlink=r.data.referralLink;renderUser();
+  }catch{user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};renderUser();}
+}
+function renderUser(){
+  const{firstName,balance,referrals}=user;
+  const ini=firstName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const av=document.getElementById('avEl');av.innerHTML=`<span class="ini">${ini}</span>`;
+  document.getElementById('nameEl').textContent=firstName;
+  if(bvis){animN('balMain',balance);document.getElementById('balTot').textContent=fmt(balance)+'.00';}
+  document.getElementById('wBal').textContent=fmt(balance)+' Ks';
+  document.getElementById('refC').textContent=referrals;
+  document.getElementById('refE').textContent=fmt(referrals*5000);
+  document.getElementById('refLnk').value=rlink;
+  document.getElementById('ctaBtn').disabled=balance<MWD;
 }
 
-function closeP2PModal() {
-  document.getElementById('p2pOverlay').classList.remove('open');
-  clearInterval(p2pTimerInterval);
-  p2pTimerInterval = null;
-  // Reset upload
-  p2pFile = null;
-  document.getElementById('p2pUplPrev').style.display='none';
-  document.getElementById('p2pUplPh').style.display='flex';
-  document.getElementById('p2pUploadArea').classList.remove('has-file');
-  document.getElementById('p2pFileInp').value='';
-  document.getElementById('p2pSubmitBtn').disabled = true;
-  document.getElementById('p2pExpired').style.display='none';
+async function loadLB(){
+  try{
+    const r=await apix('/api/users/leaderboard');if(!r.success)throw 0;
+    const t3=r.data.slice(0,3),rest=r.data.slice(3);
+    const ord=[1,0,2],cls=['p2','p1','p3'];
+    const bgs=['<span class="rb rbs">🥈 #2</span>','<span class="rb rbg">🥇 #1</span>','<span class="rb rbb">🥉 #3</span>'];
+    const pel=document.getElementById('podEl');pel.innerHTML='';
+    ord.forEach(i=>{const p=t3[i];if(!p){pel.innerHTML+='<div></div>';return;}
+      pel.innerHTML+=`<div class="pod ${cls[i]}">${i===0?'<div class="pcrown">👑</div>':''}<div class="pav" style="background:${ac(i)}">${p.avatar}</div>${bgs[i]}<div class="pnm mm">${p.name.split(' ')[0]}</div><div class="pst">${p.referrals} ဖိတ်</div></div>`;});
+    let h='';rest.forEach(p=>{h+=`<div class="row"><div class="rrk">#${p.rank}</div><div class="rav" style="background:${ac(p.rank)}">${p.avatar}</div><div class="rbdy"><div class="rnm">${p.name}</div><div class="rsb mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div></div><div class="rrt"><div class="ramt">+${fmt(p.earned)}</div><div style="font-size:9.5px;color:#8099c0">Ks</div></div></div>`;});
+    document.getElementById('lbEl').innerHTML=h;
+  }catch{document.getElementById('podEl').innerHTML='<p style="grid-column:span 3;text-align:center;color:#8099c0;font-size:12px;padding:16px" class="mm">မရနိုင်ပါ</p>';}
 }
 
-function p2pGoStep(n) {
-  [1,2,3].forEach(i => {
-    const el = document.getElementById('p2ws'+i);
-    if (el) el.style.display = i===n ? 'flex' : 'none';
-    if (i===1 && n!==1) { document.getElementById('p2ws1').style.display='none'; }
-    const s = document.getElementById('p2s'+i);
-    if(s){ s.className='si '+(i<n?'done':i===n?'active':'todo'); if(i===3&&n===3){s.textContent='✓';s.className='si done';} }
+async function loadWDs(){
+  try{
+    const r=await apix('/api/withdrawals/recent');if(!r.success)throw 0;
+    if(!r.data.length){document.getElementById('wdEl').innerHTML='<p style="text-align:center;padding:22px;color:#8099c0;font-size:12px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';return;}
+    let h='';r.data.forEach((w,i)=>{h+=`<div class="row"><div class="rav" style="background:${ac(i)}">${w.avatar}</div><div class="rbdy"><div class="rnm">${w.name}</div><div class="rsb mm">${w.date}</div></div><div class="rrt"><div class="ramt">+${fmt(w.net)} Ks</div><div class="rbadge mm"><span style="width:5px;height:5px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div></div>`;});
+    document.getElementById('wdEl').innerHTML=h;
+  }catch{document.getElementById('wdEl').innerHTML='<p style="text-align:center;color:#8099c0;font-size:12px;padding:18px" class="mm">မရနိုင်ပါ</p>';}
+}
+
+function swTab(t){
+  document.getElementById('tp').classList.toggle('on',t==='p');document.getElementById('tw').classList.toggle('on',t==='w');
+  document.getElementById('pnp').classList.toggle('on',t==='p');document.getElementById('pnw').classList.toggle('on',t==='w');
+}
+
+// P2P
+function openP2P(){
+  document.getElementById('p2Amt').value='';document.getElementById('p2FeeBox').style.display='none';document.getElementById('p2BuyBtn').disabled=true;
+  p2SetSt(1);document.getElementById('p2Ov').classList.add('open');
+}
+function closeP2P(){document.getElementById('p2Ov').classList.remove('open');clearInterval(p2Timer);p2Timer=null;rsetP2Up();}
+function rsetP2Up(){
+  p2File=null;
+  document.getElementById('p2UPr').style.display='none';document.getElementById('p2UPH').style.display='flex';
+  document.getElementById('p2UpA').classList.remove('has');document.getElementById('p2FI').value='';
+  document.getElementById('p2SubBtn').disabled=true;document.getElementById('p2Exp').style.display='none';
+  document.getElementById('p2UpA').style.display='flex';document.getElementById('p2SubBtn').style.display='flex';
+  const bk=document.getElementById('p2BkBtn');if(bk)bk.style.display='';
+}
+function p2Rst(){closeP2P();setTimeout(openP2P,300);}
+function p2SetSt(n){
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById('pw'+i);if(el)el.style.display=i===n?'block':'none';
+    const s=document.getElementById('ps'+i);
+    if(s){s.className='si '+(i<n?'done':i===n?'active':'todo');if(i===3&&n===3){s.textContent='✓';s.className='si done';}}
   });
-  ['p2sl12','p2sl23'].forEach((id,idx)=>{ const el=document.getElementById(id); if(el) el.className='sl'+(n>idx+1?' done':''); });
+  ['ps12','ps23'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
+}
+function onP2A(){
+  const v=parseInt(document.getElementById('p2Amt').value)||0;
+  const fb=document.getElementById('p2FeeBox'),btn=document.getElementById('p2BuyBtn');
+  if(v>=P2MIN){fb.style.display='block';document.getElementById('p2Ba').textContent=fmt(v)+' Ks';document.getElementById('p2Tot').textContent=fmt(v+P2FEE)+' Ks';document.getElementById('p2Ret').textContent=fmt(v*5)+' Ks';btn.disabled=false;}
+  else{fb.style.display='none';btn.disabled=true;}
+}
+function p2Next(){
+  p2Amt=parseInt(document.getElementById('p2Amt').value)||0;if(p2Amt<P2MIN)return;
+  document.getElementById('p2TPhone').textContent=payPhone;document.getElementById('p2TName').textContent='('+payName+')';
+  document.getElementById('p2TrAmt').textContent=fmt(p2Amt+P2FEE)+' Ks';
+  p2SetSt(2);startP2Timer();
+}
+function p2Back(){clearInterval(p2Timer);p2Timer=null;p2SetSt(1);}
+function startP2Timer(){
+  p2Secs=900;updTmr();clearInterval(p2Timer);
+  p2Timer=setInterval(()=>{p2Secs--;updTmr();if(p2Secs<=0){clearInterval(p2Timer);p2Expired();}},1000);
+}
+function updTmr(){
+  const m=Math.floor(p2Secs/60),s=p2Secs%60;
+  const d=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  const el=document.getElementById('p2Tmr');if(el){el.textContent=d;el.className='timerval'+(p2Secs<=60?' urg':'');}
+}
+function p2Expired(){
+  document.getElementById('p2UpA').style.display='none';document.getElementById('p2SubBtn').style.display='none';
+  const bk=document.getElementById('p2BkBtn');if(bk)bk.style.display='none';
+  document.getElementById('p2Exp').style.display='block';
+  const el=document.getElementById('p2Tmr');if(el)el.textContent='00:00';
+}
+function onP2F(e){
+  const f=e.target.files?.[0];if(!f)return;p2File=f;
+  const rd=new FileReader();rd.onload=ev=>{const img=document.getElementById('p2UPr');img.src=ev.target.result;img.style.display='block';document.getElementById('p2UPH').style.display='none';document.getElementById('p2UpA').classList.add('has');};
+  rd.readAsDataURL(f);document.getElementById('p2SubBtn').disabled=false;
+}
+async function subP2P(){
+  if(!p2File){showT('Screenshot မတင်ရသေးပါ','err');return;}
+  if(p2Secs<=0){showT('အချိန်ကုန်ပြီ — ပြန်စပါ','err');return;}
+  document.getElementById('p2SubBtn').disabled=true;document.getElementById('p2SubTxt').textContent='တင်နေသည်...';document.getElementById('p2Sp').style.display='block';
+  clearInterval(p2Timer);
+  try{
+    const fd=new FormData();fd.append('amount',p2Amt);fd.append('screenshot',p2File);
+    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
+    if(!r.success)throw new Error(r.message);
+    p2SetSt(3);showT('တင်ပြီးပါပြီ!','ok');
+  }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('p2SubBtn').disabled=false;}
+  finally{document.getElementById('p2SubTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('p2Sp').style.display='none';}
 }
 
-function onP2PAmt() {
-  const v = parseInt(document.getElementById('p2pAmt').value) || 0;
-  const fb = document.getElementById('p2pFeeBox');
-  const btn = document.getElementById('p2pBuyBtn');
-  if (v >= P2P_MIN) {
-    fb.style.display = 'block';
-    document.getElementById('p2pBuyAmt').textContent = fmt(v) + ' Ks';
-    document.getElementById('p2pTotal').textContent  = fmt(v + P2P_FEE) + ' Ks';
-    document.getElementById('p2pReturn').textContent = fmt(v * 5) + ' Ks';
-    btn.disabled = false;
-  } else {
-    fb.style.display = 'none'; btn.disabled = true;
-  }
+// Withdraw
+function openWd(){
+  const b=user?.balance||0;
+  document.getElementById('wBal').textContent=fmt(b)+' Ks';
+  document.getElementById('lowWarn').style.display=b<MWD?'flex':'none';
+  document.getElementById('wAmtSec').style.display=b<MWD?'none':'block';
+  document.getElementById('wAmt').value='';document.getElementById('wFeeBox').style.display='none';
+  wStep(1);document.getElementById('wdOv').classList.add('open');
+}
+function closeWd(){
+  document.getElementById('wdOv').classList.remove('open');wFile=null;
+  document.getElementById('wUPr').style.display='none';document.getElementById('wUPH').style.display='flex';
+  document.getElementById('wUpA').classList.remove('has');document.getElementById('wFI').value='';document.getElementById('wSubBtn').disabled=true;
+}
+function wStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('ww'+i).style.display=i===n?'block':'none';
+    const s=document.getElementById('ws'+i+'i');
+    if(s){s.className='si '+(i<n?'done':i===n?'active':'todo');if(i===3&&n===3){s.textContent='✓';s.className='si done';}}
+  });
+  ['ws12','ws23'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
+}
+function onWA(){
+  const v=parseInt(document.getElementById('wAmt').value)||0,b=user?.balance||0;
+  const fb=document.getElementById('wFeeBox'),btn=document.getElementById('wNBtn');
+  if(v>=MWD&&b>=v){fb.style.display='block';document.getElementById('wFA').textContent=fmt(v)+' Ks';document.getElementById('wFN').textContent=fmt(v+SVC)+' Ks';document.getElementById('wTRet').textContent=fmt(v+SVC)+' ကျပ်';btn.disabled=false;}
+  else{fb.style.display='none';btn.disabled=true;}
+}
+function onWF(e){
+  const f=e.target.files?.[0];if(!f)return;wFile=f;
+  const rd=new FileReader();rd.onload=ev=>{const img=document.getElementById('wUPr');img.src=ev.target.result;img.style.display='block';document.getElementById('wUPH').style.display='none';document.getElementById('wUpA').classList.add('has');};
+  rd.readAsDataURL(f);document.getElementById('wSubBtn').disabled=false;
+}
+async function subWd(){
+  if(!wFile){showT('Screenshot မတင်ရသေးပါ','err');return;}
+  const amt=parseInt(document.getElementById('wAmt').value);if(!amt||amt<MWD){showT('ပမာဏ မမှန်ကန်ပါ','err');return;}
+  document.getElementById('wSubBtn').disabled=true;document.getElementById('wSubTxt').textContent='တင်နေသည်...';document.getElementById('wSp').style.display='block';
+  try{
+    const fd=new FormData();fd.append('amount',amt);fd.append('screenshot',wFile);
+    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
+    if(!r.success)throw new Error(r.message);
+    if(r.data?.newBalance!==undefined){user.balance=r.data.newBalance;renderUser();}
+    wStep(3);showT('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWDs();
+  }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('wSubBtn').disabled=false;}
+  finally{document.getElementById('wSubTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('wSp').style.display='none';}
 }
 
-function p2pGoStep2() {
-  p2pAmount = parseInt(document.getElementById('p2pAmt').value) || 0;
-  if (p2pAmount < P2P_MIN) return;
-  document.getElementById('p2pTransferAmt').textContent = fmt(p2pAmount + P2P_FEE) + ' Ks';
-  p2pGoStep(2);
-  startP2PTimer();
-}
+// Ref
+function openRef(){document.getElementById('refC').textContent=user?.referrals||0;document.getElementById('refE').textContent=fmt((user?.referrals||0)*5000);document.getElementById('refLnk').value=rlink;document.getElementById('refOv').classList.add('open');}
+function closeRef(){document.getElementById('refOv').classList.remove('open');}
+function cpRef(){navigator.clipboard.writeText(rlink).then(()=>showT('📋 Link ကူးယူပြီး!','ok'));}
+function shRef(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink));else cpRef();}
 
-function p2pGoBack() {
-  clearInterval(p2pTimerInterval); p2pTimerInterval = null;
-  document.getElementById('p2pExpired').style.display = 'none';
-  document.getElementById('p2pUploadArea').style.display = 'flex';
-  document.getElementById('p2pSubmitBtn').style.display  = 'flex';
-  document.querySelector('#p2ws2 .btn-ghost').style.display = '';
-  p2pGoStep(1);
-}
-
-function p2pRestart() {
-  closeP2PModal();
-  setTimeout(openP2PModal, 300);
-}
-
-function startP2PTimer() {
-  p2pSecondsLeft = P2P_TIMER;
-  updateTimerDisplay();
-  clearInterval(p2pTimerInterval);
-  p2pTimerInterval = setInterval(() => {
-    p2pSecondsLeft--;
-    updateTimerDisplay();
-    if (p2pSecondsLeft <= 0) {
-      clearInterval(p2pTimerInterval);
-      p2pTimerExpired();
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay() {
-  const m = Math.floor(p2pSecondsLeft / 60);
-  const s = p2pSecondsLeft % 60;
-  const display = (m < 10?'0':'') + m + ':' + (s < 10?'0':'') + s;
-  const el = document.getElementById('p2pTimerVal');
-  if (el) {
-    el.textContent = display;
-    el.className = 'p2p-timer-val' + (p2pSecondsLeft <= 60 ? ' urgent' : '');
-  }
-}
-
-function p2pTimerExpired() {
-  document.getElementById('p2pUploadArea').style.display  = 'none';
-  document.getElementById('p2pSubmitBtn').style.display   = 'none';
-  document.querySelector('#p2ws2 .btn-ghost').style.display = 'none';
-  document.getElementById('p2pExpired').style.display     = 'block';
-  document.getElementById('p2pTimerVal').textContent      = '00:00';
-}
-
-function onP2PFileSelect(e) {
-  const f = e.target.files?.[0]; if (!f) return;
-  p2pFile = f;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const img = document.getElementById('p2pUplPrev');
-    img.src = ev.target.result; img.style.display = 'block';
-    document.getElementById('p2pUplPh').style.display = 'none';
-    document.getElementById('p2pUploadArea').classList.add('has-file');
-  };
-  reader.readAsDataURL(f);
-  document.getElementById('p2pSubmitBtn').disabled = false;
-}
-
-async function submitP2P() {
-  if (!p2pFile) { showToast('Screenshot မတင်ရသေးပါ', 'err'); return; }
-  if (p2pSecondsLeft <= 0) { showToast('အချိန်ကုန်ပြီ — ပြန်စပါ', 'err'); return; }
-  document.getElementById('p2pSubmitBtn').disabled = true;
-  document.getElementById('p2pSubmitTxt').textContent = 'တင်နေသည်...';
-  document.getElementById('p2pSpinner').style.display = 'block';
-  clearInterval(p2pTimerInterval);
-  try {
-    const fd = new FormData();
-    fd.append('amount', p2pAmount);
-    fd.append('screenshot', p2pFile);
-    // Reuse the same /api/withdrawals endpoint
-    const res = await fetch(API + '/api/withdrawals', {
-      method: 'POST',
-      headers: { 'x-telegram-id': tgId },
-      body: fd,
-    }).then(r => r.json());
-    if (!res.success) throw new Error(res.message);
-    if (user && res.data?.newBalance !== undefined) { user.balance = res.data.newBalance; renderUser(); }
-    p2pGoStep(3);
-    showToast('တင်ပြီးပါပြီ!', 'ok');
-  } catch(err) {
-    showToast(err.message || 'မအောင်မြင်ပါ', 'err');
-    document.getElementById('p2pSubmitBtn').disabled = false;
-  } finally {
-    document.getElementById('p2pSubmitTxt').textContent = 'ငွေလွှဲပြီးပြီ ✓';
-    document.getElementById('p2pSpinner').style.display = 'none';
-  }
-}
-
-function animNum(id,target){const el=document.getElementById(id);const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;(function tick(){const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(from+(target-from)*e));if(p<1)requestAnimationFrame(tick);})();}
+// Helpers
+function animN(id,target){const el=document.getElementById(id);const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;(function tick(){const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(from+(target-from)*e));if(p<1)requestAnimationFrame(tick);})();}
 let _tt;
-function showToast(msg,type=''){const el=document.getElementById('toast');clearTimeout(_tt);el.textContent=msg;el.className='show '+type;_tt=setTimeout(()=>{el.className=''},3600);}
+function showT(msg,type=''){const el=document.getElementById('toast');clearTimeout(_tt);el.textContent=msg;el.className='show '+type;_tt=setTimeout(()=>{el.className=''},3600);}
 </script>
 </body>
 </html>
