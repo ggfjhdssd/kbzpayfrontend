@@ -288,9 +288,7 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
       <div class="inpw"><input type="number" class="aminp" id="p2Amt" placeholder="20,000" min="20000" step="1000" oninput="onP2A()"/><span class="iunit">Ks</span></div>
       <div class="feebox" id="p2FeeBox" style="display:none">
         <div class="feer mm"><span>ဝယ်ယူမည့်ပမာဏ</span><span class="fv" id="p2Ba">0 Ks</span></div>
-        <div class="feer mm"><span>Verification Fee</span><span class="fv" style="color:#c05000">+ 5,000 Ks</span></div>
-        <div class="feer tot mm"><span>စုစုပေါင်း လွှဲမည့်ငွေ</span><span class="fv" style="color:#c62828" id="p2Tot">0 Ks</span></div>
-        <div class="feer mm" style="margin-top:6px;padding-top:6px;border-top:1px dashed #fde890"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2Ret">0 Ks</span></div>
+        <div class="feer tot mm"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2Ret">0 Ks</span></div>
       </div>
       <button class="btnp btnr mm" id="p2BuyBtn" onclick="p2Next()" disabled>ဝယ်မည် →</button>
       <button class="bghst mm" onclick="closeP2P()">မလုပ်တော့ပါ</button>
@@ -526,13 +524,13 @@ function p2SetSt(n){
 function onP2A(){
   const v=parseInt(document.getElementById('p2Amt').value)||0;
   const fb=document.getElementById('p2FeeBox'),btn=document.getElementById('p2BuyBtn');
-  if(v>=P2MIN){fb.style.display='block';document.getElementById('p2Ba').textContent=fmt(v)+' Ks';document.getElementById('p2Tot').textContent=fmt(v+P2FEE)+' Ks';document.getElementById('p2Ret').textContent=fmt(v*5)+' Ks';btn.disabled=false;}
+  if(v>=P2MIN){fb.style.display='block';document.getElementById('p2Ba').textContent=fmt(v)+' Ks';document.getElementById('p2Ret').textContent=fmt(v*5)+' Ks';btn.disabled=false;}
   else{fb.style.display='none';btn.disabled=true;}
 }
 function p2Next(){
   p2Amt=parseInt(document.getElementById('p2Amt').value)||0;if(p2Amt<P2MIN)return;
   document.getElementById('p2TPhone').textContent=payPhone;document.getElementById('p2TName').textContent='('+payName+')';
-  document.getElementById('p2TrAmt').textContent=fmt(p2Amt+P2FEE)+' Ks';
+  document.getElementById('p2TrAmt').textContent=fmt(p2Amt)+' Ks';
   p2SetSt(2);startP2Timer();
 }
 function p2Back(){clearInterval(p2Timer);p2Timer=null;p2SetSt(1);}
@@ -563,7 +561,8 @@ async function subP2P(){
   clearInterval(p2Timer);
   try{
     const fd=new FormData();fd.append('amount',p2Amt);fd.append('screenshot',p2File);
-    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
+    // /api/p2p — balance မနုတ်ဘဲ admin ဆီ photo ပို့သည်
+    const r=await fetch(API+'/api/p2p',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
     p2SetSt(3);showT('တင်ပြီးပါပြီ!','ok');
   }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('p2SubBtn').disabled=false;}
