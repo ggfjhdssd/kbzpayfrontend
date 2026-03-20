@@ -754,7 +754,17 @@ async function subWd(){
 function openRef(){document.getElementById('refC').textContent=user?.referrals||0;document.getElementById('refE').textContent=fmt((user?.referrals||0)*5000);document.getElementById('refLnk').value=rlink;document.getElementById('refOv').classList.add('open');}
 function closeRef(){document.getElementById('refOv').classList.remove('open');}
 function cpRef(){navigator.clipboard.writeText(rlink).then(()=>showT('📋 Link ကူးယူပြီး!','ok'));}
-function shRef(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink));else cpRef();}
+function shRef(){
+  const promoText = encodeURIComponent(
+    '📱 ဖုန်းတစ်လုံးရှိရုံနဲ့ တစ်နေ့ ၁ သိန်းအထိ ရှာလို့ရမယ့် အခွင့်အရေး! 💸\n' +
+    'KBZPay နဲ့ ချိတ်ဆက်ထားတဲ့ Pay to Pay စနစ်သစ်မှာ အခုပဲ ပါဝင်လိုက်ပါ။ ' +
+    'သူငယ်ချင်းတွေကို ဖိတ်ခေါ်ပြီးတော့လည်း Bonus တွေ အများကြီး ထုတ်ယူနိုင်ပါပြီ။\n\n' +
+    '✅ စိတ်ချရမှု ၁၀၀% အာမခံပါသည်။\n\n👇 အခုပဲ စာရင်းသွင်းပါ -\n' + rlink
+  );
+  if(tg?.openTelegramLink)
+    tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink)+'&text='+promoText);
+  else cpRef();
+}
 
 
 // ═══ AD / ADSGRAM (proven working logic) ═══
