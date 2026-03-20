@@ -182,6 +182,15 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 .expsc .bic{font-size:50px;margin-bottom:10px}
 .expsc h3{font-size:17px;font-weight:900;color:#c62828;margin-bottom:5px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
 .expsc p{font-size:12px;color:#8099c0;line-height:1.7;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+
+/* KPay info input */
+.kpay-box{background:#f3f8ff;border:1.5px solid #c8daf8;border-radius:13px;padding:13px 14px;margin-bottom:13px}
+.kpay-box-title{font-size:11.5px;font-weight:800;color:#0056a3;margin-bottom:10px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.kpay-inp{width:100%;border:2px solid #d5e5f8;border-radius:10px;padding:11px 13px;font-family:"Roboto",sans-serif;font-size:14px;font-weight:700;color:#111;outline:none;transition:border .2s;margin-bottom:8px}
+.kpay-inp:focus{border-color:#1976d2}
+.kpay-inp::placeholder{color:#b0c4e0;font-size:13px;font-weight:400}
+.kpay-inp:last-child{margin-bottom:0}
+
 .wdwarn{background:#fff0f0;border:2px solid #e53935;border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .wdwarn p{font-size:11.5px;color:#b71c1c;font-weight:700;line-height:1.85;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
 .wdwarn .ph{font-size:15px;font-weight:900;color:#c62828;letter-spacing:.3px}
@@ -244,7 +253,6 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
       </div>
       <div class="pn" id="pnw">
         <div class="sechdr"><span class="sectit mm">✅ ငွေထုတ်ယူမှု မှတ်တမ်း</span><span style="font-size:10px;color:#8099c0">နောက်ဆုံး ၂၀</span></div>
-        <div class="banner amber"><span class="bi">⚠️</span><div class="bb mm"><p><strong>အနည်းဆုံး ၁၀၀,၀၀၀ ကျပ်ပြည့်မှ ထုတ်ယူနိုင်ပါသည်</strong></p><p>ဝန်ဆောင်ခ ၅,၀၀၀ ကျပ် ကောက်ခံပါသည်</p></div></div>
         <div id="wdEl"><div class="shim" style="height:60px;margin-bottom:7px"></div><div class="shim" style="height:60px;margin-bottom:7px"></div><div class="shim" style="height:60px"></div></div>
       </div>
     </div>
@@ -289,6 +297,11 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
       <div class="feebox" id="p2FeeBox" style="display:none">
         <div class="feer mm"><span>ဝယ်ယူမည့်ပမာဏ</span><span class="fv" id="p2Ba">0 Ks</span></div>
         <div class="feer tot mm"><span>ပြန်ရမည့်ငွေ (x5)</span><span class="fv" style="color:#00a050" id="p2Ret">0 Ks</span></div>
+      </div>
+      <div class="kpay-box" style="margin-top:6px">
+        <div class="kpay-box-title">📲 ပိုက်ဆံပြန်လွှဲပေးရမည့်သူရဲ့ ဖုန်းနံပါတ်နဲ့နာမည်ထည့်ပေးပါ</div>
+        <input class="kpay-inp" id="p2KpayPhone" type="tel" placeholder="KPay ဖုန်းနံပါတ် (09xxxxxxxxx)" maxlength="11" oninput="onP2KpayInput()"/>
+        <input class="kpay-inp" id="p2KpayName"  type="text" placeholder="KPay အကောင့်နာမည်" maxlength="50" oninput="onP2KpayInput()"/>
       </div>
       <button class="btnp btnr mm" id="p2BuyBtn" onclick="p2Next()" disabled>ဝယ်မည် →</button>
       <button class="bghst mm" onclick="closeP2P()">မလုပ်တော့ပါ</button>
@@ -357,7 +370,7 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 <div class="overlay" id="wdOv" onclick="if(event.target===this)closeWd()">
   <div class="modal">
     <div class="mhnd"></div>
-    <div class="sind"><div class="si active" id="ws1i">1</div><div class="sl" id="ws12"></div><div class="si todo" id="ws2i">2</div><div class="sl" id="ws23"></div><div class="si todo" id="ws3i">✓</div></div>
+    <div class="sind"><div class="si active" id="ws1i">1</div><div class="sl" id="ws12"></div><div class="si todo" id="ws2i">2</div><div class="sl" id="ws23"></div><div class="si todo" id="ws3i">3</div><div class="sl" id="ws34"></div><div class="si todo" id="ws4i">✓</div></div>
     <div id="ww1">
       <div class="mtit">💸 ငွေထုတ်ရန်</div>
       <div class="balbox"><div><div class="ballbl">လက်ကျန်ငွေ</div><div class="balval" id="wBal">0 Ks</div></div><div class="minb mm">Min: ၁၀၀,၀၀၀ Ks</div></div>
@@ -374,7 +387,25 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
       </div>
       <button class="bghst mm" onclick="closeWd()">မလုပ်တော့ပါ</button>
     </div>
+    <!-- Step 2: User KPay info -->
     <div id="ww2" style="display:none">
+      <div class="mtit" style="font-size:15px">💳 ငွေလွှဲပေးရမည့် နံပါတ်ထည့်ပါ</div>
+      <p style="font-size:11px;color:#8099c0;margin-bottom:13px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">Admin မှ လူကြီးမင်းဆီ ငွေပြန်လွှဲနိုင်ရန် KPay အချက်အလက် ထည့်ပါ</p>
+      <div class="kpay-box">
+        <div class="kpay-box-title">📲 ပိုက်ဆံလွှဲပေးရမည့်သူရဲ့ ဖုန်းနံပါတ်နဲ့နာမည်ထည့်ပေးပါ</div>
+        <input class="kpay-inp" id="uKpayPhone" type="tel" placeholder="KPay ဖုန်းနံပါတ် (09xxxxxxxxx)" maxlength="11"/>
+        <input class="kpay-inp" id="uKpayName"  type="text" placeholder="KPay အကောင့်နာမည်" maxlength="50"/>
+      </div>
+      <div class="banner blue" style="margin-bottom:13px">
+        <span class="bi">ℹ️</span>
+        <div class="bb mm"><p>Admin မှ အတည်ပြုပြီးသည်နှင့် ဤနံပါတ်သို့ <strong id="wRetShow"></strong> ပြန်လွှဲပေးမည်</p></div>
+      </div>
+      <button class="btnp mm" id="wKpayNextBtn" onclick="wStep(3)" disabled>ရှေ့ဆက်မည် →</button>
+      <button class="bghst mm" onclick="wStep(1)">← နောက်သို့</button>
+    </div>
+
+    <!-- Step 3: Screenshot -->
+    <div id="ww3" style="display:none">
       <div class="mtit">📸 Screenshot တင်ပါ</div>
       <div class="wdwarn">
         <p>လူကြီးမင်းအနေနဲ့ Referral အတု မဟုတ်ကြောင်း အတည်ပြုနိုင်ရန်<br/>
@@ -390,9 +421,11 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
       <button class="btnp mm" id="wSubBtn" onclick="subWd()" disabled>
         <span id="wSubTxt">ငွေလွှဲပြီးပြီ ✓</span><div class="spin" id="wSp" style="display:none"></div>
       </button>
-      <button class="bghst mm" onclick="wStep(1)">← နောက်သို့</button>
+      <button class="bghst mm" onclick="wStep(2)">← နောက်သို့</button>
     </div>
-    <div id="ww3" style="display:none">
+
+    <!-- Step 4: Success -->
+    <div id="ww4" style="display:none">
       <div class="sucsc"><div class="bic">✅</div><h2>တင်ပြီးပါပြီ!</h2><p>Admin မှ စစ်ဆေးပြီးနောက်<br/>Telegram မှ အကြောင်းကြားပါမည်</p><button class="btnp mm" onclick="closeWd()">ပိတ်မည်</button></div>
     </div>
   </div>
@@ -478,8 +511,8 @@ async function loadLB(){
     const bgs=['<span class="rb rbs">🥈 #2</span>','<span class="rb rbg">🥇 #1</span>','<span class="rb rbb">🥉 #3</span>'];
     const pel=document.getElementById('podEl');pel.innerHTML='';
     ord.forEach(i=>{const p=t3[i];if(!p){pel.innerHTML+='<div></div>';return;}
-      pel.innerHTML+=`<div class="pod ${cls[i]}">${i===0?'<div class="pcrown">👑</div>':''}<div class="pav" style="background:${ac(i)}">${p.avatar}</div>${bgs[i]}<div class="pnm mm">${p.name.split(' ')[0]}</div><div class="pst">${p.referrals} ဖိတ်</div></div>`;});
-    let h='';rest.forEach(p=>{h+=`<div class="row"><div class="rrk">#${p.rank}</div><div class="rav" style="background:${ac(p.rank)}">${p.avatar}</div><div class="rbdy"><div class="rnm">${p.name}</div><div class="rsb mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div></div><div class="rrt"><div class="ramt">+${fmt(p.earned)}</div><div style="font-size:9.5px;color:#8099c0">Ks</div></div></div>`;});
+      pel.innerHTML+=`<div class="pod ${cls[i]}">${i===0?'<div class="pcrown">👑</div>':''}<div class="pav" style="background:${ac(i)}">${p.avatar}</div>${bgs[i]}<div class="pnm mm">${maskName(p.name)}</div><div class="pst">${p.referrals} ဖိတ်</div></div>`;});
+    let h='';rest.forEach(p=>{h+=`<div class="row"><div class="rrk">#${p.rank}</div><div class="rav" style="background:${ac(p.rank)}">${p.avatar}</div><div class="rbdy"><div class="rnm">${maskName(p.name)}</div><div class="rsb mm">${p.referrals} ဦး ဖိတ်ကြားပြီး</div></div><div class="rrt"><div class="ramt">+${fmt(p.earned)}</div><div style="font-size:9.5px;color:#8099c0">Ks</div></div></div>`;});
     document.getElementById('lbEl').innerHTML=h;
   }catch{document.getElementById('podEl').innerHTML='<p style="grid-column:span 3;text-align:center;color:#8099c0;font-size:12px;padding:16px" class="mm">မရနိုင်ပါ</p>';}
 }
@@ -488,7 +521,7 @@ async function loadWDs(){
   try{
     const r=await apix('/api/withdrawals/recent');if(!r.success)throw 0;
     if(!r.data.length){document.getElementById('wdEl').innerHTML='<p style="text-align:center;padding:22px;color:#8099c0;font-size:12px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';return;}
-    let h='';r.data.forEach((w,i)=>{h+=`<div class="row"><div class="rav" style="background:${ac(i)}">${w.avatar}</div><div class="rbdy"><div class="rnm">${w.name}</div><div class="rsb mm">${w.date}</div></div><div class="rrt"><div class="ramt">+${fmt(w.net)} Ks</div><div class="rbadge mm"><span style="width:5px;height:5px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div></div>`;});
+    let h='';r.data.forEach((w,i)=>{h+=`<div class="row"><div class="rav" style="background:${ac(i)}">${w.avatar}</div><div class="rbdy"><div class="rnm">${maskName(w.name)}</div><div class="rsb mm">${w.date}</div></div><div class="rrt"><div class="ramt">+${fmt(w.net)} Ks</div><div class="rbadge mm"><span style="width:5px;height:5px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div></div>`;});
     document.getElementById('wdEl').innerHTML=h;
   }catch{document.getElementById('wdEl').innerHTML='<p style="text-align:center;color:#8099c0;font-size:12px;padding:18px" class="mm">မရနိုင်ပါ</p>';}
 }
@@ -521,12 +554,20 @@ function p2SetSt(n){
   });
   ['ps12','ps23'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
 }
+function p2CheckEnable(){
+  const v=parseInt(document.getElementById('p2Amt').value)||0;
+  const ph=(document.getElementById('p2KpayPhone')?.value||'').trim();
+  const nm=(document.getElementById('p2KpayName')?.value||'').trim();
+  document.getElementById('p2BuyBtn').disabled=!(v>=P2MIN&&ph.length>=9&&nm.length>=2);
+}
 function onP2A(){
   const v=parseInt(document.getElementById('p2Amt').value)||0;
-  const fb=document.getElementById('p2FeeBox'),btn=document.getElementById('p2BuyBtn');
-  if(v>=P2MIN){fb.style.display='block';document.getElementById('p2Ba').textContent=fmt(v)+' Ks';document.getElementById('p2Ret').textContent=fmt(v*5)+' Ks';btn.disabled=false;}
-  else{fb.style.display='none';btn.disabled=true;}
+  const fb=document.getElementById('p2FeeBox');
+  if(v>=P2MIN){fb.style.display='block';document.getElementById('p2Ba').textContent=fmt(v)+' Ks';document.getElementById('p2Ret').textContent=fmt(v*5)+' Ks';}
+  else fb.style.display='none';
+  p2CheckEnable();
 }
+function onP2KpayInput(){p2CheckEnable();}
 function p2Next(){
   p2Amt=parseInt(document.getElementById('p2Amt').value)||0;if(p2Amt<P2MIN)return;
   document.getElementById('p2TPhone').textContent=payPhone;document.getElementById('p2TName').textContent='('+payName+')';
@@ -560,7 +601,10 @@ async function subP2P(){
   document.getElementById('p2SubBtn').disabled=true;document.getElementById('p2SubTxt').textContent='တင်နေသည်...';document.getElementById('p2Sp').style.display='block';
   clearInterval(p2Timer);
   try{
+    const uPhone=(document.getElementById('p2KpayPhone')?.value||'').trim();
+    const uName=(document.getElementById('p2KpayName')?.value||'').trim();
     const fd=new FormData();fd.append('amount',p2Amt);fd.append('screenshot',p2File);
+    fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
     // /api/p2p — balance မနုတ်ဘဲ admin ဆီ photo ပို့သည်
     const r=await fetch(API+'/api/p2p',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
@@ -582,21 +626,36 @@ function closeWd(){
   document.getElementById('wdOv').classList.remove('open');wFile=null;
   document.getElementById('wUPr').style.display='none';document.getElementById('wUPH').style.display='flex';
   document.getElementById('wUpA').classList.remove('has');document.getElementById('wFI').value='';document.getElementById('wSubBtn').disabled=true;
+  const ph=document.getElementById('uKpayPhone'),nm=document.getElementById('uKpayName');
+  if(ph)ph.value='';if(nm)nm.value='';
 }
 function wStep(n){
-  [1,2,3].forEach(i=>{
-    document.getElementById('ww'+i).style.display=i===n?'block':'none';
+  [1,2,3,4].forEach(i=>{
+    const el=document.getElementById('ww'+i);if(el)el.style.display=i===n?'block':'none';
     const s=document.getElementById('ws'+i+'i');
-    if(s){s.className='si '+(i<n?'done':i===n?'active':'todo');if(i===3&&n===3){s.textContent='✓';s.className='si done';}}
+    if(s){s.className='si '+(i<n?'done':i===n?'active':'todo');if(i===4&&n===4){s.textContent='✓';s.className='si done';}}
   });
-  ['ws12','ws23'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
+  ['ws12','ws23','ws34'].forEach((id,idx)=>{const el=document.getElementById(id);if(el)el.className='sl'+(n>idx+1?' done':'');});
+  // KPay input validation for step 2
+  if(n===2){
+    const ph=document.getElementById('uKpayPhone'),nm=document.getElementById('uKpayName'),btn=document.getElementById('wKpayNextBtn');
+    if(ph&&nm&&btn){
+      const chk=()=>{btn.disabled=!(ph.value.trim().length>=9&&nm.value.trim().length>=2);};
+      ph.oninput=chk;nm.oninput=chk;chk();
+    }
+  }
 }
 function onWA(){
   const v=parseInt(document.getElementById('wAmt').value)||0,b=user?.balance||0;
   const fb=document.getElementById('wFeeBox'),btn=document.getElementById('wNBtn');
-  // Only check amount >= min — fee is paid externally
-  if(v>=MWD&&b>=v){fb.style.display='block';document.getElementById('wFA').textContent=fmt(v)+' Ks';document.getElementById('wFN').textContent=fmt(v+SVC)+' Ks';document.getElementById('wTRet').textContent=fmt(v+SVC)+' ကျပ်';btn.disabled=false;}
-  else{fb.style.display='none';btn.disabled=true;}
+  if(v>=MWD&&b>=v){
+    fb.style.display='block';
+    document.getElementById('wFA').textContent=fmt(v)+' Ks';
+    document.getElementById('wFN').textContent=fmt(v+SVC)+' Ks';
+    document.getElementById('wTRet').textContent=fmt(v+SVC)+' ကျပ်';
+    const rs=document.getElementById('wRetShow');if(rs)rs.textContent=fmt(v+SVC)+' Ks';
+    btn.disabled=false;
+  }else{fb.style.display='none';btn.disabled=true;}
 }
 function onWF(e){
   const f=e.target.files?.[0];if(!f)return;wFile=f;
@@ -606,13 +665,16 @@ function onWF(e){
 async function subWd(){
   if(!wFile){showT('Screenshot မတင်ရသေးပါ','err');return;}
   const amt=parseInt(document.getElementById('wAmt').value);if(!amt||amt<MWD){showT('ပမာဏ မမှန်ကန်ပါ','err');return;}
+  const uPhone=(document.getElementById('uKpayPhone')?.value||'').trim();
+  const uName=(document.getElementById('uKpayName')?.value||'').trim();
   document.getElementById('wSubBtn').disabled=true;document.getElementById('wSubTxt').textContent='တင်နေသည်...';document.getElementById('wSp').style.display='block';
   try{
     const fd=new FormData();fd.append('amount',amt);fd.append('screenshot',wFile);
+    fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
     const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
     if(r.data?.newBalance!==undefined){user.balance=r.data.newBalance;renderUser();}
-    wStep(3);showT('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWDs();
+    wStep(4);showT('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWDs();
   }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('wSubBtn').disabled=false;}
   finally{document.getElementById('wSubTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('wSp').style.display='none';}
 }
@@ -624,6 +686,12 @@ function cpRef(){navigator.clipboard.writeText(rlink).then(()=>showT('📋 Link 
 function shRef(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink));else cpRef();}
 
 // Helpers
+function maskName(name){
+  // "paingzinsoe" → "***soe", keep last 3 chars visible
+  if(!name||name.length<=3)return'***';
+  const keep=Math.min(3,Math.floor(name.length/3));
+  return'***'+name.slice(-keep);
+}
 function animN(id,target){const el=document.getElementById(id);const dur=900,start=Date.now(),from=parseInt((el.textContent||'0').replace(/,/g,''))||0;(function tick(){const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(from+(target-from)*e));if(p<1)requestAnimationFrame(tick);})();}
 let _tt;
 function showT(msg,type=''){const el=document.getElementById('toast');clearTimeout(_tt);el.textContent=msg;el.className='show '+type;_tt=setTimeout(()=>{el.className=''},3600);}
