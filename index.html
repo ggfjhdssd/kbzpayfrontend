@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0053a6"/>
 <title>KBZPay</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -194,6 +195,23 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 .wdwarn{background:#fff0f0;border:2px solid #e53935;border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .wdwarn p{font-size:11.5px;color:#b71c1c;font-weight:700;line-height:1.85;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
 .wdwarn .ph{font-size:15px;font-weight:900;color:#c62828;letter-spacing:.3px}
+/* ═══ AD MODAL CSS ═══ */
+.ad-task{background:#f3f8ff;border:1.5px solid #c8daf8;border-radius:14px;padding:13px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:background .15s}
+.ad-task.watched{background:#e4f9ee;border-color:#a0e8c0}
+.ad-task-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1976d2,#0053a6);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ad-task.watched .ad-task-icon{background:linear-gradient(135deg,#00c875,#009d55)}
+.ad-task-body{flex:1;min-width:0}
+.ad-task-title{font-size:12.5px;font-weight:800;color:#0d1b38;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.ad-task-sub{font-size:11px;color:#8099c0;margin-top:2px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.ad-task-btn{padding:8px 13px;border-radius:10px;font-size:11.5px;font-weight:800;border:none;cursor:pointer;font-family:"Noto Sans Myanmar","Roboto",sans-serif;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.ad-task-btn.ready{background:linear-gradient(135deg,#1976d2,#0053a6);color:#fff;box-shadow:0 3px 10px rgba(0,83,166,.28)}
+.ad-task-btn.cd{background:#e0eaf8;color:#8099c0;cursor:not-allowed}
+.ad-task-btn.done{background:#e4f9ee;color:#00924a;cursor:default}
+.ad-earn-box{background:linear-gradient(135deg,#e4f9ee,#d0f5e0);border:1.5px solid #a0e8c0;border-radius:13px;padding:13px;text-align:center;margin-bottom:13px}
+.ad-earn-val{font-size:26px;font-weight:900;color:#00924a;font-variant-numeric:tabular-nums}
+.ad-earn-lbl{font-size:11px;color:#00924a;margin-top:2px;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.vpn-note{background:#fff8e0;border:1px solid #fde090;border-radius:11px;padding:10px 13px;font-size:11px;color:#7a5800;font-weight:600;line-height:1.7;font-family:"Noto Sans Myanmar","Roboto",sans-serif}
+.vpn-note strong{color:#c06000}
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#0a1628;color:#fff;padding:10px 19px;border-radius:20px;font-size:12px;font-weight:700;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.22);max-width:86vw;text-align:center;white-space:normal}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{background:linear-gradient(135deg,#00c875,#009d55)}
@@ -224,7 +242,7 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
         </div>
         <span class="albl mm">ငွေထုတ်ရန်</span>
       </div>
-      <div class="act" onclick="openRef()">
+      <div class="act" onclick="openAd()">
         <div class="aiwrap">
           <svg viewBox="0 0 32 32" fill="none"><rect x="3" y="7" width="22" height="16" rx="3" stroke="white" stroke-width="2.2" fill="none"/><text x="10" y="20" font-size="10" font-weight="700" fill="white" font-family="Arial">$</text><line x1="23" y1="15" x2="29" y2="15" stroke="white" stroke-width="2.2" stroke-linecap="round"/><polyline points="26,11 23,15 26,19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
@@ -428,6 +446,59 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
     <div id="ww4" style="display:none">
       <div class="sucsc"><div class="bic">✅</div><h2>တင်ပြီးပါပြီ!</h2><p>Admin မှ စစ်ဆေးပြီးနောက်<br/>Telegram မှ အကြောင်းကြားပါမည်</p><button class="btnp mm" onclick="closeWd()">ပိတ်မည်</button></div>
     </div>
+  </div>
+</div>
+
+<!-- AD MODAL -->
+<div class="overlay" id="adOv" onclick="if(event.target===this)closeAd()">
+  <div class="modal">
+    <div class="mhnd"></div>
+    <div class="mtit">📺 ကြော်ငြာကြည့်ပြီး ငွေရှာပါ</div>
+    <p style="font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">ကြော်ငြာတစ်ခုကြည့်တိုင်း ၃,၀၀၀ ကျပ် ရရှိမည်</p>
+
+    <!-- Earned today -->
+    <div class="ad-earn-box">
+      <div class="ad-earn-val" id="adEarnedVal">0 Ks</div>
+      <div class="ad-earn-lbl">ဒီနေ့ ကြော်ငြာမှ ရရှိပြီး</div>
+    </div>
+
+    <!-- Task 1 -->
+    <div class="ad-task" id="adTask0">
+      <div class="ad-task-icon">📱</div>
+      <div class="ad-task-body">
+        <div class="ad-task-title mm">ကြော်ငြာ Task 1</div>
+        <div class="ad-task-sub mm" id="adSub0">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+      </div>
+      <button class="ad-task-btn ready" id="adBtn0" onclick="watchAd(0)">ကြည့်မည်</button>
+    </div>
+
+    <!-- Task 2 -->
+    <div class="ad-task" id="adTask1">
+      <div class="ad-task-icon">🎬</div>
+      <div class="ad-task-body">
+        <div class="ad-task-title mm">ကြော်ငြာ Task 2</div>
+        <div class="ad-task-sub mm" id="adSub1">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+      </div>
+      <button class="ad-task-btn ready" id="adBtn1" onclick="watchAd(1)">ကြည့်မည်</button>
+    </div>
+
+    <!-- Task 3 -->
+    <div class="ad-task" id="adTask2">
+      <div class="ad-task-icon">💰</div>
+      <div class="ad-task-body">
+        <div class="ad-task-title mm">ကြော်ငြာ Task 3</div>
+        <div class="ad-task-sub mm" id="adSub2">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+      </div>
+      <button class="ad-task-btn ready" id="adBtn2" onclick="watchAd(2)">ကြည့်မည်</button>
+    </div>
+
+    <!-- VPN note -->
+    <div class="vpn-note">
+      ⚠️ <strong>VPN ဖွင့်ပါ (USA/UK)</strong><br/>
+      မြန်မာပြည်မှ ကြည့်မည်ဆိုပါက VPN (USA သို့မဟုတ် UK) တစ်ခုခု ဖွင့်ထားမှသာ ကြော်ငြာ Load တက်လာမည် ဖြစ်ပါသည်။
+    </div>
+    <div style="height:10px"></div>
+    <button class="bghst mm" onclick="closeAd()">ပိတ်မည်</button>
   </div>
 </div>
 
@@ -685,6 +756,99 @@ function closeRef(){document.getElementById('refOv').classList.remove('open');}
 function cpRef(){navigator.clipboard.writeText(rlink).then(()=>showT('📋 Link ကူးယူပြီး!','ok'));}
 function shRef(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink));else cpRef();}
 
+
+// ═══ AD / ADSGRAM ═══
+const AD_BLOCK_IDS = ['int-23919','int-23898','int-23919']; // 3 tasks
+const AD_REWARD = 3000;
+const AD_COOLDOWN = 60; // 60 seconds = 1 minute
+let adEarned = 0;
+// Per-task state: {cd: seconds_remaining, done: false}
+let adState = [{cd:0,done:false},{cd:0,done:false},{cd:0,done:false}];
+let adCdInterval = null;
+let adControllers = [null,null,null];
+
+function openAd(){
+  renderAdTasks();
+  document.getElementById('adOv').classList.add('open');
+  // Start cooldown tick if needed
+  startAdCdTick();
+}
+function closeAd(){document.getElementById('adOv').classList.remove('open');}
+
+function renderAdTasks(){
+  document.getElementById('adEarnedVal').textContent = fmt(adEarned) + ' Ks';
+  adState.forEach((s,i)=>{
+    const btn  = document.getElementById('adBtn'+i);
+    const sub  = document.getElementById('adSub'+i);
+    const task = document.getElementById('adTask'+i);
+    if(s.done){
+      btn.textContent='✅ ပြီးပါပြီ';btn.className='ad-task-btn done';
+      sub.textContent='ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
+      task.classList.add('watched');
+    } else if(s.cd>0){
+      const m=Math.floor(s.cd/60),sec=s.cd%60;
+      btn.textContent=(m>0?m+'m ':'')+sec+'s';
+      btn.className='ad-task-btn cd';
+      sub.textContent='Cooldown ကုန်ရင် ထပ်ကြည့်နိုင်သည်';
+      task.classList.remove('watched');
+    } else {
+      btn.textContent='ကြည့်မည်';btn.className='ad-task-btn ready';
+      sub.textContent='ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်';
+      task.classList.remove('watched');
+    }
+  });
+}
+
+function startAdCdTick(){
+  if(adCdInterval) return;
+  adCdInterval = setInterval(()=>{
+    let any=false;
+    adState.forEach(s=>{if(s.cd>0){s.cd--;any=true;}});
+    if(any) renderAdTasks();
+  },1000);
+}
+
+async function watchAd(idx){
+  if(adState[idx].cd>0||adState[idx].done) return;
+  const btn=document.getElementById('adBtn'+idx);
+  btn.textContent='Loading...';btn.className='ad-task-btn cd';
+
+  try{
+    // Init controller lazily
+    if(!adControllers[idx] && window.Adsgram){
+      adControllers[idx] = window.Adsgram.init({ blockId: AD_BLOCK_IDS[idx] });
+    }
+    if(!adControllers[idx]) throw new Error('Adsgram not loaded');
+
+    const result = await adControllers[idx].show();
+    if(result.done){
+      // Ad watched — give reward
+      adEarned += AD_REWARD;
+      adState[idx] = {cd: AD_COOLDOWN, done: false};
+      // Reward user balance via API
+      try{
+        await apix('/api/ad-reward',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({amount: AD_REWARD, taskIndex: idx})
+        });
+        if(user){user.balance=(user.balance||0)+AD_REWARD;renderUser();}
+      }catch{}
+      showT('+'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
+      renderAdTasks();
+      startAdCdTick();
+    }
+  }catch(e){
+    // Ad not available or error
+    adState[idx].cd = 0;
+    renderAdTasks();
+    if(e?.message?.includes('no fill')||e?.message?.includes('No ad')||e?.type==='no_fill'){
+      showT('ကြော်ငြာ မရနိုင်ပါ — VPN (USA/UK) ဖွင့်ပြီး ထပ်ကြိုးစားပါ','err');
+    } else {
+      showT('ကြော်ငြာ မပြသနိုင်ပါ','err');
+    }
+  }
+}
 // Helpers
 function maskName(name){
   // "paingzinsoe" → "***soe", keep last 3 chars visible
