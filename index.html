@@ -757,96 +757,140 @@ function cpRef(){navigator.clipboard.writeText(rlink).then(()=>showT('📋 Link 
 function shRef(){if(tg?.openTelegramLink)tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(rlink));else cpRef();}
 
 
-// ═══ AD / ADSGRAM ═══
-const AD_BLOCK_IDS = ['int-23919','int-23898','int-23919']; // 3 tasks
-const AD_REWARD = 3000;
-const AD_COOLDOWN = 60; // 60 seconds = 1 minute
-let adEarned = 0;
-// Per-task state: {cd: seconds_remaining, done: false}
-let adState = [{cd:0,done:false},{cd:0,done:false},{cd:0,done:false}];
-let adCdInterval = null;
-let adControllers = [null,null,null];
+// ═══ AD / ADSGRAM (proven working logic) ═══
+const AD_BLOCK_IDS  = ['int-23471','int-23471','int-23471'];
+const AD_REWARD     = 3000;
+const AD_COOLDOWN   = 300; // 5 minutes = 300 seconds (same as working code)
+const AD_TIMER_KEYS = ['ad_cd_0','ad_cd_1','ad_cd_2'];
+let adEarned        = 0;
+let adTimerIntervals= [null,null,null];
+// Lazily init one controller per block id
+let adControllers   = [null,null,null];
 
 function openAd(){
-  renderAdTasks();
+  document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
+  // Resume any active cooldowns from localStorage
+  [0,1,2].forEach(i => adCheckCd(i));
   document.getElementById('adOv').classList.add('open');
-  // Start cooldown tick if needed
-  startAdCdTick();
 }
 function closeAd(){document.getElementById('adOv').classList.remove('open');}
 
-function renderAdTasks(){
-  document.getElementById('adEarnedVal').textContent = fmt(adEarned) + ' Ks';
-  adState.forEach((s,i)=>{
-    const btn  = document.getElementById('adBtn'+i);
-    const sub  = document.getElementById('adSub'+i);
-    const task = document.getElementById('adTask'+i);
-    if(s.done){
-      btn.textContent='✅ ပြီးပါပြီ';btn.className='ad-task-btn done';
-      sub.textContent='ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
-      task.classList.add('watched');
-    } else if(s.cd>0){
-      const m=Math.floor(s.cd/60),sec=s.cd%60;
-      btn.textContent=(m>0?m+'m ':'')+sec+'s';
-      btn.className='ad-task-btn cd';
-      sub.textContent='Cooldown ကုန်ရင် ထပ်ကြည့်နိုင်သည်';
-      task.classList.remove('watched');
-    } else {
-      btn.textContent='ကြည့်မည်';btn.className='ad-task-btn ready';
-      sub.textContent='ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်';
-      task.classList.remove('watched');
+// Check localStorage for existing cooldown (persists across modal open/close)
+function adCheckCd(i){
+  const expiry = localStorage.getItem(AD_TIMER_KEYS[i]);
+  if(expiry){
+    const rem = Math.floor((parseInt(expiry) - Date.now())/1000);
+    if(rem > 0){ adStartTimer(i, rem); return; }
+    else localStorage.removeItem(AD_TIMER_KEYS[i]);
+  }
+  adSetReady(i);
+}
+
+function adSetReady(i){
+  const btn = document.getElementById('adBtn'+i);
+  const sub = document.getElementById('adSub'+i);
+  const task= document.getElementById('adTask'+i);
+  if(!btn) return;
+  btn.textContent='ကြည့်မည်';
+  btn.className='ad-task-btn ready';
+  btn.disabled=false;
+  sub.textContent='ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်';
+  task.classList.remove('watched');
+}
+
+function adStartTimer(i, duration){
+  const btn = document.getElementById('adBtn'+i);
+  const sub = document.getElementById('adSub'+i);
+  if(!btn) return;
+  // Stop existing
+  if(adTimerIntervals[i]){ clearInterval(adTimerIntervals[i]); adTimerIntervals[i]=null; }
+  btn.disabled=true; btn.className='ad-task-btn cd';
+  let t = duration;
+  const tick=()=>{
+    if(t<=0){
+      clearInterval(adTimerIntervals[i]); adTimerIntervals[i]=null;
+      localStorage.removeItem(AD_TIMER_KEYS[i]);
+      adSetReady(i); return;
     }
-  });
+    const m=Math.floor(t/60),s=t%60;
+    btn.textContent=(m>0?m+'m ':'')+s+'s';
+    sub.textContent='Cooldown — ထပ်ကြည့်နိုင်ရန် စောင့်ပါ';
+    t--;
+  };
+  tick();
+  adTimerIntervals[i]=setInterval(tick,1000);
 }
 
-function startAdCdTick(){
-  if(adCdInterval) return;
-  adCdInterval = setInterval(()=>{
-    let any=false;
-    adState.forEach(s=>{if(s.cd>0){s.cd--;any=true;}});
-    if(any) renderAdTasks();
-  },1000);
+async function watchAd(i){
+  const btn = document.getElementById('adBtn'+i);
+  if(!btn || btn.disabled) return;
+
+  // Confirm popup (like working code)
+  if(tg && tg.showPopup){
+    tg.showPopup({
+      title:'ကြော်ငြာကြည့်မည်',
+      message:'၃,၀၀၀ Ks ရရှိရန် ကြော်ငြာကို အဆုံးထိကြည့်ပေးပါ။',
+      buttons:[{id:'cancel',type:'cancel',text:'မကြည့်သေးပါ'},{id:'ok',type:'default',text:'ကြည့်မည်'}]
+    }, (btnId)=>{ if(btnId==='ok') _doWatchAd(i); });
+  } else {
+    _doWatchAd(i);
+  }
 }
 
-async function watchAd(idx){
-  if(adState[idx].cd>0||adState[idx].done) return;
-  const btn=document.getElementById('adBtn'+idx);
-  btn.textContent='Loading...';btn.className='ad-task-btn cd';
+async function _doWatchAd(i){
+  const btn = document.getElementById('adBtn'+i);
+  const sub = document.getElementById('adSub'+i);
+  const task= document.getElementById('adTask'+i);
+  btn.disabled=true; btn.className='ad-task-btn cd';
+  btn.textContent='Loading...';
+  sub.textContent='ကြော်ငြာရှာနေသည်... 🔎';
 
   try{
-    // Init controller lazily
-    if(!adControllers[idx] && window.Adsgram){
-      adControllers[idx] = window.Adsgram.init({ blockId: AD_BLOCK_IDS[idx] });
+    // Lazy init controller — exact pattern from working code
+    if(!adControllers[i] && window.Adsgram){
+      adControllers[i] = window.Adsgram.init({ blockId: AD_BLOCK_IDS[i] });
     }
-    if(!adControllers[idx]) throw new Error('Adsgram not loaded');
+    if(!adControllers[i]) throw new Error('Adsgram SDK မတင်ရသေးပါ');
 
-    const result = await adControllers[idx].show();
-    if(result.done){
-      // Ad watched — give reward
+    const startTime = Date.now();
+    const result    = await adControllers[i].show();
+    const watched   = Math.floor((Date.now()-startTime)/1000);
+
+    // result.done + 14s minimum (same as working code)
+    if(result && result.done && watched >= 14){
       adEarned += AD_REWARD;
-      adState[idx] = {cd: AD_COOLDOWN, done: false};
-      // Reward user balance via API
+      document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
+      // Give reward via backend
       try{
-        await apix('/api/ad-reward',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({amount: AD_REWARD, taskIndex: idx})
+        const r = await apix('/api/ad-reward',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({amount: AD_REWARD})
         });
-        if(user){user.balance=(user.balance||0)+AD_REWARD;renderUser();}
-      }catch{}
-      showT('+'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
-      renderAdTasks();
-      startAdCdTick();
+        if(r?.data?.newBalance !== undefined && user){
+          user.balance = r.data.newBalance; renderUser();
+        } else if(user){
+          user.balance = (user.balance||0)+AD_REWARD; renderUser();
+        }
+      }catch{ if(user){user.balance=(user.balance||0)+AD_REWARD;renderUser();} }
+
+      task.classList.add('watched');
+      sub.textContent='✅ ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
+      showT('🎉 +'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
+      if(tg?.showAlert) tg.showAlert('ဂုဏ်ယူပါတယ်! '+fmt(AD_REWARD)+' Ks ရရှိပါပြီ။');
+
+      // Start 5-minute cooldown
+      localStorage.setItem(AD_TIMER_KEYS[i], String(Date.now()+(AD_COOLDOWN*1000)));
+      adStartTimer(i, AD_COOLDOWN);
+    } else {
+      // Watched but not long enough
+      adSetReady(i);
+      showT('ကြော်ငြာကို အဆုံးထိ ကြည့်ပေးပါ (အနည်းဆုံး ၁၄ စက္ကန့်)','err');
     }
   }catch(e){
-    // Ad not available or error
-    adState[idx].cd = 0;
-    renderAdTasks();
-    if(e?.message?.includes('no fill')||e?.message?.includes('No ad')||e?.type==='no_fill'){
-      showT('ကြော်ငြာ မရနိုင်ပါ — VPN (USA/UK) ဖွင့်ပြီး ထပ်ကြိုးစားပါ','err');
-    } else {
-      showT('ကြော်ငြာ မပြသနိုင်ပါ','err');
-    }
+    adSetReady(i);
+    // "no fill" = no ads available (VPN issue)
+    showT('ကြော်ငြာ မရနိုင်ပါ — VPN (USA/UK) ဖွင့်ပြီး ထပ်ကြိုးစားပါ','err');
+    console.warn('Ad error task'+i+':', e?.message||e);
   }
 }
 // Helpers
