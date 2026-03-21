@@ -519,57 +519,95 @@ const SVC=5000,MWD=100000,P2MIN=20000,P2FEE=5000;
 const CLR=['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
 const ac=i=>CLR[i%CLR.length];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
-let tg=window.Telegram?.WebApp,tid='demo',initDataStr='',user=null,rlink='#',bvis=true;
+// Phone validation: must start with 09, total 9-11 digits
+const PHONE_RE = /^09\d{7,9}$/;
+let tg=window.Telegram?.WebApp,tid=null,initDataStr='',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09783646736',payName='Yee Mon Naing';
 
+// ═══ HAPTIC FEEDBACK HELPERS ═══
+function hapticLight(){ try{ tg?.HapticFeedback?.impactOccurred('light'); }catch(e){} }
+function hapticError(){ try{ tg?.HapticFeedback?.notificationOccurred('error'); }catch(e){} }
+function hapticSuccess(){ try{ tg?.HapticFeedback?.notificationOccurred('success'); }catch(e){} }
+
+// ═══ TELEGRAM ID ═══
+function getTid(){
+  if(tid) return tid;
+  try{
+    const wa = window.Telegram?.WebApp;
+    // Method 1: initDataUnsafe (fastest)
+    if(wa?.initDataUnsafe?.user?.id){
+      tid = String(wa.initDataUnsafe.user.id);
+      return tid;
+    }
+    // Method 2: parse raw initData string
+    if(wa?.initData){
+      const p = new URLSearchParams(wa.initData);
+      const uStr = p.get('user');
+      if(uStr){ const u=JSON.parse(uStr); if(u?.id){ tid=String(u.id); return tid; } }
+    }
+  }catch(e){ console.warn('[KBZ] getTid error:',e); }
+  return null;
+}
+
 document.addEventListener('DOMContentLoaded',async()=>{
-  // ── Init Telegram WebApp (Paycoin approach) ─────────────
+  // ── Init Telegram WebApp ──────────────────────────────────
   if(window.Telegram?.WebApp){
     tg = window.Telegram.WebApp;
     tg.expand();
     tg.ready();
-    // Raw initData string — sent to backend for HMAC verification
     initDataStr = tg.initData || '';
-    // Get tid for fallback display
-    const u = tg.initDataUnsafe?.user;
-    if(u?.id) tid = String(u.id);
   }
+  getTid(); // populate tid
   console.log('[KBZ] tid=', tid, 'initData=', initDataStr.length>0?'present':'MISSING');
-  await loadUser();loadLB();loadWDs();loadCfg();
+
+  // ── Block if not opened from Telegram ────────────────────
+  if(!tid){
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+        height:100vh;background:#0053a6;color:#fff;text-align:center;padding:32px;font-family:'Roboto',sans-serif">
+        <div style="font-size:56px;margin-bottom:16px">✈️</div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:10px">Telegram မှ ဖွင့်ပါ</h2>
+        <p style="font-size:14px;opacity:.85;line-height:1.7">Please open this app from Telegram.<br/>
+        ဤ App ကို Telegram Bot မှသာ ဖွင့်နိုင်ပါသည်။</p>
+      </div>`;
+    return;
+  }
+
+  await loadUser(); loadLB(); loadWDs(); loadCfg();
+
+  // ── Eye / hide balance ────────────────────────────────────
   document.getElementById('eyeBtn').addEventListener('click',()=>{
+    hapticLight();
     bvis=!bvis;
     document.getElementById('eyeBtn').className=bvis?'fa-regular fa-eye':'fa-regular fa-eye-slash';
-    document.getElementById('balMain').textContent=bvis?fmt(user?.balance||0):'*****';
-    document.getElementById('balTot').textContent=bvis?fmt(user?.balance||0)+'.00':'*****';
+    const bal=user?.balance||0;
+    document.getElementById('balMain').textContent=bvis?fmt(bal):'*****';
+    document.getElementById('balTot').textContent=bvis?fmt(bal)+'.00':'*****';
   });
 });
 
-// apix — Paycoin approach: send raw initData for backend HMAC verification
-const apix=(p,o={})=>fetch(API+p,{
-  headers:{
-    'x-telegram-id':        tid,
-    'X-Telegram-Init-Data': initDataStr,
-    ...(o.headers||{})
-  },
-  ...o
-}).then(r=>r.json());
-
-// getTid — read from initDataUnsafe
-function getTid(){
-  if(tid && tid!=='demo') return tid;
-  try{
-    const wa = window.Telegram?.WebApp;
-    if(wa?.initDataUnsafe?.user?.id){
-      tid = String(wa.initDataUnsafe.user.id);
-    } else if(wa?.initData){
-      const p = new URLSearchParams(wa.initData);
-      const uStr = p.get('user');
-      if(uStr){ const u=JSON.parse(uStr); if(u?.id) tid=String(u.id); }
+// ═══ UNIFIED API HELPER ═══
+async function callApi(path, options={}){
+  const fetchOptions = {
+    ...options,
+    headers:{
+      'x-telegram-id':        tid||'',
+      'X-Telegram-Init-Data': initDataStr,
+      ...(options.headers||{})
     }
-  }catch(e){}
-  return tid;
+  };
+  try{
+    const res = await fetch(API+path, fetchOptions);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return await res.json();
+  } catch(e){
+    console.error('[KBZ] callApi error:', path, e);
+    throw e;
+  }
 }
+// Keep apix as alias for backward compat
+const apix = callApi;
 
 async function loadCfg(){
   try{
@@ -585,12 +623,10 @@ async function loadCfg(){
 
 async function loadUser(){
   try{
-    // Refresh tid and initDataStr before API call
-    getTid();
     if(tg?.initData) initDataStr = tg.initData;
     const wa=tg?.initDataUnsafe;
     const u=wa?.user, sp=wa?.start_param||'';
-    const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
+    const r=await callApi('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         telegramId: tid,
         firstName:  u?.first_name||'Guest',
@@ -601,7 +637,6 @@ async function loadUser(){
     if(!r.success)throw 0;
     user=r.data;
     rlink=r.data.referralLink;
-    // Always sync tid from server-confirmed value
     if(r.data.telegramId) tid = String(r.data.telegramId);
     renderUser();
   }catch(e){
@@ -615,7 +650,10 @@ function renderUser(){
   const ini=firstName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const av=document.getElementById('avEl');av.innerHTML=`<span class="ini">${ini}</span>`;
   document.getElementById('nameEl').textContent=firstName;
-  if(bvis){animN('balMain',balance);document.getElementById('balTot').textContent=fmt(balance)+'.00';}
+  const balDisplay = bvis ? fmt(balance) : '*****';
+  const balTotDisplay = bvis ? fmt(balance)+'.00' : '*****';
+  if(bvis){ animN('balMain',balance); } else { document.getElementById('balMain').textContent='*****'; }
+  document.getElementById('balTot').textContent=balTotDisplay;
   document.getElementById('wBal').textContent=fmt(balance)+' Ks';
   document.getElementById('refC').textContent=referrals;
   document.getElementById('refE').textContent=fmt(referrals*5000);
@@ -653,6 +691,7 @@ function swTab(t){
 
 // P2P
 function openP2P(){
+  hapticLight();
   document.getElementById('p2Amt').value='';document.getElementById('p2FeeBox').style.display='none';document.getElementById('p2BuyBtn').disabled=true;
   p2SetSt(1);document.getElementById('p2Ov').classList.add('open');
 }
@@ -678,7 +717,8 @@ function p2CheckEnable(){
   const v=parseInt(document.getElementById('p2Amt').value)||0;
   const ph=(document.getElementById('p2KpayPhone')?.value||'').trim();
   const nm=(document.getElementById('p2KpayName')?.value||'').trim();
-  document.getElementById('p2BuyBtn').disabled=!(v>=P2MIN&&ph.length>=9&&nm.length>=2);
+  // Phone: must start 09, total 9-11 digits
+  document.getElementById('p2BuyBtn').disabled=!(v>=P2MIN&&PHONE_RE.test(ph)&&nm.length>=2);
 }
 function onP2A(){
   const v=parseInt(document.getElementById('p2Amt').value)||0;
@@ -716,25 +756,29 @@ function onP2F(e){
   rd.readAsDataURL(f);document.getElementById('p2SubBtn').disabled=false;
 }
 async function subP2P(){
-  if(!p2File){showT('Screenshot မတင်ရသေးပါ','err');return;}
-  if(p2Secs<=0){showT('အချိန်ကုန်ပြီ — ပြန်စပါ','err');return;}
+  if(!p2File){showT('Screenshot မတင်ရသေးပါ','err');hapticError();return;}
+  if(p2Secs<=0){showT('အချိန်ကုန်ပြီ — ပြန်စပါ','err');hapticError();return;}
+  // Validate phone
+  const uPhone=(document.getElementById('p2KpayPhone')?.value||'').trim();
+  const uName=(document.getElementById('p2KpayName')?.value||'').trim();
+  if(!PHONE_RE.test(uPhone)){showT('❌ ဖုန်းနံပါတ် မမှန်ကန်ပါ (09 ဖြင့်စပြီး ၉-၁၁ လုံး)','err');hapticError();return;}
+  hapticLight();
   document.getElementById('p2SubBtn').disabled=true;document.getElementById('p2SubTxt').textContent='တင်နေသည်...';document.getElementById('p2Sp').style.display='block';
   clearInterval(p2Timer);
   try{
-    const uPhone=(document.getElementById('p2KpayPhone')?.value||'').trim();
-    const uName=(document.getElementById('p2KpayName')?.value||'').trim();
     const fd=new FormData();fd.append('amount',p2Amt);fd.append('screenshot',p2File);
     fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
-    // /api/p2p — balance မနုတ်ဘဲ admin ဆီ photo ပို့သည်
-    const r=await fetch(API+'/api/p2p',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
+    const r=await fetch(API+'/api/p2p',{method:'POST',headers:{'x-telegram-id':tid||''},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
+    hapticSuccess();
     p2SetSt(3);showT('တင်ပြီးပါပြီ!','ok');
-  }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('p2SubBtn').disabled=false;}
+  }catch(e){hapticError();showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('p2SubBtn').disabled=false;}
   finally{document.getElementById('p2SubTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('p2Sp').style.display='none';}
 }
 
 // Withdraw
 function openWd(){
+  hapticLight();
   const b=user?.balance||0;
   document.getElementById('wBal').textContent=fmt(b)+' Ks';
   document.getElementById('lowWarn').style.display=b<MWD?'flex':'none';
@@ -760,7 +804,17 @@ function wStep(n){
   if(n===2){
     const ph=document.getElementById('uKpayPhone'),nm=document.getElementById('uKpayName'),btn=document.getElementById('wKpayNextBtn');
     if(ph&&nm&&btn){
-      const chk=()=>{btn.disabled=!(ph.value.trim().length>=9&&nm.value.trim().length>=2);};
+      const chk=()=>{
+        const phVal=ph.value.trim();
+        const valid=PHONE_RE.test(phVal)&&nm.value.trim().length>=2;
+        btn.disabled=!valid;
+        // Show inline hint if phone entered but invalid
+        if(phVal.length>0&&!PHONE_RE.test(phVal)){
+          ph.style.borderColor='#e53935';
+        } else {
+          ph.style.borderColor='';
+        }
+      };
       ph.oninput=chk;nm.oninput=chk;chk();
     }
   }
@@ -783,19 +837,22 @@ function onWF(e){
   rd.readAsDataURL(f);document.getElementById('wSubBtn').disabled=false;
 }
 async function subWd(){
-  if(!wFile){showT('Screenshot မတင်ရသေးပါ','err');return;}
-  const amt=parseInt(document.getElementById('wAmt').value);if(!amt||amt<MWD){showT('ပမာဏ မမှန်ကန်ပါ','err');return;}
+  if(!wFile){showT('Screenshot မတင်ရသေးပါ','err');hapticError();return;}
+  const amt=parseInt(document.getElementById('wAmt').value);if(!amt||amt<MWD){showT('ပမာဏ မမှန်ကန်ပါ','err');hapticError();return;}
   const uPhone=(document.getElementById('uKpayPhone')?.value||'').trim();
   const uName=(document.getElementById('uKpayName')?.value||'').trim();
+  if(!PHONE_RE.test(uPhone)){showT('❌ ဖုန်းနံပါတ် မမှန်ကန်ပါ (09 ဖြင့်စပြီး ၉-၁၁ လုံး)','err');hapticError();return;}
+  hapticLight();
   document.getElementById('wSubBtn').disabled=true;document.getElementById('wSubTxt').textContent='တင်နေသည်...';document.getElementById('wSp').style.display='block';
   try{
     const fd=new FormData();fd.append('amount',amt);fd.append('screenshot',wFile);
     fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
-    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
+    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid||''},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
     if(r.data?.newBalance!==undefined){user.balance=r.data.newBalance;renderUser();}
+    hapticSuccess();
     wStep(4);showT('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWDs();
-  }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('wSubBtn').disabled=false;}
+  }catch(e){hapticError();showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('wSubBtn').disabled=false;}
   finally{document.getElementById('wSubTxt').textContent='ငွေလွှဲပြီးပြီ ✓';document.getElementById('wSp').style.display='none';}
 }
 
@@ -877,9 +934,7 @@ function taskStartTimer(i, duration){
 async function claimTask(i){
   const btn = document.getElementById('adBtn'+i);
   if(!btn || btn.disabled) return;
-
-  // Sync tid
-  if(user?.telegramId && user.telegramId!=='demo') tid = String(user.telegramId);
+  hapticLight(); // haptic on button press
 
   btn.disabled = true; btn.className = 'ad-task-btn cd';
   btn.textContent = 'လုပ်ဆောင်နေသည်...';
@@ -888,28 +943,33 @@ async function claimTask(i){
   sub.textContent = 'စစ်ဆေးနေသည်...';
 
   try{
-    const r = await apix('/api/ad-reward',{
+    // Security: send only taskIndex — backend calculates the reward amount
+    const r = await callApi('/api/ad-reward',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({amount: TASK_REWARD, taskIndex: i})
+      body: JSON.stringify({ taskIndex: i })
     });
     if(r?.success && r?.data?.newBalance !== undefined){
-      taskEarned += TASK_REWARD;
+      const earned = r.data.reward || TASK_REWARD; // use server-returned reward
+      taskEarned += earned;
       document.getElementById('adEarnedVal').textContent = fmt(taskEarned)+' Ks';
       if(user){ user.balance = r.data.newBalance; renderUser(); }
       task.classList.add('watched');
-      sub.textContent = '✅ ရရှိပြီး +'+fmt(TASK_REWARD)+' Ks';
-      showT('🎉 +'+fmt(TASK_REWARD)+' Ks ရပါပြီ!','ok');
+      sub.textContent = '✅ ရရှိပြီး +'+fmt(earned)+' Ks';
+      showT('🎉 +'+fmt(earned)+' Ks ရပါပြီ!','ok');
+      hapticSuccess();
       // Start 5-minute cooldown
       localStorage.setItem(TASK_KEYS[i], String(Date.now()+(TASK_COOLDOWN*1000)));
       taskStartTimer(i, TASK_COOLDOWN);
     } else {
       sub.textContent = 'ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်';
       showT('❌ '+(r?.message||'မအောင်မြင်ပါ'),'err');
+      hapticError();
       taskSetReady(i);
     }
   }catch(e){
     showT('❌ Network error — ထပ်ကြိုးစားပါ','err');
+    hapticError();
     taskSetReady(i);
   }
 }
