@@ -519,34 +519,45 @@ const SVC=5000,MWD=100000,P2MIN=20000,P2FEE=5000;
 const CLR=['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
 const ac=i=>CLR[i%CLR.length];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
-let tg=null,tid='demo',initDataStr='',user=null,rlink='#',bvis=true;
+let tg=null,tid='demo',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09783646736',payName='Yee Mon Naing';
 
-document.addEventListener('DOMContentLoaded',async()=>{
-  // ── Init Telegram WebApp ─────────────────────────────────
-  // ready() MUST be called first before reading any data
-  tg = window.Telegram?.WebApp || null;
-  if(tg){
-    tg.ready();    // ← MUST be first
-    tg.expand();
-    tg.setHeaderColor('#0053a6');
-    // Store raw initData for backend
-    initDataStr = tg.initData || '';
-    // Get user ID
-    const u = tg.initDataUnsafe?.user;
-    if(u?.id){
-      tid = String(u.id);
-    } else if(initDataStr){
-      // Parse from initData string as fallback
-      try{
-        const p = new URLSearchParams(initDataStr);
-        const uStr = p.get('user');
-        if(uStr){ const uo=JSON.parse(uStr); if(uo?.id) tid=String(uo.id); }
-      }catch(e){}
+// ── Telegram init ─────────────────────────────────────────────────────────────
+// Run immediately when script loads — before DOMContentLoaded
+if(window.Telegram?.WebApp){
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
+  tg = window.Telegram.WebApp;
+  const _u = tg.initDataUnsafe?.user;
+  if(_u?.id) tid = String(_u.id);
+}
+
+// ── apix helper ───────────────────────────────────────────────────────────────
+// tid is a global let — always read current value at call time
+function apix(p,o={}){
+  // Ensure tid is latest — fallback chain
+  if(!tid||tid==='demo'){
+    if(tg?.initDataUnsafe?.user?.id) tid=String(tg.initDataUnsafe.user.id);
+    else if(tg?.initData){
+      try{const q=new URLSearchParams(tg.initData);const s=q.get('user');if(s){const v=JSON.parse(s);if(v?.id)tid=String(v.id);}}catch(e){}
     }
+    if(user?.telegramId&&user.telegramId!=='demo') tid=String(user.telegramId);
   }
-  console.log('[KBZ] tid=', tid, 'initData=', initDataStr.length>0?'OK':'MISSING');
+  return fetch(API+p,{
+    headers:{'x-telegram-id':tid,...(o.headers||{})},
+    ...o
+  }).then(r=>r.json());
+}
+
+document.addEventListener('DOMContentLoaded',async()=>{
+  if(tg){tg.setHeaderColor('#0053a6');}
+  // Re-read tid in case not ready during script load
+  if((!tid||tid==='demo')&&tg){
+    const _u=tg.initDataUnsafe?.user;
+    if(_u?.id) tid=String(_u.id);
+  }
+  console.log('[KBZ] tid=',tid);
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
@@ -555,50 +566,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
     document.getElementById('balTot').textContent=bvis?fmt(user?.balance||0)+'.00':'*****';
   });
 });
-
-// getTid — always re-reads from all available sources
-function getTid(){
-  // 1. Already have valid tid
-  if(tid && tid!=='demo') return tid;
-  try{
-    const wa = window.Telegram?.WebApp;
-    // 2. initDataUnsafe (most reliable after ready())
-    if(wa?.initDataUnsafe?.user?.id){
-      tid = String(wa.initDataUnsafe.user.id);
-      return tid;
-    }
-    // 3. Parse from initData string
-    const raw = wa?.initData || initDataStr;
-    if(raw){
-      const p = new URLSearchParams(raw);
-      const uStr = p.get('user');
-      if(uStr){
-        const u = JSON.parse(uStr);
-        if(u?.id){ tid = String(u.id); return tid; }
-      }
-    }
-    // 4. user object from server (after loadUser)
-    if(user?.telegramId && user.telegramId !== 'demo'){
-      tid = String(user.telegramId);
-      return tid;
-    }
-  }catch(e){}
-  return tid;
-}
-
-// apix — always calls getTid() at request time (never stale)
-const apix=(p,o={})=>{
-  const currentTid = getTid();
-  const currentInitData = window.Telegram?.WebApp?.initData || initDataStr || '';
-  return fetch(API+p,{
-    headers:{
-      'x-telegram-id':        currentTid,
-      'X-Telegram-Init-Data': currentInitData,
-      ...(o.headers||{})
-    },
-    ...o
-  }).then(r=>r.json());
-};
 
 async function loadCfg(){
   try{
@@ -906,11 +873,7 @@ function taskStartTimer(i, duration){
 async function claimTask(i){
   const btn = document.getElementById('adBtn'+i);
   if(!btn || btn.disabled) return;
-
-  // Always get latest tid from all sources before API call
-  getTid();
-  // Also update initDataStr
-  if(window.Telegram?.WebApp?.initData) initDataStr = window.Telegram.WebApp.initData;
+  // apix() handles tid internally — no pre-processing needed
 
   btn.disabled = true; btn.className = 'ad-task-btn cd';
   btn.textContent = 'လုပ်ဆောင်နေသည်...';

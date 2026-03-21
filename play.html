@@ -160,8 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Init WebApp
   tg = window.Telegram?.WebApp || null;
   if(tg){
-    tg.expand();
     tg.ready();
+    tg.expand();
     tg.setHeaderColor('#1565c0');
     tgInitData = tg.initData || '';
     // Method 1: initDataUnsafe
