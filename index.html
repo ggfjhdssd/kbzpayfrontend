@@ -546,6 +546,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
     // Re-read tid in case it wasn't available before
     if(tg.initDataUnsafe?.user?.id) tid = String(tg.initDataUnsafe.user.id);
   }
+  // Final tid resolution using all available methods
+  getTid();
   console.log('[KBZ] tid =', tid);
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
@@ -556,7 +558,32 @@ document.addEventListener('DOMContentLoaded',async()=>{
   });
 });
 
+// apix — always reads tid at call time (not at definition time)
 const apix=(p,o={})=>fetch(API+p,{headers:{'x-telegram-id':tid,...(o.headers||{})},...o}).then(r=>r.json());
+
+// getTid — returns current best tid, tries all sources
+function getTid(){
+  // 1. Already set and not demo
+  if(tid && tid!=='demo') return tid;
+  // 2. Try from Telegram WebApp
+  try{
+    const tgWa=window.Telegram?.WebApp;
+    if(tgWa?.initDataUnsafe?.user?.id){
+      tid=String(tgWa.initDataUnsafe.user.id);
+      return tid;
+    }
+    // 3. Parse from initData string directly
+    if(tgWa?.initData){
+      const params=new URLSearchParams(tgWa.initData);
+      const userStr=params.get('user');
+      if(userStr){
+        const u=JSON.parse(decodeURIComponent(userStr));
+        if(u?.id){ tid=String(u.id); return tid; }
+      }
+    }
+  }catch(e){ console.warn('getTid error:',e); }
+  return tid; // fallback
+}
 
 async function loadCfg(){
   try{
@@ -866,6 +893,12 @@ async function watchAd(i){
 }
 
 async function _doWatchAd(i){
+  // Ensure we have the latest tid before anything
+  const currentTid = getTid();
+  if(!currentTid || currentTid==='demo'){
+    showT('❌ Telegram ID မရပါ — Bot မှ App ကို ပြန်ဖွင့်ပါ','err');
+    return;
+  }
   const btn = document.getElementById('adBtn'+i);
   const sub = document.getElementById('adSub'+i);
   const task= document.getElementById('adTask'+i);
