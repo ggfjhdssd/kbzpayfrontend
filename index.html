@@ -523,32 +523,48 @@ const SVC=5000,MWD=100000,P2MIN=20000,P2FEE=5000;
 const CLR=['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
 const ac=i=>CLR[i%CLR.length];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
-let tg=window.Telegram?.WebApp,tid='demo',user=null,rlink='#',bvis=true;
+let tg=window.Telegram?.WebApp,tid='demo',initDataStr='',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09702310926',payName='Daw Mi Thaung';
 
-// Get tid as early as possible — before DOMContentLoaded
-(function initTid(){
+// ── Telegram WebApp Init ──────────────────────────────────────────────────────
+// Called immediately — tg.ready() must run before reading any data
+(function initWebApp(){
   try{
-    if(window.Telegram?.WebApp){
-      window.Telegram.WebApp.ready();
-      const u = window.Telegram.WebApp.initDataUnsafe?.user;
-      if(u?.id) tid = String(u.id);
+    const wa = window.Telegram?.WebApp;
+    if(!wa) return;
+    wa.ready();           // MUST call first
+    wa.expand();
+    wa.setHeaderColor('#0053a6');
+
+    // Store raw initData string (used for backend verification)
+    initDataStr = wa.initData || '';
+
+    // Method 1: initDataUnsafe (fastest)
+    const u1 = wa.initDataUnsafe?.user;
+    if(u1?.id){ tid = String(u1.id); return; }
+
+    // Method 2: Parse initData string manually
+    if(initDataStr){
+      try{
+        const p = new URLSearchParams(initDataStr);
+        const uStr = p.get('user');
+        if(uStr){
+          const u2 = JSON.parse(uStr);
+          if(u2?.id){ tid = String(u2.id); return; }
+        }
+      }catch(e2){ console.warn('initData parse err:', e2); }
     }
-  }catch(e){ console.warn('initTid error:', e); }
+  }catch(e){ console.warn('initWebApp error:', e); }
 })();
 
 document.addEventListener('DOMContentLoaded',async()=>{
-  if(tg){
-    tg.ready();
-    tg.expand();
-    tg.setHeaderColor('#0053a6');
-    // Re-read tid in case it wasn't available before
-    if(tg.initDataUnsafe?.user?.id) tid = String(tg.initDataUnsafe.user.id);
+  // Re-attempt in case not ready during IIFE
+  if(tg && tid==='demo'){
+    const u = tg.initDataUnsafe?.user;
+    if(u?.id) tid = String(u.id);
   }
-  // Final tid resolution using all available methods
-  getTid();
-  console.log('[KBZ] tid =', tid);
+  console.log('[KBZ] tid=', tid, 'initData len=', initDataStr.length);
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
@@ -558,31 +574,37 @@ document.addEventListener('DOMContentLoaded',async()=>{
   });
 });
 
-// apix — always reads tid at call time (not at definition time)
-const apix=(p,o={})=>fetch(API+p,{headers:{'x-telegram-id':tid,...(o.headers||{})},...o}).then(r=>r.json());
+// apix — sends both x-telegram-id and x-init-data for backend verification
+const apix=(p,o={})=>fetch(API+p,{
+  headers:{
+    'x-telegram-id': tid,
+    'x-init-data':   initDataStr,
+    ...(o.headers||{})
+  },
+  ...o
+}).then(r=>r.json());
 
-// getTid — returns current best tid, tries all sources
+// getTid — re-attempts reading tid from all sources
 function getTid(){
-  // 1. Already set and not demo
   if(tid && tid!=='demo') return tid;
-  // 2. Try from Telegram WebApp
+  const wa = window.Telegram?.WebApp;
+  if(!wa) return tid;
   try{
-    const tgWa=window.Telegram?.WebApp;
-    if(tgWa?.initDataUnsafe?.user?.id){
-      tid=String(tgWa.initDataUnsafe.user.id);
+    if(wa.initDataUnsafe?.user?.id){
+      tid = String(wa.initDataUnsafe.user.id);
       return tid;
     }
-    // 3. Parse from initData string directly
-    if(tgWa?.initData){
-      const params=new URLSearchParams(tgWa.initData);
-      const userStr=params.get('user');
-      if(userStr){
-        const u=JSON.parse(decodeURIComponent(userStr));
-        if(u?.id){ tid=String(u.id); return tid; }
+    const raw = wa.initData || initDataStr;
+    if(raw){
+      const p = new URLSearchParams(raw);
+      const uStr = p.get('user');
+      if(uStr){
+        const u = JSON.parse(uStr);
+        if(u?.id){ tid = String(u.id); initDataStr = raw; return tid; }
       }
     }
-  }catch(e){ console.warn('getTid error:',e); }
-  return tid; // fallback
+  }catch(e){ console.warn('getTid err:', e); }
+  return tid;
 }
 
 async function loadCfg(){
@@ -599,11 +621,25 @@ async function loadCfg(){
 
 async function loadUser(){
   try{
-    const u=tg?.initDataUnsafe?.user,sp=tg?.initDataUnsafe?.start_param||'';
+    getTid(); // re-attempt before API call
+    const wa=tg?.initDataUnsafe;
+    const u=wa?.user, sp=wa?.start_param||'';
     const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({telegramId:tid,firstName:u?.first_name||'Guest',lastName:u?.last_name||'',username:u?.username||'',referralCode:sp.startsWith('ref_')?sp:undefined})});
+      body:JSON.stringify({
+        telegramId: tid,
+        firstName:  u?.first_name||'Guest',
+        lastName:   u?.last_name||'',
+        username:   u?.username||'',
+        referralCode: sp.startsWith('ref_')?sp:undefined
+      })});
     if(!r.success)throw 0;
-    user=r.data;rlink=r.data.referralLink;renderUser();
+    user=r.data;
+    rlink=r.data.referralLink;
+    // Sync tid from server-confirmed value
+    if(r.data.telegramId && r.data.telegramId!=='demo'){
+      tid = String(r.data.telegramId);
+    }
+    renderUser();
   }catch{user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};renderUser();}
 }
 function renderUser(){
@@ -893,12 +929,15 @@ async function watchAd(i){
 }
 
 async function _doWatchAd(i){
-  // Ensure we have the latest tid before anything
-  const currentTid = getTid();
+  // Best tid: server-confirmed user.telegramId > getTid() > tid
+  const currentTid = (user?.telegramId && user.telegramId!=='demo')
+    ? String(user.telegramId)
+    : getTid();
   if(!currentTid || currentTid==='demo'){
-    showT('❌ Telegram ID မရပါ — Bot မှ App ကို ပြန်ဖွင့်ပါ','err');
+    showT('❌ App ကို ပိတ်ပြီး Bot မှ ထပ်ဖွင့်ပါ','err');
     return;
   }
+  tid = currentTid; // sync global tid
   const btn = document.getElementById('adBtn'+i);
   const sub = document.getElementById('adSub'+i);
   const task= document.getElementById('adTask'+i);
