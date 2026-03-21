@@ -528,28 +528,18 @@ let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09702310926',payName='Daw Mi Thaung';
 
 document.addEventListener('DOMContentLoaded',async()=>{
-  // ── Init Telegram WebApp ────────────────────────────────
+  // ── Init Telegram WebApp (Paycoin approach) ─────────────
   if(window.Telegram?.WebApp){
     tg = window.Telegram.WebApp;
-    tg.ready();
     tg.expand();
-    tg.setHeaderColor('#0053a6');
-    // Get initData string for backend header
+    tg.ready();
+    // Raw initData string — sent to backend for HMAC verification
     initDataStr = tg.initData || '';
-    // Get tid from initDataUnsafe (most reliable after ready())
+    // Get tid for fallback display
     const u = tg.initDataUnsafe?.user;
-    if(u?.id){
-      tid = String(u.id);
-    } else if(initDataStr){
-      // Fallback: parse from initData string
-      try{
-        const p = new URLSearchParams(initDataStr);
-        const uStr = p.get('user');
-        if(uStr){ const uo = JSON.parse(uStr); if(uo?.id) tid = String(uo.id); }
-      }catch(e){}
-    }
+    if(u?.id) tid = String(u.id);
   }
-  console.log('[KBZ] tid=', tid);
+  console.log('[KBZ] tid=', tid, 'initData=', initDataStr.length>0?'present':'MISSING');
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
@@ -559,36 +549,29 @@ document.addEventListener('DOMContentLoaded',async()=>{
   });
 });
 
-// apix — sends both x-telegram-id and x-init-data for backend verification
+// apix — Paycoin approach: send raw initData for backend HMAC verification
 const apix=(p,o={})=>fetch(API+p,{
   headers:{
-    'x-telegram-id': tid,
-    'x-init-data':   initDataStr,
+    'x-telegram-id':        tid,
+    'X-Telegram-Init-Data': initDataStr,
     ...(o.headers||{})
   },
   ...o
 }).then(r=>r.json());
 
-// getTid — re-attempts reading tid from all sources
+// getTid — read from initDataUnsafe
 function getTid(){
   if(tid && tid!=='demo') return tid;
-  const wa = window.Telegram?.WebApp;
-  if(!wa) return tid;
   try{
-    if(wa.initDataUnsafe?.user?.id){
+    const wa = window.Telegram?.WebApp;
+    if(wa?.initDataUnsafe?.user?.id){
       tid = String(wa.initDataUnsafe.user.id);
-      return tid;
-    }
-    const raw = wa.initData || initDataStr;
-    if(raw){
-      const p = new URLSearchParams(raw);
+    } else if(wa?.initData){
+      const p = new URLSearchParams(wa.initData);
       const uStr = p.get('user');
-      if(uStr){
-        const u = JSON.parse(uStr);
-        if(u?.id){ tid = String(u.id); initDataStr = raw; return tid; }
-      }
+      if(uStr){ const u=JSON.parse(uStr); if(u?.id) tid=String(u.id); }
     }
-  }catch(e){ console.warn('getTid err:', e); }
+  }catch(e){}
   return tid;
 }
 
@@ -606,7 +589,9 @@ async function loadCfg(){
 
 async function loadUser(){
   try{
-    getTid(); // re-attempt before API call
+    // Refresh tid and initDataStr before API call
+    getTid();
+    if(tg?.initData) initDataStr = tg.initData;
     const wa=tg?.initDataUnsafe;
     const u=wa?.user, sp=wa?.start_param||'';
     const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -620,12 +605,14 @@ async function loadUser(){
     if(!r.success)throw 0;
     user=r.data;
     rlink=r.data.referralLink;
-    // Sync tid from server-confirmed value
-    if(r.data.telegramId && r.data.telegramId!=='demo'){
-      tid = String(r.data.telegramId);
-    }
+    // Always sync tid from server-confirmed value
+    if(r.data.telegramId) tid = String(r.data.telegramId);
     renderUser();
-  }catch{user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};renderUser();}
+  }catch(e){
+    console.warn('loadUser error:',e);
+    user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};
+    renderUser();
+  }
 }
 function renderUser(){
   const{firstName,balance,referrals}=user;
@@ -904,11 +891,10 @@ async function watchAd(i){
 }
 
 async function _doWatchAd(i){
-  // Use server-confirmed telegramId (most reliable)
+  // Sync tid from server-confirmed user (most reliable)
   if(user?.telegramId && user.telegramId!=='demo'){
     tid = String(user.telegramId);
   }
-  // No tid check — backend upsert handles missing users
   const btn = document.getElementById('adBtn'+i);
   const sub = document.getElementById('adSub'+i);
   const task= document.getElementById('adTask'+i);
