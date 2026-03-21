@@ -527,8 +527,26 @@ let tg=window.Telegram?.WebApp,tid='demo',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09702310926',payName='Daw Mi Thaung';
 
+// Get tid as early as possible — before DOMContentLoaded
+(function initTid(){
+  try{
+    if(window.Telegram?.WebApp){
+      window.Telegram.WebApp.ready();
+      const u = window.Telegram.WebApp.initDataUnsafe?.user;
+      if(u?.id) tid = String(u.id);
+    }
+  }catch(e){ console.warn('initTid error:', e); }
+})();
+
 document.addEventListener('DOMContentLoaded',async()=>{
-  if(tg){tg.ready();tg.expand();tg.setHeaderColor('#0053a6');if(tg.initDataUnsafe?.user)tid=String(tg.initDataUnsafe.user.id);}
+  if(tg){
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#0053a6');
+    // Re-read tid in case it wasn't available before
+    if(tg.initDataUnsafe?.user?.id) tid = String(tg.initDataUnsafe.user.id);
+  }
+  console.log('[KBZ] tid =', tid);
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
