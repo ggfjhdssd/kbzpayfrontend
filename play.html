@@ -153,26 +153,54 @@ body{font-family:var(--ff);display:flex;justify-content:center}
 const API    = 'https://kbzpaybackend.onrender.com';
 const COLORS = ['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c'];
 const fmt    = n => Number(n||0).toLocaleString('en-US');
-let tg = window.Telegram?.WebApp;
-let tgId = 'demo', myRefLink = '#';
+let tg = null;
+let tgId = 'demo', tgInitData = '', myRefLink = '#';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if(tg){tg.ready();tg.expand();tg.setHeaderColor('#1565c0');if(tg.initDataUnsafe?.user)tgId=String(tg.initDataUnsafe.user.id);}
+  // Init WebApp
+  tg = window.Telegram?.WebApp || null;
+  if(tg){
+    tg.expand();
+    tg.ready();
+    tg.setHeaderColor('#1565c0');
+    tgInitData = tg.initData || '';
+    // Method 1: initDataUnsafe
+    if(tg.initDataUnsafe?.user?.id){
+      tgId = String(tg.initDataUnsafe.user.id);
+    // Method 2: parse from initData string
+    } else if(tgInitData){
+      try{
+        const p = new URLSearchParams(tgInitData);
+        const uStr = p.get('user');
+        if(uStr){ const u=JSON.parse(uStr); if(u?.id) tgId=String(u.id); }
+      }catch(e){}
+    }
+  }
+  console.log('[PLAY] tgId=', tgId);
   await loadUser();
   loadLeaderboard();
 });
 
 async function loadUser() {
   try {
+    // Re-read tid before API call
+    if(tg?.initDataUnsafe?.user?.id) tgId = String(tg.initDataUnsafe.user.id);
+    if(tg?.initData) tgInitData = tg.initData;
     const tgUser=tg?.initDataUnsafe?.user;
     const sp=tg?.initDataUnsafe?.start_param||'';
     const res=await fetch(API+'/api/users/me',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-telegram-id':tgId},
+      headers:{
+        'Content-Type':'application/json',
+        'x-telegram-id': tgId,
+        'X-Telegram-Init-Data': tgInitData
+      },
       body:JSON.stringify({telegramId:tgId,firstName:tgUser?.first_name||'Guest',lastName:tgUser?.last_name||'',username:tgUser?.username||'',referralCode:sp.startsWith('ref_')?sp:undefined}),
     }).then(r=>r.json());
     if(!res.success) throw 0;
     const u=res.data;
+    // Sync tgId from server-confirmed value
+    if(u.telegramId) tgId = String(u.telegramId);
     myRefLink=u.referralLink;
     document.getElementById('refInp').value=myRefLink;
     document.getElementById('totalEarned').textContent=fmt(u.totalEarned||0);
