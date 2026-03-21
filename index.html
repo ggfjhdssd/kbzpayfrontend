@@ -450,53 +450,49 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 </div>
 
 <!-- AD MODAL -->
+<!-- DAILY TASK MODAL -->
 <div class="overlay" id="adOv" onclick="if(event.target===this)closeAd()">
   <div class="modal">
     <div class="mhnd"></div>
-    <div class="mtit">📺 ကြော်ငြာကြည့်ပြီး ငွေရှာပါ</div>
-    <p style="font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">ကြော်ငြာတစ်ခုကြည့်တိုင်း ၃,၀၀၀ ကျပ် ရရှိမည်</p>
+    <div class="mtit">🎯 Daily Tasks</div>
+    <p style="font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">Task တစ်ခုယူတိုင်း ၃,၀၀၀ Ks ရရှိမည် (၅ မိနစ်တစ်ကြိမ်)</p>
 
     <!-- Earned today -->
     <div class="ad-earn-box">
       <div class="ad-earn-val" id="adEarnedVal">0 Ks</div>
-      <div class="ad-earn-lbl">ဒီနေ့ ကြော်ငြာမှ ရရှိပြီး</div>
+      <div class="ad-earn-lbl">ဒီနေ့ Tasks မှ ရရှိပြီး</div>
     </div>
 
     <!-- Task 1 -->
     <div class="ad-task" id="adTask0">
-      <div class="ad-task-icon">📱</div>
+      <div class="ad-task-icon">🎁</div>
       <div class="ad-task-body">
-        <div class="ad-task-title mm">ကြော်ငြာ Task 1</div>
-        <div class="ad-task-sub mm" id="adSub0">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+        <div class="ad-task-title mm">Daily Task 1</div>
+        <div class="ad-task-sub mm" id="adSub0">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
       </div>
-      <button class="ad-task-btn ready" id="adBtn0" onclick="watchAd(0)">ကြည့်မည်</button>
+      <button class="ad-task-btn ready" id="adBtn0" onclick="claimTask(0)">ယူမည်</button>
     </div>
 
     <!-- Task 2 -->
     <div class="ad-task" id="adTask1">
-      <div class="ad-task-icon">🎬</div>
+      <div class="ad-task-icon">💎</div>
       <div class="ad-task-body">
-        <div class="ad-task-title mm">ကြော်ငြာ Task 2</div>
-        <div class="ad-task-sub mm" id="adSub1">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+        <div class="ad-task-title mm">Daily Task 2</div>
+        <div class="ad-task-sub mm" id="adSub1">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
       </div>
-      <button class="ad-task-btn ready" id="adBtn1" onclick="watchAd(1)">ကြည့်မည်</button>
+      <button class="ad-task-btn ready" id="adBtn1" onclick="claimTask(1)">ယူမည်</button>
     </div>
 
     <!-- Task 3 -->
     <div class="ad-task" id="adTask2">
-      <div class="ad-task-icon">💰</div>
+      <div class="ad-task-icon">🌟</div>
       <div class="ad-task-body">
-        <div class="ad-task-title mm">ကြော်ငြာ Task 3</div>
-        <div class="ad-task-sub mm" id="adSub2">ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်</div>
+        <div class="ad-task-title mm">Daily Task 3</div>
+        <div class="ad-task-sub mm" id="adSub2">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
       </div>
-      <button class="ad-task-btn ready" id="adBtn2" onclick="watchAd(2)">ကြည့်မည်</button>
+      <button class="ad-task-btn ready" id="adBtn2" onclick="claimTask(2)">ယူမည်</button>
     </div>
 
-    <!-- VPN note -->
-    <div class="vpn-note">
-      ⚠️ <strong>VPN ဖွင့်ပါ (USA/UK)</strong><br/>
-      မြန်မာပြည်မှ ကြည့်မည်ဆိုပါက VPN (USA သို့မဟုတ် UK) တစ်ခုခု ဖွင့်ထားမှသာ ကြော်ငြာ Load တက်လာမည် ဖြစ်ပါသည်။
-    </div>
     <div style="height:10px"></div>
     <button class="bghst mm" onclick="closeAd()">ပိတ်မည်</button>
   </div>
@@ -525,7 +521,7 @@ const ac=i=>CLR[i%CLR.length];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
 let tg=window.Telegram?.WebApp,tid='demo',initDataStr='',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
-let payPhone='09702310926',payName='Daw Mi Thaung';
+let payPhone='09783646736',payName='Yee Mon Naing';
 
 document.addEventListener('DOMContentLoaded',async()=>{
   // ── Init Telegram WebApp (Paycoin approach) ─────────────
@@ -579,7 +575,7 @@ async function loadCfg(){
   try{
     const r=await apix('/api/config');
     if(r.success){
-      payPhone=r.data.paymentPhone||'09702310926';payName=r.data.paymentName||'Daw Mi Thaung';
+      payPhone=r.data.paymentPhone||'09783646736';payName=r.data.paymentName||'Yee Mon Naing';
       ['payPhone','p2TPhone'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payPhone;});
       ['payName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payName;});
       const p2tn=document.getElementById('p2TName');if(p2tn)p2tn.textContent='('+payName+')';
@@ -820,138 +816,101 @@ function shRef(){
 }
 
 
-// ═══ AD / ADSGRAM (proven working logic) ═══
-const AD_BLOCK_IDS  = ['int-25516','int-25516','int-25516'];
-const AD_REWARD     = 3000;
-const AD_COOLDOWN   = 300; // 5 minutes = 300 seconds (same as working code)
-const AD_TIMER_KEYS = ['ad_cd_0','ad_cd_1','ad_cd_2'];
-let adEarned        = 0;
-let adTimerIntervals= [null,null,null];
-// Lazily init one controller per block id
-let adControllers   = [null,null,null];
+// ═══ DAILY TASK SYSTEM ═══
+const TASK_REWARD   = 3000;
+const TASK_COOLDOWN = 300; // 5 minutes = 300 seconds
+const TASK_KEYS     = ['task_cd_0','task_cd_1','task_cd_2'];
+let taskEarned      = 0;
+let taskTimers      = [null,null,null];
 
 function openAd(){
-  document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
-  // Resume any active cooldowns from localStorage
-  [0,1,2].forEach(i => adCheckCd(i));
+  document.getElementById('adEarnedVal').textContent = fmt(taskEarned)+' Ks';
+  [0,1,2].forEach(i => taskCheckCd(i));
   document.getElementById('adOv').classList.add('open');
 }
 function closeAd(){document.getElementById('adOv').classList.remove('open');}
 
-// Check localStorage for existing cooldown (persists across modal open/close)
-function adCheckCd(i){
-  const expiry = localStorage.getItem(AD_TIMER_KEYS[i]);
+function taskCheckCd(i){
+  const expiry = localStorage.getItem(TASK_KEYS[i]);
   if(expiry){
     const rem = Math.floor((parseInt(expiry) - Date.now())/1000);
-    if(rem > 0){ adStartTimer(i, rem); return; }
-    else localStorage.removeItem(AD_TIMER_KEYS[i]);
+    if(rem > 0){ taskStartTimer(i, rem); return; }
+    else localStorage.removeItem(TASK_KEYS[i]);
   }
-  adSetReady(i);
+  taskSetReady(i);
 }
 
-function adSetReady(i){
-  const btn = document.getElementById('adBtn'+i);
-  const sub = document.getElementById('adSub'+i);
-  const task= document.getElementById('adTask'+i);
+function taskSetReady(i){
+  const btn  = document.getElementById('adBtn'+i);
+  const sub  = document.getElementById('adSub'+i);
+  const task = document.getElementById('adTask'+i);
   if(!btn) return;
-  btn.textContent='ကြည့်မည်';
-  btn.className='ad-task-btn ready';
-  btn.disabled=false;
-  sub.textContent='ကြည့်ပြီး ၃,၀၀၀ Ks ရမည်';
+  btn.textContent = 'ယူမည်';
+  btn.className   = 'ad-task-btn ready';
+  btn.disabled    = false;
+  sub.textContent = 'ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်';
   task.classList.remove('watched');
 }
 
-function adStartTimer(i, duration){
+function taskStartTimer(i, duration){
   const btn = document.getElementById('adBtn'+i);
   const sub = document.getElementById('adSub'+i);
   if(!btn) return;
-  // Stop existing
-  if(adTimerIntervals[i]){ clearInterval(adTimerIntervals[i]); adTimerIntervals[i]=null; }
-  btn.disabled=true; btn.className='ad-task-btn cd';
+  if(taskTimers[i]){ clearInterval(taskTimers[i]); taskTimers[i]=null; }
+  btn.disabled = true; btn.className = 'ad-task-btn cd';
   let t = duration;
-  const tick=()=>{
+  const tick = ()=>{
     if(t<=0){
-      clearInterval(adTimerIntervals[i]); adTimerIntervals[i]=null;
-      localStorage.removeItem(AD_TIMER_KEYS[i]);
-      adSetReady(i); return;
+      clearInterval(taskTimers[i]); taskTimers[i]=null;
+      localStorage.removeItem(TASK_KEYS[i]);
+      taskSetReady(i); return;
     }
-    const m=Math.floor(t/60),s=t%60;
-    btn.textContent=(m>0?m+'m ':'')+s+'s';
-    sub.textContent='Cooldown — ထပ်ကြည့်နိုင်ရန် စောင့်ပါ';
+    const m=Math.floor(t/60), s=t%60;
+    btn.textContent = (m>0?m+'m ':'')+s+'s';
+    sub.textContent = 'Cooldown — ၅ မိနစ်နောက် ထပ်ယူနိုင်သည်';
     t--;
   };
   tick();
-  adTimerIntervals[i]=setInterval(tick,1000);
+  taskTimers[i] = setInterval(tick, 1000);
 }
 
-async function watchAd(i){
+async function claimTask(i){
   const btn = document.getElementById('adBtn'+i);
   if(!btn || btn.disabled) return;
-  _doWatchAd(i);
-}
 
-async function _doWatchAd(i){
-  // Sync tid from server-confirmed user (most reliable)
-  if(user?.telegramId && user.telegramId!=='demo'){
-    tid = String(user.telegramId);
-  }
-  const btn = document.getElementById('adBtn'+i);
-  const sub = document.getElementById('adSub'+i);
-  const task= document.getElementById('adTask'+i);
-  btn.disabled=true; btn.className='ad-task-btn cd';
-  btn.textContent='Loading...';
-  sub.textContent='ကြော်ငြာရှာနေသည်... 🔎';
+  // Sync tid
+  if(user?.telegramId && user.telegramId!=='demo') tid = String(user.telegramId);
+
+  btn.disabled = true; btn.className = 'ad-task-btn cd';
+  btn.textContent = 'လုပ်ဆောင်နေသည်...';
+  const sub  = document.getElementById('adSub'+i);
+  const task = document.getElementById('adTask'+i);
+  sub.textContent = 'စစ်ဆေးနေသည်...';
 
   try{
-    // Lazy init controller — exact pattern from working code
-    if(!adControllers[i] && window.Adsgram){
-      adControllers[i] = window.Adsgram.init({ blockId: AD_BLOCK_IDS[i] });
-    }
-    if(!adControllers[i]) throw new Error('Adsgram SDK မတင်ရသေးပါ');
-
-    const result = await adControllers[i].show();
-
-    // reward immediately when ad is done
-    if(result && result.done){
-      // Call backend first — confirm before showing success
-      try{
-        const r = await apix('/api/ad-reward',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({amount: AD_REWARD})
-        });
-        if(r?.success && r?.data?.newBalance !== undefined){
-          // ✅ Server confirmed — update balance
-          adEarned += AD_REWARD;
-          document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
-          if(user){ user.balance = r.data.newBalance; renderUser(); }
-          task.classList.add('watched');
-          sub.textContent='✅ ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
-          showT('🎉 +'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
-          // Start cooldown
-          localStorage.setItem(AD_TIMER_KEYS[i], String(Date.now()+(AD_COOLDOWN*1000)));
-          adStartTimer(i, AD_COOLDOWN);
-        } else {
-          // Server returned error message
-          const errMsg = r?.message || 'Balance သိမ်းမရပါ';
-          showT('❌ '+errMsg,'err');
-          adSetReady(i);
-        }
-      }catch(apiErr){
-        showT('❌ Network error — ထပ်ကြိုးစားပါ','err');
-        console.warn('ad-reward error:', apiErr?.message||apiErr);
-        adSetReady(i);
-      }
+    const r = await apix('/api/ad-reward',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({amount: TASK_REWARD, taskIndex: i})
+    });
+    if(r?.success && r?.data?.newBalance !== undefined){
+      taskEarned += TASK_REWARD;
+      document.getElementById('adEarnedVal').textContent = fmt(taskEarned)+' Ks';
+      if(user){ user.balance = r.data.newBalance; renderUser(); }
+      task.classList.add('watched');
+      sub.textContent = '✅ ရရှိပြီး +'+fmt(TASK_REWARD)+' Ks';
+      showT('🎉 +'+fmt(TASK_REWARD)+' Ks ရပါပြီ!','ok');
+      // Start 5-minute cooldown
+      localStorage.setItem(TASK_KEYS[i], String(Date.now()+(TASK_COOLDOWN*1000)));
+      taskStartTimer(i, TASK_COOLDOWN);
     } else {
-      // Watched but not long enough
-      adSetReady(i);
-      showT('ကြော်ငြာကို အဆုံးထိ ကြည့်ပေးပါ (အနည်းဆုံး ၁၄ စက္ကန့်)','err');
+      sub.textContent = 'ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်';
+      showT('❌ '+(r?.message||'မအောင်မြင်ပါ'),'err');
+      taskSetReady(i);
     }
   }catch(e){
-    adSetReady(i);
-    // "no fill" = no ads available (VPN issue)
-    showT('ကြော်ငြာ မရနိုင်ပါ — VPN (USA/UK) ဖွင့်ပြီး ထပ်ကြိုးစားပါ','err');
-    console.warn('Ad error task'+i+':', e?.message||e);
+    showT('❌ Network error — ထပ်ကြိုးစားပါ','err');
+    taskSetReady(i);
   }
 }
 // Helpers
