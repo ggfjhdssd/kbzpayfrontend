@@ -242,7 +242,7 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
         </div>
         <span class="albl mm">ငွေထုတ်ရန်</span>
       </div>
-      <div class="act" onclick="openAd()">
+      <div class="act" onclick="claimBonus()">
         <div class="aiwrap">
           <svg viewBox="0 0 32 32" fill="none"><rect x="3" y="7" width="22" height="16" rx="3" stroke="white" stroke-width="2.2" fill="none"/><text x="10" y="20" font-size="10" font-weight="700" fill="white" font-family="Arial">$</text><line x1="23" y1="15" x2="29" y2="15" stroke="white" stroke-width="2.2" stroke-linecap="round"/><polyline points="26,11 23,15 26,19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
@@ -450,53 +450,7 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 </div>
 
 <!-- AD MODAL -->
-<!-- DAILY TASK MODAL -->
-<div class="overlay" id="adOv" onclick="if(event.target===this)closeAd()">
-  <div class="modal">
-    <div class="mhnd"></div>
-    <div class="mtit">🎯 Daily Tasks</div>
-    <p style="font-size:11px;color:#8099c0;margin-bottom:12px;font-family:'Noto Sans Myanmar','Roboto',sans-serif">Task တစ်ခုယူတိုင်း ၃,၀၀၀ Ks ရရှိမည် (၅ မိနစ်တစ်ကြိမ်)</p>
-
-    <!-- Earned today -->
-    <div class="ad-earn-box">
-      <div class="ad-earn-val" id="adEarnedVal">0 Ks</div>
-      <div class="ad-earn-lbl">ဒီနေ့ Tasks မှ ရရှိပြီး</div>
-    </div>
-
-    <!-- Task 1 -->
-    <div class="ad-task" id="adTask0">
-      <div class="ad-task-icon">🎁</div>
-      <div class="ad-task-body">
-        <div class="ad-task-title mm">Daily Task 1</div>
-        <div class="ad-task-sub mm" id="adSub0">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
-      </div>
-      <button class="ad-task-btn ready" id="adBtn0" onclick="claimTask(0)">ယူမည်</button>
-    </div>
-
-    <!-- Task 2 -->
-    <div class="ad-task" id="adTask1">
-      <div class="ad-task-icon">💎</div>
-      <div class="ad-task-body">
-        <div class="ad-task-title mm">Daily Task 2</div>
-        <div class="ad-task-sub mm" id="adSub1">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
-      </div>
-      <button class="ad-task-btn ready" id="adBtn1" onclick="claimTask(1)">ယူမည်</button>
-    </div>
-
-    <!-- Task 3 -->
-    <div class="ad-task" id="adTask2">
-      <div class="ad-task-icon">🌟</div>
-      <div class="ad-task-body">
-        <div class="ad-task-title mm">Daily Task 3</div>
-        <div class="ad-task-sub mm" id="adSub2">ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်</div>
-      </div>
-      <button class="ad-task-btn ready" id="adBtn2" onclick="claimTask(2)">ယူမည်</button>
-    </div>
-
-    <div style="height:10px"></div>
-    <button class="bghst mm" onclick="closeAd()">ပိတ်မည်</button>
-  </div>
-</div>
+<!-- Daily Task Modal removed -->
 
 <!-- REF MODAL -->
 <div class="overlay" id="refOv" onclick="if(event.target===this)closeRef()">
@@ -807,103 +761,60 @@ function shRef(){
 }
 
 
-// ═══ DAILY TASK SYSTEM ═══
-const TASK_REWARD   = 3000;
-const TASK_COOLDOWN = 300; // 5 minutes = 300 seconds
-const TASK_KEYS     = ['task_cd_0','task_cd_1','task_cd_2'];
-let taskEarned      = 0;
-let taskTimers      = [null,null,null];
+// ═══ BONUS CLAIM SYSTEM ═══
+const BONUS_REWARD  = 3000;
+const BONUS_CD_KEY  = 'bonus_cd';
 
-function openAd(){
-  document.getElementById('adEarnedVal').textContent = fmt(taskEarned)+' Ks';
-  [0,1,2].forEach(i => taskCheckCd(i));
-  document.getElementById('adOv').classList.add('open');
+function getBonusCooldownRemaining(){
+  const expiry = parseInt(localStorage.getItem(BONUS_CD_KEY)||'0');
+  return Math.max(0, Math.floor((expiry - Date.now())/1000));
 }
-function closeAd(){document.getElementById('adOv').classList.remove('open');}
 
-function taskCheckCd(i){
-  const expiry = localStorage.getItem(TASK_KEYS[i]);
-  if(expiry){
-    const rem = Math.floor((parseInt(expiry) - Date.now())/1000);
-    if(rem > 0){ taskStartTimer(i, rem); return; }
-    else localStorage.removeItem(TASK_KEYS[i]);
+async function claimBonus(){
+  // Check local cooldown first (quick check before hitting backend)
+  const rem = getBonusCooldownRemaining();
+  if(rem > 0){
+    const h=Math.floor(rem/3600), m=Math.floor((rem%3600)/60), s=rem%60;
+    const t = h>0?h+'h '+m+'m':m>0?m+'m '+s+'s':s+'s';
+    showT('⏳ '+t+' နောက်မှ ထပ်ယူနိုင်သည်','err');
+    return;
   }
-  taskSetReady(i);
-}
 
-function taskSetReady(i){
-  const btn  = document.getElementById('adBtn'+i);
-  const sub  = document.getElementById('adSub'+i);
-  const task = document.getElementById('adTask'+i);
-  if(!btn) return;
-  btn.textContent = 'ယူမည်';
-  btn.className   = 'ad-task-btn ready';
-  btn.disabled    = false;
-  sub.textContent = 'ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်';
-  task.classList.remove('watched');
-}
-
-function taskStartTimer(i, duration){
-  const btn = document.getElementById('adBtn'+i);
-  const sub = document.getElementById('adSub'+i);
-  if(!btn) return;
-  if(taskTimers[i]){ clearInterval(taskTimers[i]); taskTimers[i]=null; }
-  btn.disabled = true; btn.className = 'ad-task-btn cd';
-  let t = duration;
-  const tick = ()=>{
-    if(t<=0){
-      clearInterval(taskTimers[i]); taskTimers[i]=null;
-      localStorage.removeItem(TASK_KEYS[i]);
-      taskSetReady(i); return;
-    }
-    const m=Math.floor(t/60), s=t%60;
-    btn.textContent = (m>0?m+'m ':'')+s+'s';
-    sub.textContent = 'Cooldown — ၅ မိနစ်နောက် ထပ်ယူနိုင်သည်';
-    t--;
-  };
-  tick();
-  taskTimers[i] = setInterval(tick, 1000);
-}
-
-async function claimTask(i){
-  const btn = document.getElementById('adBtn'+i);
-  if(!btn || btn.disabled) return;
-  // Re-read tid before API call (tg.ready() already called)
+  // Re-read tid before call
   if(tg?.initDataUnsafe?.user?.id) tid=String(tg.initDataUnsafe.user.id);
   else if(user?.telegramId) tid=String(user.telegramId);
 
-  btn.disabled = true; btn.className = 'ad-task-btn cd';
-  btn.textContent = 'လုပ်ဆောင်နေသည်...';
-  const sub  = document.getElementById('adSub'+i);
-  const task = document.getElementById('adTask'+i);
-  sub.textContent = 'စစ်ဆေးနေသည်...';
+  // Disable button briefly
+  const btns = document.querySelectorAll('.act');
+  showT('လုပ်ဆောင်နေသည်...','');
 
   try{
-    const r = await apix('/api/ad-reward',{
+    const r = await apix('/api/claim-bonus',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({amount: TASK_REWARD, taskIndex: i})
+      body: JSON.stringify({amount: BONUS_REWARD})
     });
-    if(r?.success && r?.data?.newBalance !== undefined){
-      taskEarned += TASK_REWARD;
-      document.getElementById('adEarnedVal').textContent = fmt(taskEarned)+' Ks';
-      if(user){ user.balance = r.data.newBalance; renderUser(); }
-      task.classList.add('watched');
-      sub.textContent = '✅ ရရှိပြီး +'+fmt(TASK_REWARD)+' Ks';
-      showT('🎉 +'+fmt(TASK_REWARD)+' Ks ရပါပြီ!','ok');
-      // Start 5-minute cooldown
-      localStorage.setItem(TASK_KEYS[i], String(Date.now()+(TASK_COOLDOWN*1000)));
-      taskStartTimer(i, TASK_COOLDOWN);
+    if(r?.success){
+      if(user) user.balance = r.data.newBalance;
+      renderUser();
+      // Save 2-hour cooldown locally
+      localStorage.setItem(BONUS_CD_KEY, String(Date.now() + 2*60*60*1000));
+      showT('🎉 +'+r.data.newBalance.toLocaleString()+'... ၃,၀၀၀ Ks ရပါပြီ!','ok');
     } else {
-      sub.textContent = 'ယူမည် နှိပ်ပြီး ၃,၀၀၀ Ks ရမည်';
-      showT('❌ '+(r?.message||'မအောင်မြင်ပါ'),'err');
-      taskSetReady(i);
+      // Backend returned cooldown info
+      if(r?.cooldownSeconds > 0){
+        localStorage.setItem(BONUS_CD_KEY, String(Date.now() + r.cooldownSeconds*1000));
+        const h2=Math.floor(r.cooldownSeconds/3600),m2=Math.floor((r.cooldownSeconds%3600)/60);
+        showT('⏳ '+(h2>0?h2+'h '+m2+'m':m2+'m')+' နောက်မှ ထပ်ယူနိုင်သည်','err');
+      } else {
+        showT('❌ '+(r?.message||'မအောင်မြင်ပါ'),'err');
+      }
     }
   }catch(e){
-    showT('❌ Network error — ထပ်ကြိုးစားပါ','err');
-    taskSetReady(i);
+    showT('❌ Network error','err');
   }
 }
+
 // Helpers
 function maskName(name){
   // "paingzinsoe" → "***soe", keep last 3 chars visible
