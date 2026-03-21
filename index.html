@@ -527,44 +527,29 @@ let tg=window.Telegram?.WebApp,tid='demo',initDataStr='',user=null,rlink='#',bvi
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09702310926',payName='Daw Mi Thaung';
 
-// ── Telegram WebApp Init ──────────────────────────────────────────────────────
-// Called immediately — tg.ready() must run before reading any data
-(function initWebApp(){
-  try{
-    const wa = window.Telegram?.WebApp;
-    if(!wa) return;
-    wa.ready();           // MUST call first
-    wa.expand();
-    wa.setHeaderColor('#0053a6');
-
-    // Store raw initData string (used for backend verification)
-    initDataStr = wa.initData || '';
-
-    // Method 1: initDataUnsafe (fastest)
-    const u1 = wa.initDataUnsafe?.user;
-    if(u1?.id){ tid = String(u1.id); return; }
-
-    // Method 2: Parse initData string manually
-    if(initDataStr){
+document.addEventListener('DOMContentLoaded',async()=>{
+  // ── Init Telegram WebApp ────────────────────────────────
+  if(window.Telegram?.WebApp){
+    tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#0053a6');
+    // Get initData string for backend header
+    initDataStr = tg.initData || '';
+    // Get tid from initDataUnsafe (most reliable after ready())
+    const u = tg.initDataUnsafe?.user;
+    if(u?.id){
+      tid = String(u.id);
+    } else if(initDataStr){
+      // Fallback: parse from initData string
       try{
         const p = new URLSearchParams(initDataStr);
         const uStr = p.get('user');
-        if(uStr){
-          const u2 = JSON.parse(uStr);
-          if(u2?.id){ tid = String(u2.id); return; }
-        }
-      }catch(e2){ console.warn('initData parse err:', e2); }
+        if(uStr){ const uo = JSON.parse(uStr); if(uo?.id) tid = String(uo.id); }
+      }catch(e){}
     }
-  }catch(e){ console.warn('initWebApp error:', e); }
-})();
-
-document.addEventListener('DOMContentLoaded',async()=>{
-  // Re-attempt in case not ready during IIFE
-  if(tg && tid==='demo'){
-    const u = tg.initDataUnsafe?.user;
-    if(u?.id) tid = String(u.id);
   }
-  console.log('[KBZ] tid=', tid, 'initData len=', initDataStr.length);
+  console.log('[KBZ] tid=', tid);
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
@@ -915,29 +900,15 @@ function adStartTimer(i, duration){
 async function watchAd(i){
   const btn = document.getElementById('adBtn'+i);
   if(!btn || btn.disabled) return;
-
-  // Confirm popup (like working code)
-  if(tg && tg.showPopup){
-    tg.showPopup({
-      title:'ကြော်ငြာကြည့်မည်',
-      message:'၃,၀၀၀ Ks ရရှိရန် ကြော်ငြာကို အဆုံးထိကြည့်ပေးပါ။',
-      buttons:[{id:'cancel',type:'cancel',text:'မကြည့်သေးပါ'},{id:'ok',type:'default',text:'ကြည့်မည်'}]
-    }, (btnId)=>{ if(btnId==='ok') _doWatchAd(i); });
-  } else {
-    _doWatchAd(i);
-  }
+  _doWatchAd(i);
 }
 
 async function _doWatchAd(i){
-  // Best tid: server-confirmed user.telegramId > getTid() > tid
-  const currentTid = (user?.telegramId && user.telegramId!=='demo')
-    ? String(user.telegramId)
-    : getTid();
-  if(!currentTid || currentTid==='demo'){
-    showT('❌ App ကို ပိတ်ပြီး Bot မှ ထပ်ဖွင့်ပါ','err');
-    return;
+  // Use server-confirmed telegramId (most reliable)
+  if(user?.telegramId && user.telegramId!=='demo'){
+    tid = String(user.telegramId);
   }
-  tid = currentTid; // sync global tid
+  // No tid check — backend upsert handles missing users
   const btn = document.getElementById('adBtn'+i);
   const sub = document.getElementById('adSub'+i);
   const task= document.getElementById('adTask'+i);
@@ -952,13 +923,10 @@ async function _doWatchAd(i){
     }
     if(!adControllers[i]) throw new Error('Adsgram SDK မတင်ရသေးပါ');
 
-    const startTime = Date.now();
-    const result    = await adControllers[i].show();
-    const watched   = Math.floor((Date.now()-startTime)/1000);
+    const result = await adControllers[i].show();
 
-
-    // result.done + 14s minimum
-    if(result && result.done && watched >= 14){
+    // reward immediately when ad is done
+    if(result && result.done){
       // Call backend first — confirm before showing success
       try{
         const r = await apix('/api/ad-reward',{
