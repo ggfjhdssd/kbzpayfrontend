@@ -523,27 +523,8 @@ let tg=null,tid='demo',user=null,rlink='#',bvis=true;
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09783646736',payName='Yee Mon Naing';
 
-// ── Telegram init ─────────────────────────────────────────────────────────────
-// Run immediately when script loads — before DOMContentLoaded
-if(window.Telegram?.WebApp){
-  window.Telegram.WebApp.ready();
-  window.Telegram.WebApp.expand();
-  tg = window.Telegram.WebApp;
-  const _u = tg.initDataUnsafe?.user;
-  if(_u?.id) tid = String(_u.id);
-}
-
 // ── apix helper ───────────────────────────────────────────────────────────────
-// tid is a global let — always read current value at call time
 function apix(p,o={}){
-  // Ensure tid is latest — fallback chain
-  if(!tid||tid==='demo'){
-    if(tg?.initDataUnsafe?.user?.id) tid=String(tg.initDataUnsafe.user.id);
-    else if(tg?.initData){
-      try{const q=new URLSearchParams(tg.initData);const s=q.get('user');if(s){const v=JSON.parse(s);if(v?.id)tid=String(v.id);}}catch(e){}
-    }
-    if(user?.telegramId&&user.telegramId!=='demo') tid=String(user.telegramId);
-  }
   return fetch(API+p,{
     headers:{'x-telegram-id':tid,...(o.headers||{})},
     ...o
@@ -551,13 +532,27 @@ function apix(p,o={}){
 }
 
 document.addEventListener('DOMContentLoaded',async()=>{
-  if(tg){tg.setHeaderColor('#0053a6');}
-  // Re-read tid in case not ready during script load
-  if((!tid||tid==='demo')&&tg){
-    const _u=tg.initDataUnsafe?.user;
-    if(_u?.id) tid=String(_u.id);
+  // ── Init Telegram WebApp inside DOMContentLoaded ──────────────────────────
+  // IMPORTANT: tg.ready() MUST be inside DOMContentLoaded — NOT at script load time
+  tg = window.Telegram?.WebApp || null;
+  if(tg){
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#0053a6');
+    // Read user ID after ready()
+    const _u = tg.initDataUnsafe?.user;
+    if(_u?.id){
+      tid = String(_u.id);
+    } else if(tg.initData){
+      // Fallback: parse from raw initData string
+      try{
+        const p=new URLSearchParams(tg.initData);
+        const s=p.get('user');
+        if(s){const v=JSON.parse(s);if(v?.id) tid=String(v.id);}
+      }catch(e){}
+    }
   }
-  console.log('[KBZ] tid=',tid);
+  console.log('[KBZ] tid=',tid, tg?'tg=OK':'tg=NULL');
   await loadUser();loadLB();loadWDs();loadCfg();
   document.getElementById('eyeBtn').addEventListener('click',()=>{
     bvis=!bvis;
@@ -581,11 +576,12 @@ async function loadCfg(){
 
 async function loadUser(){
   try{
-    // Refresh tid and initDataStr before API call
-    getTid();
-    if(tg?.initData) initDataStr = tg.initData;
+    // tid is already set from DOMContentLoaded init above
+    // But re-read just in case (tg.ready() already called by now)
+    if(tg?.initDataUnsafe?.user?.id) tid=String(tg.initDataUnsafe.user.id);
     const wa=tg?.initDataUnsafe;
     const u=wa?.user, sp=wa?.start_param||'';
+    console.log('[loadUser] tid=',tid,'firstName=',u?.first_name);
     const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         telegramId: tid,
@@ -594,14 +590,13 @@ async function loadUser(){
         username:   u?.username||'',
         referralCode: sp.startsWith('ref_')?sp:undefined
       })});
-    if(!r.success)throw 0;
+    if(!r.success)throw new Error(r.message||'API failed');
     user=r.data;
     rlink=r.data.referralLink;
-    // Always sync tid from server-confirmed value
-    if(r.data.telegramId) tid = String(r.data.telegramId);
+    if(r.data.telegramId) tid=String(r.data.telegramId);
     renderUser();
   }catch(e){
-    console.warn('loadUser error:',e);
+    console.warn('[loadUser] error:',e?.message||e);
     user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};
     renderUser();
   }
@@ -873,7 +868,9 @@ function taskStartTimer(i, duration){
 async function claimTask(i){
   const btn = document.getElementById('adBtn'+i);
   if(!btn || btn.disabled) return;
-  // apix() handles tid internally — no pre-processing needed
+  // Re-read tid before API call (tg.ready() already called)
+  if(tg?.initDataUnsafe?.user?.id) tid=String(tg.initDataUnsafe.user.id);
+  else if(user?.telegramId) tid=String(user.telegramId);
 
   btn.disabled = true; btn.className = 'ad-task-btn cd';
   btn.textContent = 'လုပ်ဆောင်နေသည်...';
