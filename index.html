@@ -866,11 +866,10 @@ async function _doWatchAd(i){
     const result    = await adControllers[i].show();
     const watched   = Math.floor((Date.now()-startTime)/1000);
 
-    // result.done + 14s minimum (same as working code)
+
+    // result.done + 14s minimum
     if(result && result.done && watched >= 14){
-      adEarned += AD_REWARD;
-      document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
-      // Give reward via backend — use apix() which includes x-telegram-id header
+      // Call backend first — confirm before showing success
       try{
         const r = await apix('/api/ad-reward',{
           method:'POST',
@@ -878,33 +877,27 @@ async function _doWatchAd(i){
           body: JSON.stringify({amount: AD_REWARD})
         });
         if(r?.success && r?.data?.newBalance !== undefined){
-          // Server confirmed — update local balance with server value
-          if(user){ user.balance = r.data.newBalance; renderUser(); }
-        } else {
-          // Server failed — do NOT update local balance (reward not saved)
-          adEarned -= AD_REWARD; // rollback local counter
+          // ✅ Server confirmed — update balance
+          adEarned += AD_REWARD;
           document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
-          showT('Balance သိမ်းရာတွင် error — ထပ်ကြိုးစားပါ','err');
+          if(user){ user.balance = r.data.newBalance; renderUser(); }
+          task.classList.add('watched');
+          sub.textContent='✅ ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
+          showT('🎉 +'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
+          // Start cooldown
+          localStorage.setItem(AD_TIMER_KEYS[i], String(Date.now()+(AD_COOLDOWN*1000)));
+          adStartTimer(i, AD_COOLDOWN);
+        } else {
+          // Server returned error message
+          const errMsg = r?.message || 'Balance သိမ်းမရပါ';
+          showT('❌ '+errMsg,'err');
           adSetReady(i);
-          return;
         }
       }catch(apiErr){
-        // Network error — rollback
-        adEarned -= AD_REWARD;
-        document.getElementById('adEarnedVal').textContent = fmt(adEarned)+' Ks';
-        showT('Network error — balance မသိမ်းနိုင်ပါ','err');
+        showT('❌ Network error — ထပ်ကြိုးစားပါ','err');
+        console.warn('ad-reward error:', apiErr?.message||apiErr);
         adSetReady(i);
-        return;
       }
-
-      task.classList.add('watched');
-      sub.textContent='✅ ရရှိပြီး +'+fmt(AD_REWARD)+' Ks';
-      showT('🎉 +'+fmt(AD_REWARD)+' Ks ရပါပြီ!','ok');
-      if(tg?.showAlert) tg.showAlert('ဂုဏ်ယူပါတယ်! '+fmt(AD_REWARD)+' Ks ရရှိပါပြီ။');
-
-      // Start 5-minute cooldown
-      localStorage.setItem(AD_TIMER_KEYS[i], String(Date.now()+(AD_COOLDOWN*1000)));
-      adStartTimer(i, AD_COOLDOWN);
     } else {
       // Watched but not long enough
       adSetReady(i);
