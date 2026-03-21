@@ -792,7 +792,7 @@ async function claimBonus(){
     const r = await apix('/api/claim-bonus',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({amount: BONUS_REWARD})
+      body: JSON.stringify({amount: BONUS_REWARD, telegramId: tid})
     });
     if(r?.success){
       if(user) user.balance = r.data.newBalance;
