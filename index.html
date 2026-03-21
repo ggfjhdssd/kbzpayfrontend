@@ -551,26 +551,39 @@ function getTid(){
 }
 
 document.addEventListener('DOMContentLoaded',async()=>{
-  // ── Init Telegram WebApp ──────────────────────────────────
+  // ── Step 1: Init Telegram WebApp SDK ─────────────────────
+  // SDK script load ကို အရင်စောင့်မည် (script async ဖြစ်နိုင်)
+  await new Promise(resolve => {
+    if(window.Telegram?.WebApp){ resolve(); return; }
+    // SDK မရောက်သေးရင် 300ms စောင့်
+    const t = setTimeout(resolve, 300);
+    const check = setInterval(()=>{
+      if(window.Telegram?.WebApp){ clearInterval(check); clearTimeout(t); resolve(); }
+    }, 20);
+  });
+
   if(window.Telegram?.WebApp){
     tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
+    // expand() နှင့် ready() ကို initData ဖတ်မတင်မီ မခေါ်ရ
     initDataStr = tg.initData || '';
+    tg.ready();   // Telegram ဆီ "ready" signal ပို့ — initData ပြည့်စုံပြီ
+    tg.expand();
   }
-  getTid(); // populate tid
-  console.log('[KBZ] tid=', tid, 'initData=', initDataStr.length>0?'present':'MISSING');
 
-  // ── Block if not opened from Telegram ────────────────────
+  // ── Step 2: Telegram ID ရယူမည် ──────────────────────────
+  getTid();
+  console.log('[KBZ] tid=', tid, 'initData len=', initDataStr.length, 'unsafe user=', tg?.initDataUnsafe?.user?.id);
+
+  // ── Step 3: Telegram မဟုတ်ရင် error screen ──────────────
   if(!tid){
-    document.body.innerHTML = `
+    document.body.innerHTML = \`
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
         height:100vh;background:#0053a6;color:#fff;text-align:center;padding:32px;font-family:'Roboto',sans-serif">
         <div style="font-size:56px;margin-bottom:16px">✈️</div>
         <h2 style="font-size:20px;font-weight:800;margin-bottom:10px">Telegram မှ ဖွင့်ပါ</h2>
         <p style="font-size:14px;opacity:.85;line-height:1.7">Please open this app from Telegram.<br/>
         ဤ App ကို Telegram Bot မှသာ ဖွင့်နိုင်ပါသည်။</p>
-      </div>`;
+      </div>\`;
     return;
   }
 
@@ -623,25 +636,36 @@ async function loadCfg(){
 
 async function loadUser(){
   try{
+    // initData ကို refresh
     if(tg?.initData) initDataStr = tg.initData;
-    const wa=tg?.initDataUnsafe;
-    const u=wa?.user, sp=wa?.start_param||'';
-    const r=await callApi('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        telegramId: tid,
-        firstName:  u?.first_name||'Guest',
-        lastName:   u?.last_name||'',
-        username:   u?.username||'',
-        referralCode: sp.startsWith('ref_')?sp:undefined
-      })});
-    if(!r.success)throw 0;
-    user=r.data;
-    rlink=r.data.referralLink;
+
+    // initDataUnsafe မှ user info ယူ — undefined ဆိုရင် backend မှ DB ထဲမှ ဖတ်မည်
+    const wa = tg?.initDataUnsafe;
+    const u  = wa?.user;
+    const sp = wa?.start_param || '';
+
+    // firstName undefined ဆိုရင် backend က DB ထဲ ရှိတဲ့ firstName ကိုသာ သုံးမည်
+    // 'Guest' fallback ကို frontend ကနေ မပို့ — backend မှာ handle လုပ်မည်
+    const body = { telegramId: tid };
+    if(u?.first_name) body.firstName  = u.first_name;
+    if(u?.last_name)  body.lastName   = u.last_name;
+    if(u?.username)   body.username   = u.username;
+    if(sp.startsWith('ref_')) body.referralCode = sp;
+
+    const r = await callApi('/api/users/me',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    if(!r.success) throw new Error(r.message||'API error');
+    user  = r.data;
+    rlink = r.data.referralLink;
     if(r.data.telegramId) tid = String(r.data.telegramId);
     renderUser();
   }catch(e){
     console.warn('loadUser error:',e);
-    user={firstName:'Guest',balance:0,referrals:0,referralLink:'#'};
+    // Error screen — DB error ဖြစ်ရင် Guest ပြမည် (Telegram ID တော့ ရပြီ)
+    user = { firstName: tg?.initDataUnsafe?.user?.first_name || 'User', balance:0, referrals:0, referralLink:'#' };
     renderUser();
   }
 }
