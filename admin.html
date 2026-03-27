@@ -127,6 +127,7 @@ tr:hover td{background:#f8fbff}
     <div class="nav-tab" onclick="switchSection('withdrawals')">💸 Withdrawals</div>
     <div class="nav-tab" onclick="switchSection('users')">👥 Users</div>
     <div class="nav-tab" onclick="switchSection('broadcast')">📢 Broadcast</div>
+    <div class="nav-tab" onclick="switchSection('honeypot')">🍯 Honeypot</div>
   </div>
   <div class="content">
 
@@ -229,6 +230,51 @@ tr:hover td{background:#f8fbff}
       </div>
     </div>
 
+    <!-- ── HONEYPOT ── -->
+    <div class="section" id="sec-honeypot">
+
+      <!-- Summary stats -->
+      <div class="stats-grid" id="hpStatsGrid">
+        <div class="stat-box"><div class="stat-num" id="hpProbes">—</div><div class="stat-lbl">🔍 Probes</div></div>
+        <div class="stat-box"><div class="stat-num" id="hpHits">—</div><div class="stat-lbl">💥 Hits</div></div>
+        <div class="stat-box"><div class="stat-num" id="hpAI">—</div><div class="stat-lbl">🤖 AI Responses</div></div>
+        <div class="stat-box"><div class="stat-num" id="hpSusIPs">—</div><div class="stat-lbl">⚠️ Suspicious IPs</div></div>
+      </div>
+
+      <!-- Gemini API Key Check -->
+      <div class="card">
+        <div class="card-title">🤖 Gemini API Key စစ်ဆေးမည်</div>
+        <div class="alert" id="hpApiAlert"></div>
+        <button class="btn-primary" id="hpCheckBtn" onclick="checkGeminiKey()" style="max-width:200px">🔑 Check API Key</button>
+      </div>
+
+      <!-- Suspicious IPs -->
+      <div class="card">
+        <div class="card-title" style="justify-content:space-between">
+          <span>⚠️ Suspicious IPs</span>
+          <button class="btn-sm btn-red" onclick="clearHoneypotLogs()">🗑 Clear All</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>IP Address</th><th>Probes</th><th>First Seen</th><th>Last Seen</th><th>Paths</th></tr></thead>
+            <tbody id="hpSusTbl"><tr><td colspan="5" style="text-align:center;color:#aaa">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent logs -->
+      <div class="card">
+        <div class="card-title">📋 Recent Honeypot Activity</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Time</th><th>Type</th><th>IP</th><th>Path</th><th>AI</th></tr></thead>
+            <tbody id="hpLogTbl"><tr><td colspan="5" style="text-align:center;color:#aaa">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-honeypot -->
+
   </div><!-- /content -->
 </div><!-- /app-body -->
 
@@ -251,6 +297,7 @@ tr:hover td{background:#f8fbff}
 const API = 'https://kbzpaybackend.onrender.com';
 const fmt = n => Number(n||0).toLocaleString('en-US');
 let SECRET = '';
+let adminSecret = '';
 let currentAction = null;
 let userPage = 1;
 let userSearchQ = '';
@@ -263,10 +310,12 @@ function doLogin() {
   SECRET = s;
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('appBody').style.display = 'flex';
+  adminSecret = s;
   loadStats();
   loadPaymentConfig();
   loadWithdrawals('pending');
   loadUsers();
+  loadHoneypot();
 }
 function doLogout() {
   SECRET = '';
@@ -292,6 +341,7 @@ function switchSection(id) {
   if (id==='payment') loadPaymentConfig();
   if (id==='withdrawals') loadWithdrawals(wdFilter);
   if (id==='users') loadUsers();
+  if (id==='honeypot') loadHoneypot();
 }
 
 // ── Stats ──────────────────────────────────────────────────────────────────────
@@ -519,6 +569,82 @@ async function sendBroadcast() {
     if (r.success) document.getElementById('bcMsg').value = '';
   } catch(e) { el.textContent = e.message; el.className = 'alert show alert-err'; }
   finally { document.getElementById('bcBtn').disabled=false; document.getElementById('bcBtn').textContent='📢 Broadcast ပို့မည်'; }
+}
+
+// ── Honeypot ───────────────────────────────────────────────────────────────────
+async function loadHoneypot() {
+  try {
+    const r = await adm('/api/mgmt/honeypot-logs');
+    if (!r.success) return;
+    const { stats, logs, suspiciousList } = r.data;
+
+    document.getElementById('hpProbes').textContent  = stats.totalProbes;
+    document.getElementById('hpHits').textContent    = stats.totalHits;
+    document.getElementById('hpAI').textContent      = stats.aiResponses;
+    document.getElementById('hpSusIPs').textContent  = stats.suspiciousIPCount;
+
+    // Suspicious IPs table
+    const susTbl = document.getElementById('hpSusTbl');
+    if (suspiciousList.length === 0) {
+      susTbl.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#aaa">Suspicious IP မရှိသေးပါ</td></tr>';
+    } else {
+      susTbl.innerHTML = suspiciousList.map(ip => `
+        <tr>
+          <td><code style="font-size:12px">${ip.ip}</code></td>
+          <td><span class="badge badge-pending">${ip.count}</span></td>
+          <td style="font-size:11px">${new Date(ip.firstSeen).toLocaleString('en-GB')}</td>
+          <td style="font-size:11px">${new Date(ip.lastSeen).toLocaleString('en-GB')}</td>
+          <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis">${(ip.paths||[]).join(', ')}</td>
+        </tr>`).join('');
+    }
+
+    // Activity log table
+    const logTbl = document.getElementById('hpLogTbl');
+    if (logs.length === 0) {
+      logTbl.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#aaa">Activity မရှိသေးပါ</td></tr>';
+    } else {
+      logTbl.innerHTML = logs.map(l => `
+        <tr>
+          <td style="font-size:11px;white-space:nowrap">${new Date(l.timestamp).toLocaleString('en-GB')}</td>
+          <td>${l.type === 'hit'
+            ? '<span class="badge badge-rejected">HIT</span>'
+            : '<span class="badge badge-pending">PROBE</span>'}</td>
+          <td><code style="font-size:11px">${l.ip}</code></td>
+          <td style="font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis"><code>${l.path||''}</code></td>
+          <td>${l.aiUsed ? '🤖 Gemini' : '—'}</td>
+        </tr>`).join('');
+    }
+  } catch(e) { console.error('loadHoneypot error:', e); }
+}
+
+async function checkGeminiKey() {
+  const btn = document.getElementById('hpCheckBtn');
+  const el  = document.getElementById('hpApiAlert');
+  el.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = '⏳ စစ်နေသည်...';
+  try {
+    const data = await adm('/api/mgmt/check-gemini');
+    if (data.ok) {
+      el.textContent = `✅ Gemini API Key အလုပ်လုပ်သည်! Model: ${data.model} | Response: ${data.text}`;
+      el.className = 'alert show alert-ok';
+    } else {
+      el.textContent = `❌ Key အလုပ်မလုပ်ပါ — ${data.error}`;
+      el.className = 'alert show alert-err';
+    }
+  } catch(e) {
+    el.textContent = `❌ Error: ${e.message}`;
+    el.className = 'alert show alert-err';
+  }
+  finally { btn.disabled=false; btn.textContent='🔑 Check API Key'; }
+}
+
+async function clearHoneypotLogs() {
+  if (!confirm('Honeypot logs အားလုံး ဖျက်ရမှာ သေချာပါသလား?')) return;
+  try {
+    await adm('/api/mgmt/honeypot-logs', { method: 'DELETE' });
+    loadHoneypot();
+  } catch(e) { alert('Error: ' + e.message); }
 }
 </script>
 </body>
