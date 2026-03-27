@@ -469,34 +469,18 @@ body{font-family:"Roboto","Noto Sans Myanmar",sans-serif;background:#e0e0e0;disp
 <div id="toast"></div>
 <script>
 const API='https://kbzpaybackend.onrender.com';
-// ─────────────────────────────────────────────────────────────────────────────
-//  SECURITY: Obfuscated route names — match backend
-// ─────────────────────────────────────────────────────────────────────────────
-const R={
-  cfg:   '/api/v2/app-cfg',
-  auth:  '/api/v2/auth-session',
-  lb:    '/api/v2/rank-board',
-  wdR:   '/api/v2/settled-payouts',
-  wdMine:'/api/v2/payout-records',
-  wd:    '/api/v3/secure-payout-handler',
-  p2p:   '/api/v3/p2p-exchange-handler',
-  bonus: '/api/v3/promo-grant-handler',
-  adRw:  '/api/v3/media-task-processor',
-};
 const SVC=5000,MWD=100000,P2MIN=20000,P2FEE=5000;
 const CLR=['#3b6ee8','#e86b3b','#3bc47a','#9b59b6','#e84393','#17a2b8','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
 const ac=i=>CLR[i%CLR.length];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
 let tg=null,tid='demo',user=null,rlink='#',bvis=true;
-// SECURITY: maskedTid (Base64) — raw telegramId ကို header မတင်ဘဲ masked version သုံးသည်
-let maskedTid='demo';
 let wFile=null,p2File=null,p2Timer=null,p2Secs=900,p2Amt=0;
 let payPhone='09783646736',payName='Yee Mon Naing';
 
-// ── apix helper — masked ID သုံးသည် ──────────────────────────────────────────
+// ── apix helper ───────────────────────────────────────────────────────────────
 function apix(p,o={}){
   return fetch(API+p,{
-    headers:{'x-telegram-id':maskedTid,...(o.headers||{})},
+    headers:{'x-telegram-id':tid,...(o.headers||{})},
     ...o
   }).then(r=>r.json());
 }
@@ -534,7 +518,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
 async function loadCfg(){
   try{
-    const r=await apix(R.cfg);
+    const r=await apix('/api/config');
     if(r.success){
       payPhone=r.data.paymentPhone||'09783646736';payName=r.data.paymentName||'Yee Mon Naing';
       ['payPhone','p2TPhone'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payPhone;});
@@ -552,7 +536,7 @@ async function loadUser(){
     const wa=tg?.initDataUnsafe;
     const u=wa?.user, sp=wa?.start_param||'';
     console.log('[loadUser] tid=',tid,'firstName=',u?.first_name);
-    const r=await apix(R.auth,{method:'POST',headers:{'Content-Type':'application/json'},
+    const r=await apix('/api/users/me',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         telegramId: tid,
         firstName:  u?.first_name||'Guest',
@@ -563,8 +547,7 @@ async function loadUser(){
     if(!r.success)throw new Error(r.message||'API failed');
     user=r.data;
     rlink=r.data.referralLink;
-    // SECURITY: Store masked ID for use in all subsequent requests
-    if(r.data.maskedId) maskedTid=r.data.maskedId;
+    if(r.data.telegramId) tid=String(r.data.telegramId);
     renderUser();
   }catch(e){
     console.warn('[loadUser] error:',e?.message||e);
@@ -587,7 +570,7 @@ function renderUser(){
 
 async function loadLB(){
   try{
-    const r=await apix(R.lb);if(!r.success)throw 0;
+    const r=await apix('/api/users/leaderboard');if(!r.success)throw 0;
     const t3=r.data.slice(0,3),rest=r.data.slice(3);
     const ord=[1,0,2],cls=['p2','p1','p3'];
     const bgs=['<span class="rb rbs">🥈 #2</span>','<span class="rb rbg">🥇 #1</span>','<span class="rb rbb">🥉 #3</span>'];
@@ -601,7 +584,7 @@ async function loadLB(){
 
 async function loadWDs(){
   try{
-    const r=await apix(R.wdR);if(!r.success)throw 0;
+    const r=await apix('/api/withdrawals/recent');if(!r.success)throw 0;
     if(!r.data.length){document.getElementById('wdEl').innerHTML='<p style="text-align:center;padding:22px;color:#8099c0;font-size:12px" class="mm">မှတ်တမ်း မရှိသေးပါ</p>';return;}
     let h='';r.data.forEach((w,i)=>{h+=`<div class="row"><div class="rav" style="background:${ac(i)}">${w.avatar}</div><div class="rbdy"><div class="rnm">${maskName(w.name)}</div><div class="rsb mm">${w.date}</div></div><div class="rrt"><div class="ramt">+${fmt(w.net)} Ks</div><div class="rbadge mm"><span style="width:5px;height:5px;background:#00c875;border-radius:50%;display:inline-block"></span> အောင်မြင်</div></div></div>`;});
     document.getElementById('wdEl').innerHTML=h;
@@ -688,7 +671,7 @@ async function subP2P(){
     const fd=new FormData();fd.append('amount',p2Amt);fd.append('screenshot',p2File);
     fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
     // /api/p2p — balance မနုတ်ဘဲ admin ဆီ photo ပို့သည်
-    const r=await fetch(API+R.p2p,{method:'POST',headers:{'x-telegram-id':maskedTid},body:fd}).then(x=>x.json());
+    const r=await fetch(API+'/api/p2p',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
     p2SetSt(3);showT('တင်ပြီးပါပြီ!','ok');
   }catch(e){showT(e.message||'မအောင်မြင်ပါ','err');document.getElementById('p2SubBtn').disabled=false;}
@@ -753,7 +736,7 @@ async function subWd(){
   try{
     const fd=new FormData();fd.append('amount',amt);fd.append('screenshot',wFile);
     fd.append('userKpayPhone',uPhone);fd.append('userKpayName',uName);
-    const r=await fetch(API+R.wd,{method:'POST',headers:{'x-telegram-id':maskedTid},body:fd}).then(x=>x.json());
+    const r=await fetch(API+'/api/withdrawals',{method:'POST',headers:{'x-telegram-id':tid},body:fd}).then(x=>x.json());
     if(!r.success)throw new Error(r.message);
     if(r.data?.newBalance!==undefined){user.balance=r.data.newBalance;renderUser();}
     wStep(4);showT('ငွေထုတ်ယူမှု တင်ပြီးပါပြီ!','ok');loadWDs();
@@ -806,7 +789,7 @@ async function claimBonus(){
   showT('လုပ်ဆောင်နေသည်...','');
 
   try{
-    const r = await apix(R.bonus,{
+    const r = await apix('/api/claim-bonus',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({amount: BONUS_REWARD, telegramId: tid})
