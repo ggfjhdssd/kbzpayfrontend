@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "KBZPay Telegram Mini App Frontend",
   "scripts": {
-    "start": "npx serve . -p 3000",
-    "dev":   "npx live-server --port=3000"
+    "start":  "npx serve . -p 3000",
+    "dev":    "npx live-server --port=3000",
+    "backup": "cp index.html index.html.bak && echo 'Backup created: index.html.bak'"
   },
   "devDependencies": {
     "live-server": "^1.2.2",
